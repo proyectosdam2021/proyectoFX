@@ -1,5 +1,6 @@
 package com.proyectoacademia;
 
+import controlador.PrincipalVistaController;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -12,7 +13,7 @@ public class ProyectoAcademia extends Application {
 
     private static Scene scene;   //donde se produce la acción con los elementos creados
     private static Stage stage;   //el maro de la ventana actual
-    
+
     @Override
     public void init() {  //Primer método que se ejecuta al instanciar la clase
         //Usado para validaciones con bases de datos
@@ -25,24 +26,20 @@ public class ProyectoAcademia extends Application {
     public void start(Stage stage) throws Exception {
         System.out.println("Método start()");
         System.out.println("Java version: " + System.getProperty("java.version") + "\nJavaFX version: " + System.getProperty("javafx.version"));
-        /*
         //cargamos la vista FXML
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/vista/LoginVista.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/vista/PrincipalVista.fxml"));
         //instanciamos y cargamos el FXML en el padre
         Parent root = loader.load();
-        //instanciamos al controlador FrmAlumnoNuevo haciendo uso del nuevo método getController
-        LoginVistaController ctrLogin = loader.getController();
-        //creamos la nueva escena que viene del padre
-        scene = new Scene(root);
+        //instanciamos el controlador haciendo uso del nuevo método getController
+        PrincipalVistaController ctrPrincipal = loader.getController();
+        scene = new Scene(root);//creamos la nueva escena padre
         stage = new Stage();    //creamos la nueva ventana
         stage.setScene(scene); //establecemos la escena
         //Cargamos el resto de componentes de la vista
         stage.setTitle("Proyecto Academia");
-        //Cargamos el icono en la ventana
-        stage.getIcons().add(new Image(getClass().getResourceAsStream("/imagenes/icons8_java_duke_50px.png")));
-        stage.setResizable(false); //no permitimos que la ventana cambie de tamaño
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("/imagenes/icons8_java_duke_50px.png")));  //Cargamos un nuevo icono en la ventana
+        //stage.setResizable(false); //no permitimos que la ventana cambie de tamaño
         stage.show(); //mostramos la ventana
-        */
     }
 
     @Override
