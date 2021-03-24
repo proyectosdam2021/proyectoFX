@@ -1,6 +1,8 @@
 package controlador;
 
+import entidades.ClassAlumno;
 import java.net.URL;
+import java.util.Date;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -33,32 +35,43 @@ public class AlumnoVistaController implements Initializable {
     @FXML
     private Button btnEliminar;
     @FXML
-    private TableView<?> tablaAlumno;
+    private Label lblNumRegistros;
     @FXML
-    private TableColumn<?, ?> colRegistro;
+    private TableView<ClassAlumno> tablaAlumno;
     @FXML
-    private TableColumn<?, ?> ColDni;
+    private TableColumn<ClassAlumno, Integer> colId;
     @FXML
-    private TableColumn<?, ?> ColNombre;
+    private TableColumn<ClassAlumno, String> ColDni;
     @FXML
-    private TableColumn<?, ?> colApellido1;
+    private TableColumn<ClassAlumno, String> ColNombre;
     @FXML
-    private TableColumn<?, ?> colApellido2;
+    private TableColumn<ClassAlumno, String> colApellido1;
     @FXML
-    private Label lblRegistros;
+    private TableColumn<ClassAlumno, String> colApellido2;
+    @FXML
+    private TableColumn<ClassAlumno, String> colCalle;
+    @FXML
+    private TableColumn<ClassAlumno, Integer> colNumero;
+    @FXML
+    private TableColumn<ClassAlumno, Integer> colCP;
+    @FXML
+    private TableColumn<ClassAlumno, String> colLocalidad;
+    @FXML
+    private TableColumn<ClassAlumno, String> colTelefono;
+    @FXML
+    private TableColumn<ClassAlumno, Date> colFechaNac;
+    @FXML
+    private TableColumn<ClassAlumno, Integer> colIdEmpresa;
 
     /**
      * Initializes the controller class.
+     *
      * @param url
      * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
-
-    @FXML
-    private void pulsoEnter(KeyEvent event) {
     }
 
     @FXML
@@ -88,5 +101,9 @@ public class AlumnoVistaController implements Initializable {
     @FXML
     private void posicionTeclaTabla(KeyEvent event) {
     }
-    
+
+    @FXML
+    private void txtPulsadoEnter(KeyEvent event) {
+    }
+
 }

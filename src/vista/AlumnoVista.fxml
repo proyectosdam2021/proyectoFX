@@ -14,9 +14,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="1000.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controlador.AlumnoVistaController">
+<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="1000.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controlador.AlumnoVistaController">
    <children>
-      <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
+      <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="1100.0" VBox.vgrow="ALWAYS">
          <children>
             <TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" tabClosingPolicy="UNAVAILABLE" HBox.hgrow="ALWAYS">
               <tabs>
@@ -34,7 +34,7 @@
                                           <Insets bottom="10.0" left="35.0" right="10.0" top="20.0" />
                                        </HBox.margin>
                                     </Label>
-                                    <TextField fx:id="txtFiltrarAlumnoTabla" onKeyPressed="#pulsoEnter">
+                                    <TextField fx:id="txtFiltrarAlumnoTabla" onKeyPressed="#txtPulsadoEnter">
                                        <HBox.margin>
                                           <Insets top="15.0" />
                                        </HBox.margin>
@@ -120,11 +120,18 @@
                                  <children>
                                     <TableView fx:id="tablaAlumno" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onKeyReleased="#posicionTeclaTabla" onMouseClicked="#posicionRatonTabla" HBox.hgrow="ALWAYS">
                                       <columns>
-                                        <TableColumn fx:id="colRegistro" maxWidth="250.0" minWidth="100.0" prefWidth="136.0" text="Registro" />
-                                        <TableColumn fx:id="ColDni" maxWidth="350.0" minWidth="100.0" prefWidth="130.0" text="DNI" />
-                                          <TableColumn fx:id="ColNombre" maxWidth="600.0" minWidth="100.0" prefWidth="140.0" text="Nombre" />
-                                          <TableColumn fx:id="colApellido1" maxWidth="600.0" minWidth="100.0" prefWidth="177.0" text="Apellido1" />
-                                          <TableColumn fx:id="colApellido2" maxWidth="600.0" minWidth="100.0" prefWidth="194.0" text="Apellido2" />
+                                        <TableColumn fx:id="colId" maxWidth="250.0" minWidth="70.0" prefWidth="75.0" text="Id" />
+                                        <TableColumn fx:id="ColDni" maxWidth="250.0" minWidth="80.0" prefWidth="100.0" text="Dni" />
+                                          <TableColumn fx:id="ColNombre" maxWidth="300.0" minWidth="100.0" prefWidth="140.0" text="Nombre" />
+                                          <TableColumn fx:id="colApellido1" maxWidth="300.0" minWidth="90.0" prefWidth="177.0" text="Apellido1" />
+                                          <TableColumn fx:id="colApellido2" maxWidth="300.0" minWidth="90.0" prefWidth="194.0" text="Apellido2" />
+                                          <TableColumn fx:id="colCalle" maxWidth="300.0" minWidth="100.0" prefWidth="194.0" text="Calle" />
+                                          <TableColumn fx:id="colNumero" maxWidth="100.0" minWidth="75.0" prefWidth="75.0" text="Número" />
+                                          <TableColumn fx:id="colCP" maxWidth="200.0" minWidth="75.0" prefWidth="75.0" text="CP" />
+                                          <TableColumn fx:id="colLocalidad" maxWidth="300.0" minWidth="100.0" prefWidth="100.0" text="Localidad" />
+                                          <TableColumn fx:id="colTelefono" maxWidth="200.0" minWidth="100.0" prefWidth="100.0" text="Teléfono" />
+                                          <TableColumn fx:id="colFechaNac" maxWidth="200.0" minWidth="100.0" prefWidth="100.0" text="Fecha nac." />
+                                          <TableColumn fx:id="colIdEmpresa" maxWidth="200.0" minWidth="100.0" prefWidth="194.0" text="Id_Empresa" />
                                       </columns>
                                        <HBox.margin>
                                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -145,7 +152,7 @@
       </HBox>
       <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="20.0" prefWidth="200.0">
          <children>
-            <Label fx:id="lblRegistros" alignment="CENTER_RIGHT" contentDisplay="RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="20.0" prefWidth="402.0" text="Mostrando 17 de un total de 222 registros" textAlignment="RIGHT" HBox.hgrow="ALWAYS">
+            <Label fx:id="lblNumRegistros" alignment="CENTER_RIGHT" contentDisplay="RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="20.0" prefWidth="402.0" text="Mostrando 17 de un total de 222 registros" textAlignment="RIGHT" HBox.hgrow="ALWAYS">
                <padding>
                   <Insets bottom="5.0" left="10.0" right="10.0" />
                </padding>

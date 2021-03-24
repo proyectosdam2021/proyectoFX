@@ -40,6 +40,7 @@ public class PrincipalVistaController implements Initializable {
     @FXML
     private void mnuiAlumno(ActionEvent event) {
         System.out.println("cargando alumno");
+        cargarAlumno();
     }
 
     @FXML
