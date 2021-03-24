@@ -40,6 +40,7 @@
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.input.KeyCodeCombination?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
@@ -61,6 +62,13 @@
                      </cursor>
                   </ImageView>
                </graphic>
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#mnuiAlumno" text="Alumnos...">
+                     <accelerator>
+                        <KeyCodeCombination alt="DOWN" code="A" control="UP" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>
+               </items>
         </Menu>
         <Menu mnemonicParsing="false" text="Profesores">
                <graphic>
@@ -76,6 +84,13 @@
                      </cursor>
                   </ImageView>
                </graphic>
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#mnuiProfesor" text="Profesores...">
+                     <accelerator>
+                        <KeyCodeCombination alt="DOWN" code="P" control="UP" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>
+               </items>
         </Menu>
         <Menu mnemonicParsing="false" text="Cursos">
                <graphic>
@@ -91,6 +106,13 @@
                      </cursor>
                   </ImageView>
                </graphic>
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#mnuiCurso" text="Cursos...">
+                     <accelerator>
+                        <KeyCodeCombination alt="DOWN" code="C" control="UP" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>
+               </items>
         </Menu>
             <Menu mnemonicParsing="false" text="Salir">
                <items>
@@ -107,7 +129,10 @@
                               <Cursor fx:constant="DEFAULT" />
                            </cursor>
                         </ImageView>
-                     </graphic></MenuItem>
+                     </graphic>
+                     <accelerator>
+                        <KeyCodeCombination alt="DOWN" code="X" control="UP" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator></MenuItem>
                </items>
                <graphic>
                   <ImageView fitHeight="50.0" fitWidth="50.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
