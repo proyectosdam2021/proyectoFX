@@ -3,7 +3,6 @@ package negocio;
 import datos.AlumnoDAO;
 import entidades.ClassAlumno;
 import java.sql.SQLException;
-import java.sql.Date; //creamos las variables Date de tipo SQL
 
 public class AlumnoNegocio {
 
