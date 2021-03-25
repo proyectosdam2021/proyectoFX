@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controlador.PrincipalVistaController">
+<VBox minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controlador.PrincipalVistaController">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
@@ -84,7 +84,7 @@
         </Menu>
             <Menu mnemonicParsing="false" text="Salir">
                <items>
-                  <MenuItem mnemonicParsing="false" onAction="#cerrarAplicacion" text="Exit">
+                  <MenuItem mnemonicParsing="false" onAction="#mnuiSalir" text="Exit">
                      <graphic>
                         <ImageView fitHeight="20.0" fitWidth="20.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
                            <image>

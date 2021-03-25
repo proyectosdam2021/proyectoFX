@@ -238,7 +238,7 @@ public class AlumnoDAO implements CrudInterface<ClassAlumno> {
             ps = CON.conectar().prepareStatement(SQL);
             rs = ps.executeQuery();
             while (rs.next()) {
-                totalResistros = rs.getInt("COUNT(registro)");
+                totalResistros = rs.getInt("COUNT(id)");
             }
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.getMessage());

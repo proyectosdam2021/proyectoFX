@@ -29,28 +29,24 @@ public class PrincipalVistaController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
-    }
-
-    @FXML
-    private void cerrarAplicacion(ActionEvent event) {
-        Platform.exit(); //Es ideal para cuando se cierre la aplicación se ejecute el proceso stop()
     }
 
     @FXML
     private void mnuiAlumno(ActionEvent event) {
-        System.out.println("cargando alumno");
         cargarAlumno();
     }
 
     @FXML
     private void mnuiProfesor(ActionEvent event) {
-        System.out.println("cargando profesor");
     }
 
     @FXML
     private void mnuiCurso(ActionEvent event) {
-        System.out.println("cargando curso");
+    }
+
+    @FXML
+    private void mnuiSalir(ActionEvent event) {
+        Platform.exit(); //Es ideal para cuando se cierre la aplicación se ejecute el proceso stop()
     }
 
     private void cargarAlumno() {

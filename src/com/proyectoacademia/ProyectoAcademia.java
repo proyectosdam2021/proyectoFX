@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 public class ProyectoAcademia extends Application {
 
     private static Scene scene;   //donde se produce la acción con los elementos creados
-    private static Stage stage;   //el maro de la ventana actual
+    private static Stage stage;   //el marco de la ventana actual
 
     @Override
     public void init() {  //Primer método que se ejecuta al instanciar la clase
