@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
+import negocio.Variables;
 
 public class Conexion {
 
@@ -27,7 +28,10 @@ public class Conexion {
         try {
             Class.forName(DRIVER);
             this.cadena = DriverManager.getConnection(URL + DB + EXTRA, USER, PASSWORD);
-            System.out.println("Conectado a la BD hosting...");
+            if (Variables.getConectadoBD() == 0) {
+                System.out.println("Conectado a la BD hosting...");
+                Variables.setConectadoBD(1);
+            }
         } catch (ClassNotFoundException | SQLException e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
             System.exit(0);

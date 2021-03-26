@@ -4,9 +4,6 @@ import datos.AlumnoDAO;
 import entidades.ClassAlumno;
 import java.net.URL;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,6 +16,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import negocio.AlumnoNegocio;
 import negocio.MensajeFX;
@@ -88,6 +86,27 @@ public class FrmAlumnoController implements Initializable {
         }
     }
 
+    //En este método controlamos no se introduzcan espacios
+    @FXML
+    private void valorTecla(KeyEvent event) {
+        Object evt = event.getSource();
+        if (evt.equals(txtDni)) {
+            if (" ".equals(event.getCharacter())) {
+                txtDni.deletePreviousChar();
+            }
+        }
+        if (evt.equals(txtTelefono)) {
+            if (" ".equals(event.getCharacter())) {
+                txtTelefono.deletePreviousChar();
+            }
+        }
+        if (evt.equals(txtCodigoPostal)) {
+            if (" ".equals(event.getCharacter())) {
+                txtCodigoPostal.deletePreviousChar();
+            }
+        }
+    }
+
     private boolean comprobarDatos() {
         //Comprobamos los campos no estén vacíos
         if (txtDni.getText().isEmpty()) {
@@ -105,6 +124,42 @@ public class FrmAlumnoController implements Initializable {
             txtApellido1.requestFocus();
             return false; //devuelvo el código y no continuo
         }
+        if (txtCalle.getText().isEmpty()) {
+            MensajeFX.printTexto("El campo 'Calle' está vacío", "WARNING", posicionX_Y());
+            txtCalle.requestFocus();
+            return false; //devuelvo el código y no continuo
+        }
+
+        if (txtNumero.getText().isEmpty()) {
+            MensajeFX.printTexto("El campo 'Número' está vacío", "WARNING", posicionX_Y());
+            txtNumero.requestFocus();
+            return false; //devuelvo el código y no continuo
+        }
+
+        if (txtCodigoPostal.getText().isEmpty()) {
+            MensajeFX.printTexto("El campo 'Código Postal' está vacío", "WARNING", posicionX_Y());
+            txtCodigoPostal.requestFocus();
+            return false; //devuelvo el código y no continuo
+        }
+
+        if (txtLocalidad.getText().isEmpty()) {
+            MensajeFX.printTexto("El campo 'Localidad' está vacío", "WARNING", posicionX_Y());
+            txtLocalidad.requestFocus();
+            return false; //devuelvo el código y no continuo
+        }
+
+        if (txtTelefono.getText().isEmpty()) {
+            MensajeFX.printTexto("El campo 'Teléfono' está vacío", "WARNING", posicionX_Y());
+            txtTelefono.requestFocus();
+            return false; //devuelvo el código y no continuo
+        }
+
+        if (txtFechaNac.getValue() == null) {
+            MensajeFX.printTexto("El campo 'Fecha de nacimiento' está vacío", "WARNING", posicionX_Y());
+            txtFechaNac.requestFocus();
+            return false; //devuelvo el código y no continuo
+        }
+
         //Comprobamos los campos no excendan del tañano permitido
         if (txtApellido2.getText().length() > 21) {
             MensajeFX.printTexto("El campo 'Apellido2' excede del tamaño de 21 carácteres", "WARNING", posicionX_Y());
@@ -203,21 +258,6 @@ public class FrmAlumnoController implements Initializable {
         myStage.close();
     }
 
-    private java.sql.Date ParseFecha(String fechaPrestamo) {
-        //convertimos el campo Date a un formato compatible con SQL
-        try {
-            SimpleDateFormat format = new SimpleDateFormat("dd/M/yyyy");
-            Date parsed = format.parse(fechaPrestamo); //tenemos que usar una variable Date de tipo java.util
-            java.sql.Date sql = new java.sql.Date(parsed.getTime());
-            return sql;
-
-        } catch (NumberFormatException | ParseException ex) {
-            System.err.println("error en la conversión " + ex);
-        }
-        System.err.println("fecha no parseada");
-        return null;
-    }
-
     private void ventanaPosicion() {
         posicion = obtenPosicionX_Y();
         stage.setX(posicion[0]);
@@ -267,8 +307,9 @@ public class FrmAlumnoController implements Initializable {
         txtCalle.setText(objAlumno.getCalle());
         txtNumero.setText(String.valueOf(objAlumno.getNumero()));
         txtCodigoPostal.setText(String.valueOf(objAlumno.getCp()));
+        txtLocalidad.setText(objAlumno.getLocalidad());
         txtTelefono.setText(objAlumno.getTelefono());
-        txtFechaNac.setPromptText(objAlumno.getFecha_nacimiento().toString());
+        txtFechaNac.setValue(objAlumno.getFecha_nacimiento().toLocalDate());
     }
 
 }

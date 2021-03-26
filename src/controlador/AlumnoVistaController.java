@@ -113,15 +113,15 @@ public class AlumnoVistaController implements Initializable {
     @FXML
     private void editarAlumnoTabla(ActionEvent event) {
         //guardamos en la variable el valor de la acción a ejecutar.
-        Variables.setTextoFrm("CREAR ALUMNO");  //Se usará posteriormente en el controlador FrmAlumno
-       // this.cargarFrmAlumno();
+        Variables.setTextoFrm("EDITAR ALUMNO");  //Se usará posteriormente en el controlador FrmAlumno
+        this.cargarFrmAlumno();
     }
 
     @FXML
     private void eliminarAlumnoTabla(ActionEvent event) {
         //guardamos en la variable el valor de la acción a ejecutar.
         Variables.setTextoFrm("ELIMINAR ALUMNO");  //Se usará posteriormente en el controlador FrmAlumno
-        //this.cargarFrmAlumno();
+        this.cargarFrmAlumno();
     }
 
     @FXML
@@ -133,9 +133,9 @@ public class AlumnoVistaController implements Initializable {
         }
         offOnBotones(false);
         //si se pulsa ENTER en algún registro de la tabla y el objeto no es nulo
-        if (claseAlumno != null) {
+        if (event.getClickCount() == 2 && (claseAlumno != null)) {
             Variables.setTextoFrm("EDITAR ALUMNO");  //Lo procesamos como Editar
-            //this.cargarFrmAlumno();
+            this.cargarFrmAlumno();
         }
     }
 
@@ -150,7 +150,7 @@ public class AlumnoVistaController implements Initializable {
         //si se pulsa ENTER en algún registro de la tabla y el objeto no es nulo
         if (event.getCode().equals(KeyCode.ENTER) && (claseAlumno != null)) {
             Variables.setTextoFrm("EDITAR ALUMNO");  //Lo procesamos como Editar
-            //this.cargarFrmAlumno();
+            this.cargarFrmAlumno();
         }
     }
 
@@ -197,7 +197,7 @@ public class AlumnoVistaController implements Initializable {
         this.txtFiltrarAlumnoTabla.setText("");
         Variables.setTextoFrm("");  //el texto superior que aparece al entrar en FrmAlumno
     }
-    
+
     private void cargarFrmAlumno() {
         try {
             //cargamos la vista FXML
@@ -206,19 +206,13 @@ public class AlumnoVistaController implements Initializable {
             Parent root = loader.load();
             //instanciamos al controlador FrmAlumnoNuevo haciendo uso del nuevo método getController
             FrmAlumnoController ctrFrmAlumno = loader.getController();
-            //creamos la nueva escena que viene del padre
-            scene = new Scene(root);
+            scene = new Scene(root); //creamos la nueva escena que viene del padre
             stage = new Stage();    //creamos la nueva ventana
             stage.setTitle("Crud de Alumnos"); //ponemos un título
             stage.initModality(Modality.APPLICATION_MODAL);  //hacemos que la escena nueva tome el foco y no permita cambiarse de ventana
             stage.setScene(scene); //establecemos la escena
-            //Activamos el estilo JMetro, hemos importado la librería que mejora la visualización
-            //jMetro = new JMetro(jfxtras.styles.jmetro.Style.LIGHT);
-            //jMetro.setScene(scene);
-            //posicionamos la nueva ventana
-            this.ventanaPosicion();
-            //cambiamos la opacidad de la ventana anterior
-            this.cambiarOpacidad(0.5);
+            this.ventanaPosicion(); //posicionamos la nueva ventana
+            this.cambiarOpacidad(0.5); //cambiamos la opacidad de la ventana anterior
             stage.setResizable(false); //no permitimos que la ventana cambie de tamaño
             stage.initStyle(StageStyle.UTILITY); //desactivamos maximinar y minimizar
             stage.getIcons().add(new Image(getClass().getResourceAsStream("/imagenes/icons8_java_duke_50px.png")));
@@ -236,13 +230,13 @@ public class AlumnoVistaController implements Initializable {
             System.err.println("Error en el inicio validado " + ex);
         }
     }
-    
+
     public void ventanaPosicion() {
         posicion = obtenPosicionX_Y();
         stage.setX(posicion[0]);
         stage.setY(posicion[1]);
     }
-    
+
     //este método obtiene la posición de la actual ventana en coordenadas x, y
     //vamos a usar estos datos para posicionar la ventana correctamente
     public double[] obtenPosicionX_Y() {
@@ -258,10 +252,10 @@ public class AlumnoVistaController implements Initializable {
         posicionxy[1] = myStage.getY() + (y - frmY);
         return posicionxy;
     }
-    
-     public void cambiarOpacidad(double valor) {
+
+    public void cambiarOpacidad(double valor) {
         Stage myStage = (Stage) this.lblNumRegistros.getScene().getWindow();
         myStage.setOpacity(valor);
     }
-       
+
 }
