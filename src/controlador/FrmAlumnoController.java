@@ -71,6 +71,11 @@ public class FrmAlumnoController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         CONTROL = new AlumnoNegocio();  //instanciamos la clase AlumnoNegocio
         lblTextoFrm.setText(Variables.getTextoFrm());  //Envíamos el texto de la variable como título del campo label de nuestra ventana
+        if ("ELIMINAR ALUMNO".equals(Variables.getTextoFrm())) { //dependiendo de la acción a realizar (NUEVO/EDITAR/ELIMINAR) activamos/desactivamos botones
+            campoEditable(false);
+        } else {
+            campoEditable(true);
+        }
     }
 
     @FXML
@@ -105,6 +110,7 @@ public class FrmAlumnoController implements Initializable {
                 txtCodigoPostal.deletePreviousChar();
             }
         }
+
     }
 
     private boolean comprobarDatos() {
@@ -310,6 +316,19 @@ public class FrmAlumnoController implements Initializable {
         txtLocalidad.setText(objAlumno.getLocalidad());
         txtTelefono.setText(objAlumno.getTelefono());
         txtFechaNac.setValue(objAlumno.getFecha_nacimiento().toLocalDate());
+    }
+
+    private void campoEditable(boolean valor) {
+        txtDni.setEditable(valor);
+        txtNombre.setEditable(valor);
+        txtApellido1.setEditable(valor);
+        txtApellido2.setEditable(valor);
+        txtCalle.setEditable(valor);
+        txtNumero.setEditable(valor);
+        txtCodigoPostal.setEditable(valor);
+        txtLocalidad.setEditable(valor);
+        txtTelefono.setEditable(valor);
+        txtFechaNac.setEditable(valor);
     }
 
 }

@@ -117,7 +117,7 @@ public class AlumnoDAO implements CrudInterface<ClassAlumno> {
     public boolean actualizar(ClassAlumno obj) {
         resp = false;
         String SQL = "UPDATE alumno SET dni=?,nombre=?,apellido1=?,apellido2=?,calle=?,numero=?,cp=?,"
-                + "localidad=?,telefono=?,fecha_nacimiento=?,id_empresa=? WHERE id=?";
+                + "localidad=?,telefono=?,fecha_nacimiento=? WHERE id=?";
         try {
             ps = CON.conectar().prepareStatement(SQL);
             ps.setString(1, obj.getDni());
@@ -130,8 +130,8 @@ public class AlumnoDAO implements CrudInterface<ClassAlumno> {
             ps.setString(8, obj.getLocalidad());
             ps.setString(9, obj.getTelefono());
             ps.setDate(10, (Date) obj.getFecha_nacimiento());
-            ps.setInt(11, obj.getId_empresa());
-            ps.setInt(12, obj.getId());
+            //ps.setInt(11, obj.getId_empresa());
+            ps.setInt(11, obj.getId());
 
             if (ps.executeUpdate() > 0) {
                 resp = true;
