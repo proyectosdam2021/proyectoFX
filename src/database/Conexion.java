@@ -9,11 +9,11 @@ import javax.swing.JOptionPane;
 public class Conexion {
 
     private final String DRIVER = "com.mysql.jdbc.Driver";
-    private final String URL = "jdbc:mysql://localhost:3306/";
+    private final String URL = "jdbc:mysql://PMYSQL114.dns-servicio.com:3306/";
     private final String EXTRA = "?zeroDateTimeBehavior=convertToNull&?autoReconnet=true&useSSL=false";
-    private final String DB = "academia";
-    private final String USER = "root";
-    private final String PASSWORD = "1q2w3e4r5t";
+    private final String DB = "6980251_academia";
+    private final String USER = "root_academia";
+    private final String PASSWORD = "1q2w3e4r5t@@";
 
     public Connection cadena;
     public static Conexion instancia;
@@ -27,6 +27,7 @@ public class Conexion {
         try {
             Class.forName(DRIVER);
             this.cadena = DriverManager.getConnection(URL + DB + EXTRA, USER, PASSWORD);
+            System.out.println("Conectado a la BD hosting...");
         } catch (ClassNotFoundException | SQLException e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
             System.exit(0);

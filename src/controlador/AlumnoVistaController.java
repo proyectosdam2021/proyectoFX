@@ -2,22 +2,30 @@ package controlador;
 
 import datos.AlumnoDAO;
 import entidades.ClassAlumno;
+import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
 import java.util.ResourceBundle;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import negocio.Variables;
 
 public class AlumnoVistaController implements Initializable {
@@ -25,6 +33,9 @@ public class AlumnoVistaController implements Initializable {
     private ObservableList<ClassAlumno> items; //instanciamos un objeto tipo arrayList especial para JavaFX
     private AlumnoDAO datos;   //instanciamos la clase AlumnoDAO la cual gestiona las acciones hacia nuestra BD
     private ClassAlumno copiaAlumno;  //objeto donde guardar datos de la tabla
+    private static Scene scene;   //variable de clase Scene donde se produce la acción con los elementos creados
+    private static Stage stage;   //variable de clase Stage que es la ventana actual
+    private double[] posicion;    //posición de la ventana en eje X-Y
 
     @FXML
     private TextField txtFiltrarAlumnoTabla;
@@ -96,7 +107,7 @@ public class AlumnoVistaController implements Initializable {
     private void nuevoAlumnoTabla(ActionEvent event) {
         //guardamos en la variable el valor de la acción a ejecutar.
         Variables.setTextoFrm("CREAR ALUMNO");  //Se usará posteriormente en el controlador FrmAlumno
-        //this.cargarFrmAlumno();
+        this.cargarFrmAlumno();
     }
 
     @FXML
@@ -187,4 +198,70 @@ public class AlumnoVistaController implements Initializable {
         Variables.setTextoFrm("");  //el texto superior que aparece al entrar en FrmAlumno
     }
     
+    private void cargarFrmAlumno() {
+        try {
+            //cargamos la vista FXML
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/vista/FrmAlumno.fxml"));
+            //instanciamos y cargamos el FXML en el padre
+            Parent root = loader.load();
+            //instanciamos al controlador FrmAlumnoNuevo haciendo uso del nuevo método getController
+            FrmAlumnoController ctrFrmAlumno = loader.getController();
+            //creamos la nueva escena que viene del padre
+            scene = new Scene(root);
+            stage = new Stage();    //creamos la nueva ventana
+            stage.setTitle("Crud de Alumnos"); //ponemos un título
+            stage.initModality(Modality.APPLICATION_MODAL);  //hacemos que la escena nueva tome el foco y no permita cambiarse de ventana
+            stage.setScene(scene); //establecemos la escena
+            //Activamos el estilo JMetro, hemos importado la librería que mejora la visualización
+            //jMetro = new JMetro(jfxtras.styles.jmetro.Style.LIGHT);
+            //jMetro.setScene(scene);
+            //posicionamos la nueva ventana
+            this.ventanaPosicion();
+            //cambiamos la opacidad de la ventana anterior
+            this.cambiarOpacidad(0.5);
+            stage.setResizable(false); //no permitimos que la ventana cambie de tamaño
+            stage.initStyle(StageStyle.UTILITY); //desactivamos maximinar y minimizar
+            stage.getIcons().add(new Image(getClass().getResourceAsStream("/imagenes/icons8_java_duke_50px.png")));
+            //Pasamos los datos a la nueva ventana FrmAlumno mientras sea distinto a CREAR ALUMNO (se usará para EDITAR/ELIMINAR)
+            if (!"CREAR ALUMNO".equals(Variables.getTextoFrm())) {
+                ctrFrmAlumno.pasarDatos(copiaAlumno);
+            }
+            stage.showAndWait(); //mostramos la nueva ventana y esperamos
+            //El programa continua en esta línea cuando la nueva ventana se cierre
+            this.cambiarOpacidad(1);
+            this.limpiarVista();
+            this.cargarTabla("");
+
+        } catch (IOException ex) {
+            System.err.println("Error en el inicio validado " + ex);
+        }
+    }
+    
+    public void ventanaPosicion() {
+        posicion = obtenPosicionX_Y();
+        stage.setX(posicion[0]);
+        stage.setY(posicion[1]);
+    }
+    
+    //este método obtiene la posición de la actual ventana en coordenadas x, y
+    //vamos a usar estos datos para posicionar la ventana correctamente
+    public double[] obtenPosicionX_Y() {
+        double[] posicionxy = new double[2];
+        //creamos una nueva ventana temporal capturando de cualquier btn/lbl la escena y ventana
+        //se entiende que los btn o lbl forman parte de la ventana que deseamos obtener datos
+        Stage myStage = (Stage) this.lblNumRegistros.getScene().getWindow();
+        int frmX = 420 / 2; //tamaño ancho componente FrmAlumno
+        int frmY = 700 / 2; //tamaño alto componente FrmAlumno
+        int x = (int) (myStage.getWidth() / 2);
+        int y = (int) (myStage.getHeight() / 2);
+        posicionxy[0] = myStage.getX() + (x - frmX);
+        posicionxy[1] = myStage.getY() + (y - frmY);
+        return posicionxy;
+    }
+    
+     public void cambiarOpacidad(double valor) {
+        Stage myStage = (Stage) this.lblNumRegistros.getScene().getWindow();
+        myStage.setOpacity(valor);
+    }
+       
 }

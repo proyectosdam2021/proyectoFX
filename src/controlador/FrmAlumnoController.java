@@ -28,7 +28,7 @@ public class FrmAlumnoController implements Initializable {
 
     private AlumnoNegocio CONTROL;  //instanciamos nuestra clase para realizar CRUD
     private int idRegistro;
-    String dniAnterior;
+    private String dniAnterior;
     private ClassAlumno objeto;
     private ObservableList<ClassAlumno> items; //instanciamos un objeto tipo arrayList especial para JavaFX
     private AlumnoDAO datos;   //instanciamos la clase AlumnoDAO la cual gestiona las acciones hacia nuestra BD
@@ -88,7 +88,7 @@ public class FrmAlumnoController implements Initializable {
         }
     }
 
-    public boolean comprobarDatos() {
+    private boolean comprobarDatos() {
         //Comprobamos los campos no estén vacíos
         if (txtDni.getText().isEmpty()) {
             MensajeFX.printTexto("El campo 'DNI' está vacío", "WARNING", posicionX_Y());
@@ -177,20 +177,20 @@ public class FrmAlumnoController implements Initializable {
 
     //este método obtiene la posición de la actual ventana en coordenadas x, y
     //vamos a usar estos datos para posicionar la ventana de mensajes en la pantalla correctamente
-    public double[] posicionX_Y() {
-        double[] posicion = new double[2];
+    private double[] posicionX_Y() {
+        double[] posicionn = new double[2];
         Stage myStage = (Stage) this.txtDni.getScene().getWindow();
         int frmX = 420 / 2; //tamaño ancho componente FrmAlumno
         int frmY = 500 / 2; //tamaño alto componente FrmAlumno
         int x = (int) (myStage.getWidth() / 2);
         int y = (int) (myStage.getHeight() / 2);
-        posicion[0] = myStage.getX() + (x - frmX);
-        posicion[1] = myStage.getY() + (y - frmY);
+        posicionn[0] = myStage.getX() + (x - frmX);
+        posicionn[1] = myStage.getY() + (y - frmY);
 
-        return posicion;
+        return posicionn;
     }
 
-    public void limpiar() {
+    private void limpiar() {
         idRegistro = 0;
         txtDni.setText("");
         txtNombre.setText("");
@@ -198,15 +198,15 @@ public class FrmAlumnoController implements Initializable {
         txtApellido2.setText("");
     }
 
-    public void cerrarVentana() {
+    private void cerrarVentana() {
         Stage myStage = (Stage) this.txtDni.getScene().getWindow();
         myStage.close();
     }
 
-    public java.sql.Date ParseFecha(String fechaPrestamo) {
+    private java.sql.Date ParseFecha(String fechaPrestamo) {
         //convertimos el campo Date a un formato compatible con SQL
         try {
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat format = new SimpleDateFormat("dd/M/yyyy");
             Date parsed = format.parse(fechaPrestamo); //tenemos que usar una variable Date de tipo java.util
             java.sql.Date sql = new java.sql.Date(parsed.getTime());
             return sql;
@@ -218,24 +218,7 @@ public class FrmAlumnoController implements Initializable {
         return null;
     }
 
-    public boolean ComparaFecha(String fecha1, String fecha2) {
-        //comparamos las fechas String usando formato java.util.Date
-        try {
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-
-            Date compara1 = format.parse(fecha1); //tenemos que usar una variable Date de tipo java.util
-            Date compara2 = format.parse(fecha2); //tenemos que usar una variable Date de tipo java.util
-            //realizamos la comparación de fechas, en este caso FechaDevolución contra la FechaPréstamo
-            int res = compara2.compareTo(compara1);
-            //si el resultado es mayor a 0 es que está correcto (0 es idéntico, -1 es menor)
-            return res > 0;
-        } catch (NumberFormatException | ParseException ex) {
-            System.err.println("error en la conversión " + ex);
-        }
-        return false;
-    }
-
-    public void ventanaPosicion() {
+    private void ventanaPosicion() {
         posicion = obtenPosicionX_Y();
         stage.setX(posicion[0]);
         stage.setY(posicion[1]);
@@ -243,7 +226,7 @@ public class FrmAlumnoController implements Initializable {
 
     //este método obtiene la posición de la actual ventana en coordenadas x, y
     //vamos a usar estos datos para posicionar la ventana correctamente
-    public double[] obtenPosicionX_Y() {
+    private double[] obtenPosicionX_Y() {
         double[] posicionxy = new double[2];
         //creamos una nueva ventana temporal capturando de cualquier btn/lbl la escena y ventana
         //se entiende que los btn o lbl forman parte de la ventana que deseamos obtener datos
@@ -269,8 +252,23 @@ public class FrmAlumnoController implements Initializable {
         objeto.setCp(Integer.parseInt(txtCodigoPostal.getText()));
         objeto.setLocalidad(txtLocalidad.getText().strip().toUpperCase());
         objeto.setTelefono(txtTelefono.getText().strip().toUpperCase());
-        objeto.setFecha_nacimiento(ParseFecha(txtFechaNac.toString()));
+        objeto.setFecha_nacimiento(java.sql.Date.valueOf(txtFechaNac.getValue()));  //convertimos un campo datepicker en Date SQL
         return objeto;
+    }
+
+    //Este método viene de AlumnoVistaController y nos pasa los datos de los campos a editar/eliminar
+    public void pasarDatos(ClassAlumno objAlumno) {
+        idRegistro = objAlumno.getId();
+        txtDni.setText(objAlumno.getDni());
+        dniAnterior = objAlumno.getDni();
+        txtNombre.setText(objAlumno.getNombre());
+        txtApellido1.setText(objAlumno.getApellido1());
+        txtApellido2.setText(objAlumno.getApellido2());
+        txtCalle.setText(objAlumno.getCalle());
+        txtNumero.setText(String.valueOf(objAlumno.getNumero()));
+        txtCodigoPostal.setText(String.valueOf(objAlumno.getCp()));
+        txtTelefono.setText(objAlumno.getTelefono());
+        txtFechaNac.setPromptText(objAlumno.getFecha_nacimiento().toString());
     }
 
 }

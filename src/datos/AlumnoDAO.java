@@ -72,7 +72,7 @@ public class AlumnoDAO implements CrudInterface<ClassAlumno> {
     public boolean insertar(ClassAlumno obj) {
         resp = false;
         String SQL = "INSERT INTO alumno (id,dni,nombre,apellido1,apellido2,calle,numero,cp,localidad,telefono,"
-                + "fecha_nacimiento,id_empresa) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+                + "fecha_nacimiento) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
 
         try {
             ps = CON.conectar().prepareStatement(SQL);
@@ -87,7 +87,7 @@ public class AlumnoDAO implements CrudInterface<ClassAlumno> {
             ps.setString(9, obj.getLocalidad());
             ps.setString(10, obj.getTelefono());
             ps.setDate(11, (Date) obj.getFecha_nacimiento());
-            ps.setInt(12, obj.getId_empresa());
+            //ps.setInt(12, null);
 
             if (ps.executeUpdate() > 0) {
                 resp = true;
