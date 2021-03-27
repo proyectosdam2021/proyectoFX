@@ -97,41 +97,29 @@ public class FrmAlumnoController implements Initializable {
         Object evt = event.getSource();
 
         if (evt.equals(txtTelefono)) {
-            if (txtTelefono.getLength() > 12) {
+            if (" ".equals(event.getCharacter())) {
                 txtTelefono.deletePreviousChar();
             } else {
-                if (" ".equals(event.getCharacter())) {
-                    txtTelefono.deletePreviousChar();
-                } else {
-                    String caracter = event.getCharacter();
-                    this.noLetras(caracter, txtTelefono);
-                }
+                String caracter = event.getCharacter();
+                this.compruebaInt(caracter, txtTelefono, 12);
             }
         }
 
         if (evt.equals(txtCodigoPostal)) {
-            if (txtCodigoPostal.getLength() > 11) {
+            if (" ".equals(event.getCharacter())) {
                 txtCodigoPostal.deletePreviousChar();
             } else {
-                if (" ".equals(event.getCharacter())) {
-                    txtCodigoPostal.deletePreviousChar();
-                } else {
-                    String caracter = event.getCharacter();
-                    this.noLetras(caracter, txtCodigoPostal);
-                }
+                String caracter = event.getCharacter();
+                this.compruebaInt(caracter, txtCodigoPostal, 11);
             }
         }
 
         if (evt.equals(txtNumero)) {
-            if (txtNumero.getLength() > 11) {
+            if (" ".equals(event.getCharacter())) {
                 txtNumero.deletePreviousChar();
             } else {
-                if (" ".equals(event.getCharacter())) {
-                    txtNumero.deletePreviousChar();
-                } else {
-                    String caracter = event.getCharacter();
-                    this.noLetras(caracter, txtNumero);
-                }
+                String caracter = event.getCharacter();
+                this.compruebaInt(caracter, txtNumero, 11);
             }
         }
 
@@ -271,6 +259,31 @@ public class FrmAlumnoController implements Initializable {
         }
     }
 
+    //Nétodo para limpiar todos los campos que forman parte del formulario
+    private void limpiar() {
+        idRegistro = 0;
+        txtDni.setText("");
+        txtNombre.setText("");
+        txtApellido1.setText("");
+        txtApellido2.setText("");
+        txtCalle.setText("");
+        txtLocalidad.setText("");
+
+    }
+
+    //Este método cierra la ventana que forme parte del componente capturado
+    private void cerrarVentana() {
+        Stage myStage = (Stage) this.txtDni.getScene().getWindow();
+        myStage.close();
+    }
+
+    //Establecemos la posición de la ventana actual 
+    private void ventanaPosicion() {
+        posicion = obtenPosicionX_Y();
+        stage.setX(posicion[0]);
+        stage.setY(posicion[1]);
+    }
+
     //este método obtiene la posición de la actual ventana en coordenadas x, y
     //vamos a usar estos datos para posicionar la ventana de mensajes en la pantalla correctamente
     private double[] posicionX_Y() {
@@ -284,25 +297,6 @@ public class FrmAlumnoController implements Initializable {
         posicionn[1] = myStage.getY() + (y - frmY);
 
         return posicionn;
-    }
-
-    private void limpiar() {
-        idRegistro = 0;
-        txtDni.setText("");
-        txtNombre.setText("");
-        txtApellido1.setText("");
-        txtApellido2.setText("");
-    }
-
-    private void cerrarVentana() {
-        Stage myStage = (Stage) this.txtDni.getScene().getWindow();
-        myStage.close();
-    }
-
-    private void ventanaPosicion() {
-        posicion = obtenPosicionX_Y();
-        stage.setX(posicion[0]);
-        stage.setY(posicion[1]);
     }
 
     //este método obtiene la posición de la actual ventana en coordenadas x, y
@@ -321,6 +315,7 @@ public class FrmAlumnoController implements Initializable {
         return posicionxy;
     }
 
+    //Convertirmos los campos textfield a tipo objeto ClassAlumno
     private ClassAlumno convertirStringObjeto() {
         this.objeto = new ClassAlumno();
         objeto.setId(idRegistro);
@@ -337,7 +332,7 @@ public class FrmAlumnoController implements Initializable {
         return objeto;
     }
 
-    //Este método viene de AlumnoVistaController y nos pasa los datos de los campos a editar/eliminar
+    //Este método viene de AlumnoVistaController y nos pasa los datos de los campos que asignamos a los txtfield
     public void pasarDatos(ClassAlumno objAlumno) {
         idRegistro = objAlumno.getId();
         txtDni.setText(objAlumno.getDni());
@@ -353,6 +348,7 @@ public class FrmAlumnoController implements Initializable {
         txtFechaNac.setValue(objAlumno.getFecha_nacimiento().toLocalDate());
     }
 
+    //Activamos o desactivamos los campos del formulario
     private void campoEditable(boolean valor) {
         txtDni.setEditable(valor);
         txtNombre.setEditable(valor);
@@ -366,6 +362,7 @@ public class FrmAlumnoController implements Initializable {
         txtFechaNac.setEditable(valor);
     }
 
+    //Método para campos de tipo String, convertiendo a mayúscula y comprobando tamaño
     private void compruebaString(String caracter, TextField txtCampo, int tamanio) {
         char palabra = caracter.charAt(0);
         if (txtCampo.getLength() > tamanio) {
@@ -379,9 +376,13 @@ public class FrmAlumnoController implements Initializable {
         }
     }
 
-    private void noLetras(String caracter, TextField txtCampo) {
+    //Método para campos de tipo Int, permitiendo solo números y comprobando tamaño
+    private void compruebaInt(String caracter, TextField txtCampo, int tamanio) {
         char palabra = caracter.charAt(0);
-        if (palabra >= '0' && palabra <= '9') {
+        if (txtCampo.getLength() > tamanio) {
+            txtCampo.deletePreviousChar();
+            txtCampo.end();
+        } else if (palabra >= '0' && palabra <= '9') {
             txtCampo.deletePreviousChar();
             txtCampo.setText(txtCampo.getText() + caracter);
             txtCampo.end();
