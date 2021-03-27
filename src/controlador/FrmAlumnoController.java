@@ -91,26 +91,83 @@ public class FrmAlumnoController implements Initializable {
         }
     }
 
-    //En este método controlamos no se introduzcan espacios
+    //En este método controlamos el texto introducido en los campos textfield
     @FXML
     private void valorTecla(KeyEvent event) {
         Object evt = event.getSource();
-        if (evt.equals(txtDni)) {
-            if (" ".equals(event.getCharacter())) {
-                txtDni.deletePreviousChar();
-            }
-        }
+
         if (evt.equals(txtTelefono)) {
-            if (" ".equals(event.getCharacter())) {
+            if (txtTelefono.getLength() > 12) {
                 txtTelefono.deletePreviousChar();
-            }
-        }
-        if (evt.equals(txtCodigoPostal)) {
-            if (" ".equals(event.getCharacter())) {
-                txtCodigoPostal.deletePreviousChar();
+            } else {
+                if (" ".equals(event.getCharacter())) {
+                    txtTelefono.deletePreviousChar();
+                } else {
+                    String caracter = event.getCharacter();
+                    this.noLetras(caracter, txtTelefono);
+                }
             }
         }
 
+        if (evt.equals(txtCodigoPostal)) {
+            if (txtCodigoPostal.getLength() > 11) {
+                txtCodigoPostal.deletePreviousChar();
+            } else {
+                if (" ".equals(event.getCharacter())) {
+                    txtCodigoPostal.deletePreviousChar();
+                } else {
+                    String caracter = event.getCharacter();
+                    this.noLetras(caracter, txtCodigoPostal);
+                }
+            }
+        }
+
+        if (evt.equals(txtNumero)) {
+            if (txtNumero.getLength() > 11) {
+                txtNumero.deletePreviousChar();
+            } else {
+                if (" ".equals(event.getCharacter())) {
+                    txtNumero.deletePreviousChar();
+                } else {
+                    String caracter = event.getCharacter();
+                    this.noLetras(caracter, txtNumero);
+                }
+            }
+        }
+
+        if (evt.equals(txtDni)) {
+            if (" ".equals(event.getCharacter())) {
+                txtDni.deletePreviousChar();
+            } else {
+                String caracter = event.getCharacter();
+                this.compruebaString(caracter, txtDni, 9);
+            }
+        }
+
+        if (evt.equals(txtNombre)) {
+            String caracter = event.getCharacter();
+            this.compruebaString(caracter, txtNombre, 30);
+        }
+
+        if (evt.equals(txtApellido1)) {
+            String caracter = event.getCharacter();
+            this.compruebaString(caracter, txtApellido1, 50);
+        }
+
+        if (evt.equals(txtApellido2)) {
+            String caracter = event.getCharacter();
+            this.compruebaString(caracter, txtApellido2, 50);
+        }
+
+        if (evt.equals(txtCalle)) {
+            String caracter = event.getCharacter();
+            this.compruebaString(caracter, txtCalle, 100); //le pasamos caracter, campo y tamaño máximo
+        }
+
+        if (evt.equals(txtLocalidad)) {
+            String caracter = event.getCharacter();
+            this.compruebaString(caracter, txtLocalidad, 30); //le pasamos caracter, campo y tamaño máximo
+        }
     }
 
     private boolean comprobarDatos() {
@@ -163,28 +220,6 @@ public class FrmAlumnoController implements Initializable {
         if (txtFechaNac.getValue() == null) {
             MensajeFX.printTexto("El campo 'Fecha de nacimiento' está vacío", "WARNING", posicionX_Y());
             txtFechaNac.requestFocus();
-            return false; //devuelvo el código y no continuo
-        }
-
-        //Comprobamos los campos no excendan del tañano permitido
-        if (txtApellido2.getText().length() > 21) {
-            MensajeFX.printTexto("El campo 'Apellido2' excede del tamaño de 21 carácteres", "WARNING", posicionX_Y());
-            txtApellido2.requestFocus();
-            return false; //devuelvo el código y no continuo
-        }
-        if (txtApellido1.getText().length() > 21) {
-            MensajeFX.printTexto("El campo 'Apellido1' excede del tamaño de 21 carácteres", "WARNING", posicionX_Y());
-            txtApellido1.requestFocus();
-            return false; //devuelvo el código y no continuo
-        }
-        if (txtNombre.getText().length() > 26) {
-            MensajeFX.printTexto("El campo 'Nombre' excede del tamaño de 26 carácteres", "WARNING", posicionX_Y());
-            txtNombre.requestFocus(); //llevo el 'foco' al campo
-            return false; //devuelvo el código y no continuo
-        }
-        if (txtDni.getText().length() > 14) {
-            MensajeFX.printTexto("El campo 'Dni' excede del tamaño de 14 carácteres", "WARNING", posicionX_Y());
-            txtDni.requestFocus(); //llevo el 'foco' al campo
             return false; //devuelvo el código y no continuo
         }
 
@@ -329,6 +364,42 @@ public class FrmAlumnoController implements Initializable {
         txtLocalidad.setEditable(valor);
         txtTelefono.setEditable(valor);
         txtFechaNac.setEditable(valor);
+    }
+
+    private void compruebaString(String caracter, TextField txtCampo, int tamanio) {
+        char palabra = caracter.charAt(0);
+        if (txtCampo.getLength() > tamanio) {
+            txtCampo.deletePreviousChar();
+            txtCampo.end();
+        } else if (palabra >= 'a') {
+            caracter = caracter.toUpperCase();
+            txtCampo.deletePreviousChar();
+            txtCampo.setText(txtCampo.getText() + caracter);
+            txtCampo.end();
+        }
+    }
+
+    private void noLetras(String caracter, TextField txtCampo) {
+        char palabra = caracter.charAt(0);
+        if (palabra >= '0' && palabra <= '9') {
+            txtCampo.deletePreviousChar();
+            txtCampo.setText(txtCampo.getText() + caracter);
+            txtCampo.end();
+        } else if (palabra >= 'a') {
+            txtCampo.deletePreviousChar();
+            txtCampo.end();
+        }
+    }
+
+    private static boolean esNumerico(String valor) {
+        try {
+            if (valor != null) {
+                Integer.parseInt(valor);
+            }
+        } catch (NumberFormatException ex) {
+            return false;
+        }
+        return true;
     }
 
 }
