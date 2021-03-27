@@ -211,6 +211,18 @@ public class FrmAlumnoController implements Initializable {
             return false; //devuelvo el código y no continuo
         }
 
+        if (!esNumerico(txtNumero.getText())) {
+            MensajeFX.printTexto("El campo 'Número' tiene carácteres no permitidos", "WARNING", posicionX_Y());
+            txtNumero.requestFocus();
+            return false; //devuelvo el código y no continuo
+        }
+
+        if (!esNumerico(txtCodigoPostal.getText())) {
+            MensajeFX.printTexto("El campo 'Código Postal' tiene carácteres no permitidos", "WARNING", posicionX_Y());
+            txtCodigoPostal.requestFocus();
+            return false; //devuelvo el código y no continuo
+        }
+
         return true;  //si llega aquí es que todo está correcto
     }
 

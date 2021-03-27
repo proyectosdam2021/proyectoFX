@@ -36,6 +36,11 @@
                         <KeyCodeCombination alt="DOWN" code="A" control="UP" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator>
                   </MenuItem>
+                  <MenuItem mnemonicParsing="false" onAction="#mnuiEmpresa" text="Empresas...">
+                     <accelerator>
+                        <KeyCodeCombination alt="DOWN" code="E" control="UP" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>
                </items>
         </Menu>
         <Menu mnemonicParsing="false" text="Profesores">

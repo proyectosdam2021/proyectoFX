@@ -19,7 +19,6 @@ public class PrincipalVistaController implements Initializable {
     private static Scene scene;   //variable de clase Scene donde se produce la acción con los elementos creados
     private static Stage stage;   //variable de clase Stage que es la ventana actual
     private VBox ventana; //creamos un objeto de tipo VBox (Todas nuestras ventanas hijas comienzan por este tipo de elemento)
-    //private ImageView imageView;
 
     /**
      * Initializes the controller class.
@@ -34,6 +33,11 @@ public class PrincipalVistaController implements Initializable {
     @FXML
     private void mnuiAlumno(ActionEvent event) {
         cargarAlumno();
+    }
+
+    @FXML
+    private void mnuiEmpresa(ActionEvent event) {
+        cargarEmpresa();
     }
 
     @FXML
@@ -57,6 +61,17 @@ public class PrincipalVistaController implements Initializable {
 
         } catch (IOException ex) {
             System.err.println("Error la carga de alumno" + ex);
+        }
+    }
+
+    private void cargarEmpresa() {
+        try {
+            ventana = FXMLLoader.load(getClass().getResource("/vista/EmpresaVista.fxml"));
+            vboxPrincipal.getChildren().setAll(ventana);
+            vboxPrincipal.setVisible(true);
+
+        } catch (IOException ex) {
+            System.err.println("Error la carga de empresa" + ex);
         }
     }
 
