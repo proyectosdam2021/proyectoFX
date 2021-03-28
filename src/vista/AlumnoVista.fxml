@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="2000.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controlador.AlumnoVistaController">
+<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="2000.0" prefWidth="1100.0" styleClass="indicetablas" stylesheets="@../Estilo/Style.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controlador.AlumnoVistaController">
    <children>
       <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="1100.0" VBox.vgrow="ALWAYS">
          <children>
@@ -118,7 +118,7 @@
                               </HBox>
                               <HBox VBox.vgrow="ALWAYS">
                                  <children>
-                                    <TableView fx:id="tablaAlumno" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onKeyReleased="#posicionTeclaTabla" onMouseClicked="#posicionRatonTabla" HBox.hgrow="ALWAYS">
+                                    <TableView fx:id="tablaAlumno" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onKeyReleased="#posicionTeclaTabla" onMouseClicked="#posicionRatonTabla" styleClass="indicetablas" HBox.hgrow="ALWAYS">
                                       <columns>
                                         <TableColumn fx:id="colId" maxWidth="250.0" minWidth="70.0" prefWidth="75.0" text="Id" />
                                         <TableColumn fx:id="ColDni" maxWidth="250.0" minWidth="80.0" prefWidth="100.0" text="Dni" />

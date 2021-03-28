@@ -1,7 +1,17 @@
 .root {
--fx-font-size: 14pt;
+-fx-font-size: 10pt;
 -fx-font-family: "Segoe";
 -fx-background: #61a2b1;}
+
+.indicetablas {
+    -fx-font-size: 10pt;
+}
+.table-view .column-header .label{
+    -fx-font-size: 11pt;
+    -fx-text-fill: #52677A;
+    -fx-alignment: CENTER;
+}
+
 
 .botonesmenu {
 -fx-font-size: 12px;
