@@ -8,7 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-
+        
 public class ProyectoAcademia extends Application {
     
     private static Scene scene;   //donde se produce la acción con los elementos creados

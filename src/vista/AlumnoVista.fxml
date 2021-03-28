@@ -123,8 +123,8 @@
                                         <TableColumn fx:id="colId" maxWidth="250.0" minWidth="70.0" prefWidth="75.0" text="Id" />
                                         <TableColumn fx:id="ColDni" maxWidth="250.0" minWidth="80.0" prefWidth="100.0" text="Dni" />
                                           <TableColumn fx:id="ColNombre" maxWidth="300.0" minWidth="100.0" prefWidth="140.0" text="Nombre" />
-                                          <TableColumn fx:id="colApellido1" maxWidth="300.0" minWidth="90.0" prefWidth="177.0" text="Apellido1" />
-                                          <TableColumn fx:id="colApellido2" maxWidth="300.0" minWidth="90.0" prefWidth="194.0" text="Apellido2" />
+                                          <TableColumn fx:id="colApellido1" maxWidth="300.0" minWidth="90.0" prefWidth="177.0" text="Apellido 1º" />
+                                          <TableColumn fx:id="colApellido2" maxWidth="300.0" minWidth="90.0" prefWidth="194.0" text="Apellido 2º" />
                                           <TableColumn fx:id="colCalle" maxWidth="300.0" minWidth="100.0" prefWidth="194.0" text="Calle" />
                                           <TableColumn fx:id="colNumero" maxWidth="100.0" minWidth="75.0" prefWidth="75.0" text="Número" />
                                           <TableColumn fx:id="colCP" maxWidth="200.0" minWidth="75.0" prefWidth="75.0" text="CP" />
