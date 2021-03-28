@@ -73,7 +73,7 @@ public class AlumnoDAO implements CrudInterface<ClassAlumno> {
         resp = false;
         String SQL = "INSERT INTO alumno (id,dni,nombre,apellido1,apellido2,calle,numero,cp,localidad,telefono,"
                 + "fecha_nacimiento) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
-
+       
         try {
             ps = CON.conectar().prepareStatement(SQL);
             ps.setInt(1, obj.getId());

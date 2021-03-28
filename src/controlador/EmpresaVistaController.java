@@ -1,7 +1,6 @@
 package controlador;
 
 import datos.EmpresaDAO;
-import entidades.ClassAlumno;
 import entidades.ClassEmpresa;
 import java.io.IOException;
 import java.net.URL;

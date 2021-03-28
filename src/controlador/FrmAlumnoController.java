@@ -158,69 +158,69 @@ public class FrmAlumnoController implements Initializable {
         }
     }
 
+    //Método donde comprobamos los campos no estén vacíos
     private boolean comprobarDatos() {
-        //Comprobamos los campos no estén vacíos
         if (txtDni.getText().isEmpty()) {
             MensajeFX.printTexto("El campo 'DNI' está vacío", "WARNING", posicionX_Y());
             txtDni.requestFocus(); //llevo el 'foco' al campo
-            return false; //devuelvo el código y no continuo
+            return false; //devuelvo false y no continuo
         }
         if (txtNombre.getText().isEmpty()) {
             MensajeFX.printTexto("El campo 'Nombre' está vacío", "WARNING", posicionX_Y());
             txtNombre.requestFocus(); //llevo el 'foco' al campo
-            return false; //devuelvo el código y no continuo
+            return false; //devuelvo false y no continuo
         }
         if (txtApellido1.getText().isEmpty()) {
             MensajeFX.printTexto("El campo 'Apellido1' está vacío", "WARNING", posicionX_Y());
             txtApellido1.requestFocus();
-            return false; //devuelvo el código y no continuo
+            return false; //devuelvo false y no continuo
         }
         if (txtCalle.getText().isEmpty()) {
             MensajeFX.printTexto("El campo 'Calle' está vacío", "WARNING", posicionX_Y());
             txtCalle.requestFocus();
-            return false; //devuelvo el código y no continuo
+            return false; //devuelvo false y no continuo
         }
 
         if (txtNumero.getText().isEmpty()) {
             MensajeFX.printTexto("El campo 'Número' está vacío", "WARNING", posicionX_Y());
             txtNumero.requestFocus();
-            return false; //devuelvo el código y no continuo
+            return false; //devuelvo false y no continuo
         }
 
         if (txtCodigoPostal.getText().isEmpty()) {
             MensajeFX.printTexto("El campo 'Código Postal' está vacío", "WARNING", posicionX_Y());
             txtCodigoPostal.requestFocus();
-            return false; //devuelvo el código y no continuo
+            return false; //devuelvo false y no continuo
         }
 
         if (txtLocalidad.getText().isEmpty()) {
             MensajeFX.printTexto("El campo 'Localidad' está vacío", "WARNING", posicionX_Y());
             txtLocalidad.requestFocus();
-            return false; //devuelvo el código y no continuo
+            return false; //devuelvo false y no continuo
         }
 
         if (txtTelefono.getText().isEmpty()) {
             MensajeFX.printTexto("El campo 'Teléfono' está vacío", "WARNING", posicionX_Y());
             txtTelefono.requestFocus();
-            return false; //devuelvo el código y no continuo
+            return false; //devuelvo false y no continuo
         }
 
         if (txtFechaNac.getValue() == null) {
             MensajeFX.printTexto("El campo 'Fecha de nacimiento' está vacío", "WARNING", posicionX_Y());
             txtFechaNac.requestFocus();
-            return false; //devuelvo el código y no continuo
+            return false; //devuelvo false y no continuo
         }
 
         if (!esNumerico(txtNumero.getText())) {
             MensajeFX.printTexto("El campo 'Número' tiene carácteres no permitidos", "WARNING", posicionX_Y());
             txtNumero.requestFocus();
-            return false; //devuelvo el código y no continuo
+            return false; //devuelvo false y no continuo
         }
 
         if (!esNumerico(txtCodigoPostal.getText())) {
             MensajeFX.printTexto("El campo 'Código Postal' tiene carácteres no permitidos", "WARNING", posicionX_Y());
             txtCodigoPostal.requestFocus();
-            return false; //devuelvo el código y no continuo
+            return false; //devuelvo false y no continuo
         }
 
         return true;  //si llega aquí es que todo está correcto
