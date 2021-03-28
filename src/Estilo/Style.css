@@ -1,6 +1,6 @@
 .root {
 -fx-font-size: 14pt;
--fx-font-family: "Times New Roman";
+-fx-font-family: "Segoe";
 -fx-background: #61a2b1;}
 
 .botonesmenu {
@@ -12,7 +12,7 @@
 
 .botonesmenu:hover{
   -fx-text-fill: white;
-      -fx-font-family: "Arial Narrow";
+      -fx-font-family: "Segoe UI";
       -fx-font-weight: bold;
       -fx-background-color: linear-gradient(#61a2b1, #2A5058);
       -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
@@ -20,7 +20,7 @@
 
 .botonesmenu:pressed{
   -fx-text-fill: white;
-      -fx-font-family: "Arial Narrow";
+      -fx-font-family: "Segoe UI";
       -fx-font-weight: bold;
       -fx-background-color: linear-gradient(#61a291, #2A5058);
       -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
