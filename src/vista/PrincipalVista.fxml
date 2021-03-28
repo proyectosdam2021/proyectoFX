@@ -1,22 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.input.KeyCodeCombination?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controlador.PrincipalVistaController">
+<VBox minHeight="-Infinity" minWidth="-Infinity" stylesheets="@../Estilo/Style.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controlador.PrincipalVistaController">
   <children>
-    <MenuBar VBox.vgrow="NEVER">
-      <menus>
-        <Menu mnemonicParsing="false" text="Alumnos">
+      <ToolBar prefHeight="40.0" prefWidth="200.0">
+        <items>
+          <Button mnemonicParsing="false" onAction="#mnuiAlumno" styleClass="botonesmenu" text="Alumnos">
                <graphic>
                   <ImageView fitHeight="50.0" fitWidth="50.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -30,20 +27,8 @@
                      </cursor>
                   </ImageView>
                </graphic>
-               <items>
-                  <MenuItem mnemonicParsing="false" onAction="#mnuiAlumno" text="Alumnos...">
-                     <accelerator>
-                        <KeyCodeCombination alt="DOWN" code="A" control="UP" meta="UP" shift="UP" shortcut="UP" />
-                     </accelerator>
-                  </MenuItem>
-                  <MenuItem mnemonicParsing="false" onAction="#mnuiEmpresa" text="Empresas...">
-                     <accelerator>
-                        <KeyCodeCombination alt="DOWN" code="E" control="UP" meta="UP" shift="UP" shortcut="UP" />
-                     </accelerator>
-                  </MenuItem>
-               </items>
-        </Menu>
-        <Menu mnemonicParsing="false" text="Profesores">
+            </Button>
+            <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#mnuiProfesor" styleClass="botonesmenu" text="Profesores">
                <graphic>
                   <ImageView fitHeight="50.0" fitWidth="50.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -57,15 +42,8 @@
                      </cursor>
                   </ImageView>
                </graphic>
-               <items>
-                  <MenuItem mnemonicParsing="false" onAction="#mnuiProfesor" text="Profesores...">
-                     <accelerator>
-                        <KeyCodeCombination alt="DOWN" code="P" control="UP" meta="UP" shift="UP" shortcut="UP" />
-                     </accelerator>
-                  </MenuItem>
-               </items>
-        </Menu>
-        <Menu mnemonicParsing="false" text="Cursos">
+            </Button>
+            <Button layoutX="131.0" layoutY="10.0" mnemonicParsing="false" onAction="#mnuiCursos" styleClass="botonesmenu" text="Cursos">
                <graphic>
                   <ImageView fitHeight="50.0" fitWidth="50.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -79,34 +57,22 @@
                      </cursor>
                   </ImageView>
                </graphic>
-               <items>
-                  <MenuItem mnemonicParsing="false" onAction="#mnuiCurso" text="Cursos...">
-                     <accelerator>
-                        <KeyCodeCombination alt="DOWN" code="C" control="UP" meta="UP" shift="UP" shortcut="UP" />
-                     </accelerator>
-                  </MenuItem>
-               </items>
-        </Menu>
-            <Menu mnemonicParsing="false" text="Salir">
-               <items>
-                  <MenuItem mnemonicParsing="false" onAction="#mnuiSalir" text="Exit">
-                     <graphic>
-                        <ImageView fitHeight="20.0" fitWidth="20.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../imagenes/icons8_cancel_50px.png" />
-                           </image>
-                           <effect>
-                              <DropShadow />
-                           </effect>
-                           <cursor>
-                              <Cursor fx:constant="DEFAULT" />
-                           </cursor>
-                        </ImageView>
-                     </graphic>
-                     <accelerator>
-                        <KeyCodeCombination alt="DOWN" code="X" control="UP" meta="UP" shift="UP" shortcut="UP" />
-                     </accelerator></MenuItem>
-               </items>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#mnuiEmpresas" styleClass="botonesmenu" text="Empresas">
+               <graphic>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../imagenes/business_building_48px.png" />
+                     </image>
+                     <effect>
+                        <DropShadow />
+                     </effect>
+                     <cursor>
+                        <Cursor fx:constant="DEFAULT" />
+                     </cursor>
+                  </ImageView>
+               </graphic></Button>
+            <Button layoutX="261.0" layoutY="10.0" mnemonicParsing="false" onAction="#mnuiSalir" styleClass="botonesmenu" text="Salir">
                <graphic>
                   <ImageView fitHeight="50.0" fitWidth="50.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -120,17 +86,14 @@
                      </cursor>
                   </ImageView>
                </graphic>
-            </Menu>
-      </menus>
-         <VBox.margin>
-            <Insets />
-         </VBox.margin>
-    </MenuBar>
+            </Button>
+        </items>
+      </ToolBar>
       <VBox fx:id="vboxPrincipal" style="-fx-background-color: white;" VBox.vgrow="ALWAYS">
          <children>
             <HBox alignment="CENTER" prefHeight="570.0" prefWidth="1100.0" style="-fx-background-color: white;" VBox.vgrow="ALWAYS">
                <children>
-                  <ImageView fitHeight="559.0" fitWidth="916.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
+                  <ImageView pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
                      <image>
                         <Image url="@../imagenes/academia2.png" />
                      </image>

@@ -35,7 +35,6 @@ public class PrincipalVistaController implements Initializable {
         cargarAlumno();
     }
 
-    @FXML
     private void mnuiEmpresa(ActionEvent event) {
         cargarEmpresa();
     }
@@ -44,12 +43,10 @@ public class PrincipalVistaController implements Initializable {
     private void mnuiProfesor(ActionEvent event) {
     }
 
-    @FXML
-    private void mnuiCurso(ActionEvent event) {
-    }
 
     @FXML
     private void mnuiSalir(ActionEvent event) {
+        //AQUÍ AÑADIR LA FUNCIONALIDAD DE SI QUIERE SALIR PARA QUE NO SALGA DIRECTO
         Platform.exit(); //Es ideal para cuando se cierre la aplicación se ejecute el proceso stop()
     }
 
@@ -95,6 +92,14 @@ public class PrincipalVistaController implements Initializable {
         } catch (IOException ex) {
             System.err.println("Error la carga de curso" + ex);
         }
+    }
+
+    @FXML
+    private void mnuiCursos(ActionEvent event) {
+    }
+
+    @FXML
+    private void mnuiEmpresas(ActionEvent event) {
     }
 
 }
