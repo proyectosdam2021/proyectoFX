@@ -9,16 +9,21 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import negocio.MensajeFX;
 
 public class PrincipalVistaController implements Initializable {
 
-    @FXML
-    private VBox vboxPrincipal;
     private static Scene scene;   //variable de clase Scene donde se produce la acción con los elementos creados
     private static Stage stage;   //variable de clase Stage que es la ventana actual
     private VBox ventana; //creamos un objeto de tipo VBox (Todas nuestras ventanas hijas comienzan por este tipo de elemento)
+    private double[] posicion;    //posición de la ventana en eje X-Y
+    @FXML
+    private VBox vboxPrincipal;
+    @FXML
+    private Button mnuSalir;
 
     /**
      * Initializes the controller class.
@@ -35,7 +40,8 @@ public class PrincipalVistaController implements Initializable {
         cargarAlumno();
     }
 
-    private void mnuiEmpresa(ActionEvent event) {
+    @FXML
+    private void mnuiEmpresas(ActionEvent event) {
         cargarEmpresa();
     }
 
@@ -43,11 +49,15 @@ public class PrincipalVistaController implements Initializable {
     private void mnuiProfesor(ActionEvent event) {
     }
 
+    @FXML
+    private void mnuiCursos(ActionEvent event) {
+    }
 
     @FXML
     private void mnuiSalir(ActionEvent event) {
-        //AQUÍ AÑADIR LA FUNCIONALIDAD DE SI QUIERE SALIR PARA QUE NO SALGA DIRECTO
-        Platform.exit(); //Es ideal para cuando se cierre la aplicación se ejecute el proceso stop()
+        if (MensajeFX.printTexto("¿Desea salir de la aplicación?", "CONFIRM", posicionX_Y())) {
+            Platform.exit(); //Es ideal para cuando se cierre la aplicación se ejecute el proceso stop()
+        }
     }
 
     private void cargarAlumno() {
@@ -94,12 +104,20 @@ public class PrincipalVistaController implements Initializable {
         }
     }
 
-    @FXML
-    private void mnuiCursos(ActionEvent event) {
-    }
-
-    @FXML
-    private void mnuiEmpresas(ActionEvent event) {
+    //este método obtiene la posición de la actual ventana en coordenadas x, y
+    //vamos a usar estos datos para posicionar la ventana de mensajes en la pantalla correctamente
+    private double[] posicionX_Y() {
+        double[] posicionxy = new double[2];
+        //creamos una nueva ventana temporal capturando de cualquier btn/lbl la escena y ventana
+        //se entiende que los btn o lbl forman parte de la ventana que deseamos obtener datos
+        Stage myStage = (Stage) this.mnuSalir.getScene().getWindow();
+        int frmX = 420 / 2; //tamaño ancho componente
+        int frmY = 400; //tamaño alto componente
+        int x = (int) (myStage.getWidth() / 2);
+        int y = (int) (myStage.getHeight() / 2);
+        posicionxy[0] = myStage.getX() + (x - frmX);
+        posicionxy[1] = myStage.getY() + (y - frmY);
+        return posicionxy;
     }
 
 }

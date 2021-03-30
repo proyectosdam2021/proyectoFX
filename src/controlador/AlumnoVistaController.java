@@ -172,18 +172,30 @@ public class AlumnoVistaController implements Initializable {
 
     public void cargarTabla(String filtro) {
         //asignamos a cada columna de la tabla el valor de su campo referenciado en ClassAlumno
-        this.colId.setCellValueFactory(new PropertyValueFactory("id"));
-        this.ColDni.setCellValueFactory(new PropertyValueFactory("dni"));
-        this.ColNombre.setCellValueFactory(new PropertyValueFactory("nombre"));
-        this.colApellido1.setCellValueFactory(new PropertyValueFactory("apellido1"));
-        this.colApellido2.setCellValueFactory(new PropertyValueFactory("apellido2"));
-        this.colCalle.setCellValueFactory(new PropertyValueFactory("calle"));
-        this.colNumero.setCellValueFactory(new PropertyValueFactory("numero"));
-        this.colCP.setCellValueFactory(new PropertyValueFactory("cp"));
-        this.colLocalidad.setCellValueFactory(new PropertyValueFactory("localidad"));
-        this.colTelefono.setCellValueFactory(new PropertyValueFactory("telefono"));
-        this.colFechaNac.setCellValueFactory(new PropertyValueFactory("fecha_nacimiento"));
-        this.colIdEmpresa.setCellValueFactory(new PropertyValueFactory("id_empresa"));
+        PropertyValueFactory<ClassAlumno, Integer> valorCol1 = new PropertyValueFactory<>("id");
+        this.colId.setCellValueFactory(valorCol1);
+        PropertyValueFactory<ClassAlumno, String> valorCol2 = new PropertyValueFactory<>("dni");
+        this.ColDni.setCellValueFactory(valorCol2);
+        PropertyValueFactory<ClassAlumno, String> valorCol3 = new PropertyValueFactory<>("nombre");
+        this.ColNombre.setCellValueFactory(valorCol3);
+        PropertyValueFactory<ClassAlumno, String> valorCol4 = new PropertyValueFactory<>("apellido1");
+        this.colApellido1.setCellValueFactory(valorCol4);
+        PropertyValueFactory<ClassAlumno, String> valorCol5 = new PropertyValueFactory<>("apellido2");
+        this.colApellido2.setCellValueFactory(valorCol5);
+        PropertyValueFactory<ClassAlumno, String> valorCol6 = new PropertyValueFactory<>("calle");
+        this.colCalle.setCellValueFactory(valorCol6);
+        PropertyValueFactory<ClassAlumno, Integer> valorCol7 = new PropertyValueFactory<>("numero");
+        this.colNumero.setCellValueFactory(valorCol7);
+        PropertyValueFactory<ClassAlumno, Integer> valorCol8 = new PropertyValueFactory<>("cp");
+        this.colCP.setCellValueFactory(valorCol8);
+        PropertyValueFactory<ClassAlumno, String> valorCol9 = new PropertyValueFactory<>("localidad");
+        this.colLocalidad.setCellValueFactory(valorCol9);
+        PropertyValueFactory<ClassAlumno, String> valorCol0 = new PropertyValueFactory<>("telefono");
+        this.colTelefono.setCellValueFactory(valorCol0);
+        PropertyValueFactory<ClassAlumno, Date> valorCol11 = new PropertyValueFactory<>("fecha_nacimiento");
+        this.colFechaNac.setCellValueFactory(valorCol11);
+        PropertyValueFactory<ClassAlumno, Integer> valorCol12 = new PropertyValueFactory<>("id_empresa");
+        this.colIdEmpresa.setCellValueFactory(valorCol12);
 
         items = datos.listar(filtro);  //llamamos al método "listar" dentro de la clase AlumnoDAO
         this.tablaAlumno.refresh();  //refrescamos los datos de la tabla (sobre todo es interesante cuando actualizamos)

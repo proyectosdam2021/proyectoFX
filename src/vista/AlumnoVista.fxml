@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="2000.0" prefWidth="1100.0" styleClass="indicetablas" stylesheets="@../Estilo/Style.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controlador.AlumnoVistaController">
+<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="2000.0" prefWidth="1100.0" styleClass="indicetablas" stylesheets="@../Estilo/Style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controlador.AlumnoVistaController">
    <children>
       <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="1100.0" VBox.vgrow="ALWAYS">
          <children>
@@ -36,7 +36,7 @@
                                     </Label>
                                     <TextField fx:id="txtFiltrarAlumnoTabla" onKeyPressed="#txtPulsadoEnter">
                                        <HBox.margin>
-                                          <Insets top="15.0" />
+                                          <Insets top="12.0" />
                                        </HBox.margin>
                                     </TextField>
                                     <Button fx:id="btnBuscar" graphicTextGap="3.0" minWidth="75.0" mnemonicParsing="false" onAction="#buscarAlumnoTabla" text="Buscar">

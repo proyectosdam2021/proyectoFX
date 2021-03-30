@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import datos.interfaces.CrudInterface;
 import entidades.ClassAlumno;
-import java.sql.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
@@ -86,11 +85,11 @@ public class AlumnoDAO implements CrudInterface<ClassAlumno> {
             ps.setInt(8, obj.getCp());
             ps.setString(9, obj.getLocalidad());
             ps.setString(10, obj.getTelefono());
-            ps.setDate(11, (Date) obj.getFecha_nacimiento());
+            ps.setDate(11, obj.getFecha_nacimiento());
             if (Variables.getEsNull() == 1) {
                 ps.setNull(12, java.sql.Types.INTEGER);
             } else {
-                ps.setInt(12, 100); //100 se cambia por el valor del ID_empresa
+                ps.setInt(12, 1); //100 se cambia por el valor del ID_empresa
             }
 
             if (ps.executeUpdate() > 0) {
@@ -133,7 +132,7 @@ public class AlumnoDAO implements CrudInterface<ClassAlumno> {
             ps.setInt(7, obj.getCp());
             ps.setString(8, obj.getLocalidad());
             ps.setString(9, obj.getTelefono());
-            ps.setDate(10, (Date) obj.getFecha_nacimiento());
+            ps.setDate(10, obj.getFecha_nacimiento());
             //ps.setInt(11, obj.getId_empresa());
             ps.setInt(11, obj.getId());
 
@@ -299,5 +298,5 @@ public class AlumnoDAO implements CrudInterface<ClassAlumno> {
         }
         return resp;
     }
-
+    
 }

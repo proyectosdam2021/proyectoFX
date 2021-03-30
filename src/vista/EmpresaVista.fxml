@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="2000.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controlador.EmpresaVistaController">
+<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="2000.0" prefWidth="1100.0" styleClass="indicetablas" stylesheets="@../Estilo/Style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controlador.EmpresaVistaController">
    <children>
       <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="1100.0" VBox.vgrow="ALWAYS">
          <children>
@@ -36,10 +36,10 @@
                                     </Label>
                                     <TextField fx:id="txtFiltrarEmpresaTabla" onKeyPressed="#txtPulsadoEnter">
                                        <HBox.margin>
-                                          <Insets top="15.0" />
+                                          <Insets top="12.0" />
                                        </HBox.margin>
                                     </TextField>
-                                    <Button fx:id="btnBuscar" graphicTextGap="3.0" minWidth="75.0" mnemonicParsing="false" onAction="#buscarAlumnoTabla" text="Buscar">
+                                    <Button fx:id="btnBuscar" graphicTextGap="3.0" minWidth="75.0" mnemonicParsing="false" onAction="#buscarEmpresaTabla" text="Buscar">
                                        <HBox.margin>
                                           <Insets left="20.0" top="11.0" />
                                        </HBox.margin>
@@ -54,7 +54,7 @@
                                           </ImageView>
                                        </graphic>
                                     </Button>
-                                    <Button fx:id="btnLimpiar" minWidth="85.0" mnemonicParsing="false" onAction="#limpiarAlumnoTabla" text="Limpiar">
+                                    <Button fx:id="btnLimpiar" minWidth="85.0" mnemonicParsing="false" onAction="#limpiarEmpresaTabla" text="Limpiar">
                                        <font>
                                           <Font name="Segoe UI Bold" size="13.0" />
                                        </font>
@@ -69,22 +69,7 @@
                                           </ImageView>
                                        </graphic>
                                     </Button>
-                                    <Button fx:id="btnNuevo" minWidth="75.0" mnemonicParsing="false" onAction="#nuevoAlumnoTabla" text="Nuevo">
-                                       <font>
-                                          <Font name="Segoe UI Bold" size="13.0" />
-                                       </font>
-                                       <HBox.margin>
-                                          <Insets left="20.0" top="11.0" />
-                                       </HBox.margin>
-                                       <graphic>
-                                          <ImageView fitHeight="22.0" fitWidth="63.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../imagenes/icons8_add_file_36px.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic>
-                                    </Button>
-                                    <Button fx:id="btnEditar" minWidth="75.0" mnemonicParsing="false" onAction="#editarAlumnoTabla" text="Editar">
+                                    <Button fx:id="btnEditar" minWidth="75.0" mnemonicParsing="false" onAction="#editarEmpresaTabla" text="Editar">
                                        <font>
                                           <Font name="Segoe UI Bold" size="13.0" />
                                        </font>
@@ -99,7 +84,7 @@
                                           </ImageView>
                                        </graphic>
                                     </Button>
-                                    <Button fx:id="btnEliminar" minWidth="80.0" mnemonicParsing="false" onAction="#eliminarAlumnoTabla" text="Eliminar">
+                                    <Button fx:id="btnEliminar" minWidth="80.0" mnemonicParsing="false" onAction="#eliminarEmpresaTabla" text="Eliminar">
                                        <font>
                                           <Font name="Segoe UI Bold" size="13.0" />
                                        </font>
@@ -118,10 +103,10 @@
                               </HBox>
                               <HBox VBox.vgrow="ALWAYS">
                                  <children>
-                                    <TableView fx:id="tablaEmpresa" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onKeyReleased="#posicionTeclaTabla" onMouseClicked="#posicionRatonTabla" HBox.hgrow="ALWAYS">
+                                    <TableView fx:id="tablaEmpresa" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onKeyReleased="#posicionTeclaTabla" onMouseClicked="#posicionRatonTabla" styleClass="indicetablas" HBox.hgrow="ALWAYS">
                                       <columns>
                                         <TableColumn fx:id="colId" maxWidth="250.0" minWidth="70.0" prefWidth="75.0" text="Id" />
-                                        <TableColumn fx:id="ColCif" maxWidth="250.0" minWidth="80.0" prefWidth="100.0" text="CIF" />
+                                        <TableColumn fx:id="colCif" maxWidth="250.0" minWidth="80.0" prefWidth="100.0" text="Cif" />
                                           <TableColumn fx:id="ColNombre" maxWidth="300.0" minWidth="100.0" prefWidth="140.0" text="Nombre" />
                                           <TableColumn fx:id="colCalle" maxWidth="300.0" minWidth="100.0" prefWidth="194.0" text="Calle" />
                                           <TableColumn fx:id="colNumero" maxWidth="100.0" minWidth="75.0" prefWidth="75.0" text="Número" />

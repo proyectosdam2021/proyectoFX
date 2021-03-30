@@ -34,7 +34,7 @@ public class ProyectoAcademia extends Application {
         PrincipalVistaController ctrPrincipal = loader.getController();
         scene = new Scene(root);//creamos la nueva escena padre
         stage = new Stage();    //creamos la nueva ventana
-        stage.setMinWidth(1024);
+        stage.setMinWidth(900);
         stage.setMinHeight(600);
         stage.setScene(scene); //establecemos la escena
         //Cargamos el resto de componentes de la vista
