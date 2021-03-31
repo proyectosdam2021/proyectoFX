@@ -64,6 +64,7 @@ public class FrmEmpresaController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         CONTROL = new EmpresaNegocio();  //instanciamos la clase Negocio
         lblTextoFrm.setText(Variables.getTextoFrm());  //Envíamos el texto de la variable como título del campo label de nuestra ventana
+        Variables.setEmpresaAniadia(0); //por defecto la empresa no está correctamente editada/añadida/eliminada
         if ("ELIMINAR EMPRESA".equals(Variables.getTextoFrm())) { //dependiendo de la acción a realizar (NUEVO/EDITAR/ELIMINAR) activamos/desactivamos botones
             campoEditable(false);
         } else {
@@ -266,6 +267,7 @@ public class FrmEmpresaController implements Initializable {
                     respuesta = this.CONTROL.insertar(convertirStringObjeto());
                     if ("OK".equals(respuesta)) {
                         MensajeFX.printTexto("Empresa añadida correctamente", "INFO", posicionX_Y());
+                        Variables.setEmpresaAniadia(1);
                         this.limpiar();
                         this.cerrarVentana();
                     } else {

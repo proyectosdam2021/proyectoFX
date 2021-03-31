@@ -7,6 +7,7 @@ public class Variables {
     private static String textoFrm;   //almacenamos el texto del título que aparece cuando se abre Frm
     private static int conectadoBD = 0; //guardamos si se ha conectado a la BD
     private static int alumnoCreaEmpresa = 0;  //guardamos si valor 0 para no crear, y 1 para si crear
+    private static int empresaAniadia = 0; //guardamos si la empresa se ha creado correctamente. 0 para no, y 1 para SI
 
     //Creamos los Getter y Setter de los datos a compartir en la aplicación
     public static int getRegistrosMostrados() {
@@ -40,5 +41,15 @@ public class Variables {
     public static void setAlumnoCreaEmpresa(int alumnoCreaEmpresa) {
         Variables.alumnoCreaEmpresa = alumnoCreaEmpresa;
     }
+
+    public static int getEmpresaAniadia() {
+        return empresaAniadia;
+    }
+
+    public static void setEmpresaAniadia(int empresaAniadia) {
+        Variables.empresaAniadia = empresaAniadia;
+    }
+    
+    
 
 }
