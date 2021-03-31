@@ -72,4 +72,13 @@ public class AlumnoNegocio {
     public int totalMostrados() {
         return Variables.getRegistrosMostrados();
     }
+
+    public boolean existe(String dni) throws SQLException {
+        if (DATOS.existe(dni)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }

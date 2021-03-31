@@ -318,7 +318,7 @@ public class FrmEmpresaController implements Initializable {
         return objetoEmpresa;
     }
 
-    //Nétodo para limpiar todos los campos que forman parte del formulario
+    //Método para limpiar todos los campos que forman parte del formulario
     private void limpiar() {
         idRegistro = 0;
         txtCif.setText("");

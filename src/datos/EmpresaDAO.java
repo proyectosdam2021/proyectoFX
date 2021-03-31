@@ -73,7 +73,7 @@ public class EmpresaDAO implements CrudInterface<ClassEmpresa> {
 
         try {
             ps = CON.conectar().prepareStatement(SQL);
-            ps.setInt(1, obj.getId());
+            ps.setInt(1, 0);
             ps.setString(2, obj.getCif());
             ps.setString(3, obj.getNombre());
             ps.setString(4, obj.getCalle());

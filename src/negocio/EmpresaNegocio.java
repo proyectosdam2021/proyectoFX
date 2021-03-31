@@ -58,6 +58,10 @@ public class EmpresaNegocio {
         }
     }
 
+    public boolean existe(String cif) throws SQLException {
+        return DATOS.existe(cif);
+    }
+
     public int total() throws SQLException {
         return DATOS.total();
     }

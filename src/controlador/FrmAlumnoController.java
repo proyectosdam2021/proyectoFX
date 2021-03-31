@@ -1,35 +1,38 @@
 package controlador;
 
-import datos.AlumnoDAO;
 import entidades.ClassAlumno;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import negocio.AlumnoNegocio;
+import negocio.EmpresaNegocio;
 import negocio.MensajeFX;
 import negocio.Variables;
 
 public class FrmAlumnoController implements Initializable {
 
     private AlumnoNegocio CONTROL;  //instanciamos nuestra clase para realizar CRUD
+    private EmpresaNegocio CONTROLEMP; // instanciamos la clase Empresa Negocio
     private int idRegistro;
     private String dniAnterior;
     private ClassAlumno objeto;
-    private ObservableList<ClassAlumno> items; //instanciamos un objeto tipo arrayList especial para JavaFX
-    private AlumnoDAO datos;   //instanciamos la clase AlumnoDAO la cual gestiona las acciones hacia nuestra BD
     private static Scene scene;   //variable de clase Scene donde se produce la acción con los elementos creados
     private static Stage stage;   //variable de clase Stage que es la ventana actual
     private double[] posicion;    //posición de la ventana en eje X-Y
@@ -57,9 +60,11 @@ public class FrmAlumnoController implements Initializable {
     @FXML
     private DatePicker txtFechaNac;
     @FXML
-    private ImageView btnCancelar;
+    private Button btnCancelar;
     @FXML
-    private ImageView bntAceptar;
+    private TextField txtAlumnoCif;
+    @FXML
+    private Button btnAceptar;
 
     /**
      * Initializes the controller class.
@@ -70,7 +75,9 @@ public class FrmAlumnoController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         CONTROL = new AlumnoNegocio();  //instanciamos la clase AlumnoNegocio
+        CONTROLEMP = new EmpresaNegocio();
         lblTextoFrm.setText(Variables.getTextoFrm());  //Envíamos el texto de la variable como título del campo label de nuestra ventana
+        Variables.setAlumnoCreaEmpresa(0); //Por defecto asignamos que NO cree empresa al crear Alumno
         if ("ELIMINAR ALUMNO".equals(Variables.getTextoFrm())) { //dependiendo de la acción a realizar (NUEVO/EDITAR/ELIMINAR) activamos/desactivamos botones
             campoEditable(false);
         } else {
@@ -129,6 +136,15 @@ public class FrmAlumnoController implements Initializable {
             } else {
                 String caracter = event.getCharacter();
                 this.compruebaString(caracter, txtDni, 9);
+            }
+        }
+
+        if (evt.equals(txtAlumnoCif)) {
+            if (" ".equals(event.getCharacter())) {
+                txtAlumnoCif.deletePreviousChar();
+            } else {
+                String caracter = event.getCharacter();
+                this.compruebaString(caracter, txtAlumnoCif, 9);
             }
         }
 
@@ -223,6 +239,24 @@ public class FrmAlumnoController implements Initializable {
             return false; //devuelvo false y no continuo
         }
 
+        if (txtAlumnoCif.getText().isEmpty()) {
+            Variables.setAlumnoCreaEmpresa(0);
+        } else {
+            try {
+                if (CONTROL.existe(txtDni.getText())) {
+                    MensajeFX.printTexto("!Ese DNI ya existe!", "ERROR", posicionX_Y());
+                    txtDni.requestFocus();
+                } else {
+                    Variables.setTextoFrm("CREAR EMPRESA");
+                    Variables.setAlumnoCreaEmpresa(1);
+                    activaBotones(true);
+                    cargarFrmEmpresa();
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(FrmAlumnoController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
         return true;  //si llega aquí es que todo está correcto
     }
 
@@ -231,14 +265,17 @@ public class FrmAlumnoController implements Initializable {
         try {
             switch (Variables.getTextoFrm()) {
                 case "CREAR ALUMNO":
-                    respuesta = this.CONTROL.insertar(convertirStringObjeto());
-                    if ("OK".equals(respuesta)) {
-                        MensajeFX.printTexto("Alumno añadido correctamente", "INFO", posicionX_Y());
-                        this.limpiar();
-                        this.cerrarVentana();
-                    } else {
-                        MensajeFX.printTexto(respuesta, "ERROR", posicionX_Y());
-                    }
+                   // if (Variables.getAlumnoCreaEmpresa() == 0) {
+                        respuesta = this.CONTROL.insertar(convertirStringObjeto());
+                        if ("OK".equals(respuesta)) {
+                            MensajeFX.printTexto("Alumno añadido correctamente", "INFO", posicionX_Y());
+                            this.limpiar();
+                            this.cerrarVentana();
+                        }
+                    //}
+                    //else {
+                    //    MensajeFX.printTexto(respuesta, "ERROR", posicionX_Y());
+                    //}
                     break;
 
                 case "EDITAR ALUMNO":
@@ -294,6 +331,11 @@ public class FrmAlumnoController implements Initializable {
         posicion = obtenPosicionX_Y();
         stage.setX(posicion[0]);
         stage.setY(posicion[1]);
+        if (Variables.getAlumnoCreaEmpresa() == 1) {
+            System.out.println("asigno nuevas coordenadas");
+            stage.setX(posicion[0] + 415);
+            stage.setY(posicion[1] - 95);
+        }
     }
 
     //este método obtiene la posición de la actual ventana en coordenadas x, y
@@ -398,7 +440,7 @@ public class FrmAlumnoController implements Initializable {
             txtCampo.deletePreviousChar();
             txtCampo.setText(txtCampo.getText() + caracter);
             txtCampo.end();
-        } else if (palabra >= 'a') {
+        } else if (palabra >= 'a' || palabra >= 'A') {
             txtCampo.deletePreviousChar();
             txtCampo.end();
         }
@@ -413,6 +455,46 @@ public class FrmAlumnoController implements Initializable {
             return false;
         }
         return true;
+    }
+
+    private void cargarFrmEmpresa() {
+        try {
+            //cargamos la vista FXML
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/vista/FrmEmpresa.fxml"));
+            //instanciamos y cargamos el FXML en el padre
+            Parent root = loader.load();
+            //instanciamos al controlador FrmEmpresa haciendo uso del nuevo método getController
+            FrmEmpresaController ctrFrmEmpresa = loader.getController();
+            scene = new Scene(root); //creamos la nueva escena que viene del padre
+            stage = new Stage();    //creamos la nueva ventana
+            stage.setTitle("Alta de Empresa"); //ponemos un título
+            stage.initModality(Modality.APPLICATION_MODAL);  //hacemos que la escena nueva tome el foco y no permita cambiarse de ventana
+            stage.setScene(scene); //establecemos la escena
+            this.ventanaPosicion(); //posicionamos la nueva ventana
+            //this.cambiarOpacidad(0.5); //cambiamos la opacidad de la ventana anterior
+            stage.setResizable(false); //no permitimos que la ventana cambie de tamaño
+            stage.initStyle(StageStyle.UTILITY); //desactivamos maximinar y minimizar
+            //stage.getIcons().add(new Image(getClass().getResourceAsStream("/imagenes/icons8_java_duke_50px.png")));
+            //Pasamos los datos a la nueva ventana FrmAlumno mientras sea distinto a CREAR ALUMNO (se usará para EDITAR/ELIMINAR)
+            // if (!"CREAR ALUMNO".equals(Variables.getTextoFrm())) {
+            //     ctrFrmAlumno.pasarDatos(copiaAlumno);
+            // }
+            stage.showAndWait(); //mostramos la nueva ventana y esperamos
+            Variables.setTextoFrm("CREAR ALUMNO");
+            activaBotones(false);
+            //El programa continua en esta línea cuando la nueva ventana se cierre
+            //this.cambiarOpacidad(1);
+            //this.limpiarVista();
+            //this.cargarTabla("");
+
+        } catch (IOException ex) {
+            System.err.println("Error en el inicio validado " + ex);
+        }
+    }
+
+    private void activaBotones(boolean valor) {
+        btnCancelar.setDisable(valor);
+        btnAceptar.setDisable(valor);
     }
 
 }

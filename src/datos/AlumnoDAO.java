@@ -86,10 +86,10 @@ public class AlumnoDAO implements CrudInterface<ClassAlumno> {
             ps.setString(9, obj.getLocalidad());
             ps.setString(10, obj.getTelefono());
             ps.setDate(11, obj.getFecha_nacimiento());
-            if (Variables.getEsNull() == 1) {
+            if (Variables.getAlumnoCreaEmpresa() == 0) {
                 ps.setNull(12, java.sql.Types.INTEGER);
             } else {
-                ps.setInt(12, 1); //100 se cambia por el valor del ID_empresa
+                ps.setInt(12, 1); //asignamos un valor al id_empresa. Este valor se cambiará automaticamente dado que es auto_increment
             }
 
             if (ps.executeUpdate() > 0) {
@@ -298,5 +298,5 @@ public class AlumnoDAO implements CrudInterface<ClassAlumno> {
         }
         return resp;
     }
-    
+
 }
