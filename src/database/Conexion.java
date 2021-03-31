@@ -10,15 +10,15 @@ import negocio.Variables;
 public class Conexion {
 
     private final String DRIVER = "com.mysql.jdbc.Driver";
-    //private final String URL = "jdbc:mysql://PMYSQL114.dns-servicio.com:3306/"; 
-    //private final String DB = "6980251_proyectoacademia";
-    //private final String USER = "root_proyectoacademia";
-    //private final String PASSWORD = "1q2w3e4r5t@@";
-    private final String URL = "jdbc:mysql://localhost:3306/";
+    private final String URL = "jdbc:mysql://PMYSQL114.dns-servicio.com:3306/";
+    private final String DB = "6980251_proyectoacademia";
+    private final String USER = "root_proyectoacademia";
+    private final String PASSWORD = "1q2w3e4r5t@@";
     private final String EXTRA = "?zeroDateTimeBehavior=convertToNull&?autoReconnet=true&useSSL=false";
-    private final String DB = "academia";
-    private final String USER = "root";
-    private final String PASSWORD = "1q2w3e4r5t";
+    //private final String URL = "jdbc:mysql://localhost:3306/";
+    //private final String DB = "academia";
+    //private final String USER = "root";
+    //private final String PASSWORD = "1q2w3e4r5t";
 
     public Connection cadena;
     public static Conexion instancia;

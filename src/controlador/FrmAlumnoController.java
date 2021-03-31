@@ -265,17 +265,21 @@ public class FrmAlumnoController implements Initializable {
         try {
             switch (Variables.getTextoFrm()) {
                 case "CREAR ALUMNO":
-                  //  if (Variables.getAlumnoCreaEmpresa() == 0)  {
+                    if (Variables.getAlumnoCreaEmpresa() == 0) {
                         respuesta = this.CONTROL.insertar(convertirStringObjeto());
                         if ("OK".equals(respuesta)) {
                             MensajeFX.printTexto("Alumno añadido correctamente", "INFO", posicionX_Y());
                             this.limpiar();
                             this.cerrarVentana();
                         }
-                 //   }
-                    //else {
-                    //    MensajeFX.printTexto(respuesta, "ERROR", posicionX_Y());
-                    //}
+                    } else if (Variables.getAlumnoCreaEmpresa() == 1 && Variables.getEmpresaAniadia() == 1) {
+                        respuesta = this.CONTROL.insertar(convertirStringObjeto());
+                        if ("OK".equals(respuesta)) {
+                            MensajeFX.printTexto("Alumno añadido correctamente", "INFO", posicionX_Y());
+                            this.limpiar();
+                            this.cerrarVentana();
+                        }
+                    }
                     break;
 
                 case "EDITAR ALUMNO":
