@@ -265,13 +265,13 @@ public class FrmAlumnoController implements Initializable {
         try {
             switch (Variables.getTextoFrm()) {
                 case "CREAR ALUMNO":
-                   // if (Variables.getAlumnoCreaEmpresa() == 0) {
-                        respuesta = this.CONTROL.insertar(convertirStringObjeto());
-                        if ("OK".equals(respuesta)) {
-                            MensajeFX.printTexto("Alumno añadido correctamente", "INFO", posicionX_Y());
-                            this.limpiar();
-                            this.cerrarVentana();
-                        }
+                    // if (Variables.getAlumnoCreaEmpresa() == 0) {
+                    respuesta = this.CONTROL.insertar(convertirStringObjeto());
+                    if ("OK".equals(respuesta)) {
+                        MensajeFX.printTexto("Alumno añadido correctamente", "INFO", posicionX_Y());
+                        this.limpiar();
+                        this.cerrarVentana();
+                    }
                     //}
                     //else {
                     //    MensajeFX.printTexto(respuesta, "ERROR", posicionX_Y());
@@ -383,6 +383,11 @@ public class FrmAlumnoController implements Initializable {
         objeto.setLocalidad(txtLocalidad.getText().strip().toUpperCase());
         objeto.setTelefono(txtTelefono.getText().strip().toUpperCase());
         objeto.setFecha_nacimiento(java.sql.Date.valueOf(txtFechaNac.getValue()));  //convertimos un campo datepicker en Date SQL
+        try {
+            objeto.setId_empresa(CONTROLEMP.ultimoRegistro());
+        } catch (SQLException ex) {
+            Logger.getLogger(FrmAlumnoController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return objeto;
     }
 

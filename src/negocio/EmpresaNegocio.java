@@ -62,6 +62,10 @@ public class EmpresaNegocio {
         return DATOS.existe(cif);
     }
 
+    public int ultimoRegistro() throws SQLException {
+        return DATOS.ultimoRegistro();
+    }
+
     public int total() throws SQLException {
         return DATOS.total();
     }
