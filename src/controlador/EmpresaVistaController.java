@@ -92,13 +92,6 @@ public class EmpresaVistaController implements Initializable {
         this.cargarTabla("");
     }
 
-    /*
-    private void nuevoEmpresaTabla(ActionEvent event) {
-        //guardamos en la variable el valor de la acción a ejecutar.
-        Variables.setTextoFrm("CREAR EMPRESA");  //Se usará posteriormente en el controlador Frm
-        this.cargarFrmEmpresa();
-    }
-     */
     @FXML
     private void editarEmpresaTabla(ActionEvent event) {
         //guardamos en la variable el valor de la acción a ejecutar.

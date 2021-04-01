@@ -1,6 +1,7 @@
 package controlador;
 
 import entidades.ClassAlumno;
+import entidades.ClassEmpresa;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -29,10 +30,12 @@ import negocio.Variables;
 public class FrmAlumnoController implements Initializable {
 
     private AlumnoNegocio CONTROL;  //instanciamos nuestra clase para realizar CRUD
-    private EmpresaNegocio CONTROLEMP; // instanciamos la clase Empresa Negocio
+    private EmpresaNegocio ControlEmpresa; // instanciamos la clase Empresa Negocio
     private int idRegistro;
+    private int idEmpresa;
     private String dniAnterior;
     private ClassAlumno objeto;
+    private ClassEmpresa objetoEmpresa;
     private static Scene scene;   //variable de clase Scene donde se produce la acción con los elementos creados
     private static Stage stage;   //variable de clase Stage que es la ventana actual
     private double[] posicion;    //posición de la ventana en eje X-Y
@@ -75,7 +78,7 @@ public class FrmAlumnoController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         CONTROL = new AlumnoNegocio();  //instanciamos la clase AlumnoNegocio
-        CONTROLEMP = new EmpresaNegocio();
+        ControlEmpresa = new EmpresaNegocio();
         lblTextoFrm.setText(Variables.getTextoFrm());  //Envíamos el texto de la variable como título del campo label de nuestra ventana
         Variables.setAlumnoCreaEmpresa(0); //Por defecto asignamos que NO cree empresa al crear Alumno
         if ("ELIMINAR ALUMNO".equals(Variables.getTextoFrm())) { //dependiendo de la acción a realizar (NUEVO/EDITAR/ELIMINAR) activamos/desactivamos botones
@@ -94,6 +97,7 @@ public class FrmAlumnoController implements Initializable {
     @FXML
     private void grabarAlumno(ActionEvent event) {
         if (comprobarDatos()) {
+            System.out.println("ahora va a guardar datos"); /////////////////////////////
             guardarDatos();
         }
     }
@@ -247,10 +251,18 @@ public class FrmAlumnoController implements Initializable {
                     MensajeFX.printTexto("!Ese DNI ya existe!", "ERROR", posicionX_Y());
                     txtDni.requestFocus();
                 } else {
-                    Variables.setTextoFrm("CREAR EMPRESA");
-                    Variables.setAlumnoCreaEmpresa(1);
-                    activaBotones(true);
-                    cargarFrmEmpresa();
+                    if (ControlEmpresa.existe(txtAlumnoCif.getText())) {
+                        System.out.println("Empresa existe en la BD..");
+                        objetoEmpresa = ControlEmpresa.cargarEmpresa(txtAlumnoCif.getText());
+                        idEmpresa = objetoEmpresa.getId();
+                        Variables.setAlumnoCreaEmpresa(1);
+                        Variables.setEmpresaAniadia(1);
+                        System.out.println(objetoEmpresa.toString());
+                    } else {
+                        Variables.setAlumnoCreaEmpresa(1);
+                        activaBotones(true);
+                        cargarFrmEmpresa();
+                    }
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(FrmAlumnoController.class.getName()).log(Level.SEVERE, null, ex);
@@ -265,6 +277,7 @@ public class FrmAlumnoController implements Initializable {
         try {
             switch (Variables.getTextoFrm()) {
                 case "CREAR ALUMNO":
+                    System.out.println("Entra dentro de Guardar datos..");
                     if (Variables.getAlumnoCreaEmpresa() == 0) {
                         respuesta = this.CONTROL.insertar(convertirStringObjeto());
                         if ("OK".equals(respuesta)) {
@@ -274,6 +287,7 @@ public class FrmAlumnoController implements Initializable {
                         }
                     } else if (Variables.getAlumnoCreaEmpresa() == 1 && Variables.getEmpresaAniadia() == 1) {
                         respuesta = this.CONTROL.insertar(convertirStringObjeto());
+                        System.out.println("dentro de guardardatos " + objeto.toString()); ///////////////
                         if ("OK".equals(respuesta)) {
                             MensajeFX.printTexto("Alumno añadido correctamente", "INFO", posicionX_Y());
                             this.limpiar();
@@ -321,7 +335,7 @@ public class FrmAlumnoController implements Initializable {
         txtApellido2.setText("");
         txtCalle.setText("");
         txtLocalidad.setText("");
-
+        idEmpresa = 0;
     }
 
     //Este método cierra la ventana que forme parte del componente capturado
@@ -336,7 +350,6 @@ public class FrmAlumnoController implements Initializable {
         stage.setX(posicion[0]);
         stage.setY(posicion[1]);
         if (Variables.getAlumnoCreaEmpresa() == 1) {
-            System.out.println("asigno nuevas coordenadas");
             stage.setX(posicion[0] + 415);
             stage.setY(posicion[1] - 95);
         }
@@ -388,7 +401,12 @@ public class FrmAlumnoController implements Initializable {
         objeto.setTelefono(txtTelefono.getText().strip().toUpperCase());
         objeto.setFecha_nacimiento(java.sql.Date.valueOf(txtFechaNac.getValue()));  //convertimos un campo datepicker en Date SQL
         try {
-            objeto.setId_empresa(CONTROLEMP.ultimoRegistro());
+            objeto.setId_empresa(ControlEmpresa.ultimoRegistro());
+            if (Variables.getEmpresaAniadia() == 1) {
+                objeto.setId_empresa(idEmpresa);
+                System.out.println("asigno valor de empresa al existir " + objeto.getId_empresa());
+                System.out.println("dentro de convertir es " + objeto.toString());
+            }
         } catch (SQLException ex) {
             Logger.getLogger(FrmAlumnoController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -483,18 +501,15 @@ public class FrmAlumnoController implements Initializable {
             //this.cambiarOpacidad(0.5); //cambiamos la opacidad de la ventana anterior
             stage.setResizable(false); //no permitimos que la ventana cambie de tamaño
             stage.initStyle(StageStyle.UTILITY); //desactivamos maximinar y minimizar
-            //stage.getIcons().add(new Image(getClass().getResourceAsStream("/imagenes/icons8_java_duke_50px.png")));
-            //Pasamos los datos a la nueva ventana FrmAlumno mientras sea distinto a CREAR ALUMNO (se usará para EDITAR/ELIMINAR)
-            // if (!"CREAR ALUMNO".equals(Variables.getTextoFrm())) {
-            //     ctrFrmAlumno.pasarDatos(copiaAlumno);
+            // if (ControlEmpresa.existe(txtAlumnoCif.getText())) {
+            //     objetoEmpresa = ControlEmpresa.cargarEmpresa(txtAlumnoCif.getText());
+            //     ctrFrmEmpresa.pasarDatos(objetoEmpresa);
             // }
+
             stage.showAndWait(); //mostramos la nueva ventana y esperamos
+            //El programa continua en esta línea cuando la nueva ventana se cierre
             Variables.setTextoFrm("CREAR ALUMNO");
             activaBotones(false);
-            //El programa continua en esta línea cuando la nueva ventana se cierre
-            //this.cambiarOpacidad(1);
-            //this.limpiarVista();
-            //this.cargarTabla("");
 
         } catch (IOException ex) {
             System.err.println("Error en el inicio validado " + ex);

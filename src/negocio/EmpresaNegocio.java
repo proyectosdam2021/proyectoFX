@@ -73,4 +73,8 @@ public class EmpresaNegocio {
     public int totalMostrados() {
         return Variables.getRegistrosMostrados();
     }
+
+    public ClassEmpresa cargarEmpresa(String cif) {
+        return DATOS.cargarEmpresa(cif);
+    }
 }

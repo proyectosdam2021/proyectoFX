@@ -275,4 +275,43 @@ public class EmpresaDAO implements CrudInterface<ClassEmpresa> {
         return ultimoRegistro;
     }
 
+    public ClassEmpresa cargarEmpresa(String texto) {
+        ClassEmpresa objetoEmpresa = new ClassEmpresa();
+        String SQL = "SELECT * FROM empresa WHERE cif=?";
+        try {
+            ps = CON.conectar().prepareStatement(SQL);
+            ps.setString(1, texto);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                objetoEmpresa.setId(rs.getInt(1));
+                objetoEmpresa.setCif(rs.getString(2));
+                objetoEmpresa.setNombre(rs.getString(3));
+                objetoEmpresa.setCalle(rs.getString(4));
+                objetoEmpresa.setNumero(rs.getInt(5));
+                objetoEmpresa.setCp(rs.getInt(6));
+                objetoEmpresa.setLocalidad(rs.getString(7));
+                objetoEmpresa.setTelefono(rs.getString(8));
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        } finally {
+            try {
+                //Para el correcto funcionamiento del Pool de conexiones
+                //Hemos puesto el conexion.close() en el finally del try-catch, para asegurarnos de que la conexion se cierra
+                //independientemente de que todo vaya bien o salten excepciones. No podemos cerrar la conexion tal cual se está haciendo
+                //y deberíamos verificar que conexion no es null antes de intentar cerrar
+                if (CON != null) {
+                    CON.desconectar();
+                }
+                if (ps != null) {
+                    ps.close();
+                    rs.close();
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(EmpresaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return objetoEmpresa;
+    }
+
 }

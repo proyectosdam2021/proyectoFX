@@ -176,7 +176,7 @@ public class FrmEmpresaController implements Initializable {
             txtCampo.deletePreviousChar();
             txtCampo.setText(txtCampo.getText() + caracter);
             txtCampo.end();
-        } else if (palabra >= 'a') {
+        } else if (palabra >= 'a' || palabra >= 'A') {
             txtCampo.deletePreviousChar();
             txtCampo.end();
         }
@@ -308,7 +308,6 @@ public class FrmEmpresaController implements Initializable {
     //Convertirmos los campos textfield a tipo objeto ClassEmpresa
     private ClassEmpresa convertirStringObjeto() {
         this.objetoEmpresa = new ClassEmpresa();
-        idRegistro = 1;
         objetoEmpresa.setId(idRegistro);
         objetoEmpresa.setCif(txtCif.getText().strip().toUpperCase());
         objetoEmpresa.setNombre(txtNombre.getText().strip().toUpperCase());
