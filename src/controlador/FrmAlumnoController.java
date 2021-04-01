@@ -259,7 +259,9 @@ public class FrmAlumnoController implements Initializable {
                         Variables.setEmpresaAniadia(1);
                         System.out.println(objetoEmpresa.toString());
                     } else {
+                        Variables.setTextoFrm("CREAR EMPRESA");
                         Variables.setAlumnoCreaEmpresa(1);
+                        Variables.setEmpresaAniadia(0);
                         activaBotones(true);
                         cargarFrmEmpresa();
                     }
@@ -508,6 +510,7 @@ public class FrmAlumnoController implements Initializable {
 
             stage.showAndWait(); //mostramos la nueva ventana y esperamos
             //El programa continua en esta línea cuando la nueva ventana se cierre
+            Variables.setEmpresaAniadia(0);  /////////////////////////
             Variables.setTextoFrm("CREAR ALUMNO");
             activaBotones(false);
 

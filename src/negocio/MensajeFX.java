@@ -11,6 +11,7 @@ public class MensajeFX {
     private final String WARNING = "WARNING";
     private final String ERROR = "ERROR";
     private final String CONFIRM = "CONFIRM";
+    private final String TIEMPO = "TIEMPO";
 
     public MensajeFX() {
     }
