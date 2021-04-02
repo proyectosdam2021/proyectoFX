@@ -23,7 +23,7 @@ import negocio.MensajeFX;
 import negocio.Variables;
 
 public class FrmAlumnoController implements Initializable {
-
+    
     private AlumnoNegocio CONTROL;  //instanciamos nuestra clase para realizar CRUD
     private EmpresaNegocio ControlEmpresa; // instanciamos la clase Empresa Negocio
     private int idRegistro;
@@ -95,18 +95,18 @@ public class FrmAlumnoController implements Initializable {
         campoEditable(true);
         campoDesactivadoEmpresa(true);
     }
-
+    
     @FXML
     private void cancelarAlumno(ActionEvent event) {
         Stage myStage = (Stage) this.txtDni.getScene().getWindow();
         myStage.close();
     }
-
+    
     @FXML
     private void grabarAlumno(ActionEvent event) {
         if (comprobarDatos()) {
-            validaCif();
             if (Variables.getAlumnoCreaEmpresa() == 1) {
+                validaCif();
                 if (comprobarDatosEmpresa()) {
                     Variables.setEmpresaAniadia(1);
                     guardarDatosEmpresa();
@@ -122,7 +122,7 @@ public class FrmAlumnoController implements Initializable {
     @FXML
     private void valorTecla(KeyEvent event) {
         Object evt = event.getSource();
-
+        
         if (evt.equals(txtTelefono)) {
             if (" ".equals(event.getCharacter())) {
                 txtTelefono.deletePreviousChar();
@@ -131,7 +131,7 @@ public class FrmAlumnoController implements Initializable {
                 this.compruebaInt(caracter, txtTelefono, 12);
             }
         }
-
+        
         if (evt.equals(txtCodigoPostal)) {
             if (" ".equals(event.getCharacter())) {
                 txtCodigoPostal.deletePreviousChar();
@@ -140,7 +140,7 @@ public class FrmAlumnoController implements Initializable {
                 this.compruebaInt(caracter, txtCodigoPostal, 11);
             }
         }
-
+        
         if (evt.equals(txtNumero)) {
             if (" ".equals(event.getCharacter())) {
                 txtNumero.deletePreviousChar();
@@ -149,7 +149,7 @@ public class FrmAlumnoController implements Initializable {
                 this.compruebaInt(caracter, txtNumero, 11);
             }
         }
-
+        
         if (evt.equals(txtDni)) {
             if (" ".equals(event.getCharacter())) {
                 txtDni.deletePreviousChar();
@@ -158,7 +158,7 @@ public class FrmAlumnoController implements Initializable {
                 this.compruebaString(caracter, txtDni, 9);
             }
         }
-
+        
         if (evt.equals(txtAlumnoCif)) {
             if (" ".equals(event.getCharacter())) {
                 txtAlumnoCif.deletePreviousChar();
@@ -167,37 +167,37 @@ public class FrmAlumnoController implements Initializable {
                 this.compruebaString(caracter, txtAlumnoCif, 9);
             }
         }
-
+        
         if (evt.equals(txtNombre)) {
             String caracter = event.getCharacter();
             this.compruebaString(caracter, txtNombre, 30);
         }
-
+        
         if (evt.equals(txtApellido1)) {
             String caracter = event.getCharacter();
             this.compruebaString(caracter, txtApellido1, 50);
         }
-
+        
         if (evt.equals(txtApellido2)) {
             String caracter = event.getCharacter();
             this.compruebaString(caracter, txtApellido2, 50);
         }
-
+        
         if (evt.equals(txtCalle)) {
             String caracter = event.getCharacter();
             this.compruebaString(caracter, txtCalle, 100); //le pasamos caracter, campo y tamaño máximo
         }
-
+        
         if (evt.equals(txtLocalidad)) {
             String caracter = event.getCharacter();
             this.compruebaString(caracter, txtLocalidad, 30); //le pasamos caracter, campo y tamaño máximo
         }
     }
-
+    
     @FXML
     private void valorTeclaEmpresa(KeyEvent event) {
         Object evt = event.getSource();
-
+        
         if (evt.equals(txtTelefonoEmpresa)) {
             if (" ".equals(event.getCharacter())) {
                 txtTelefonoEmpresa.deletePreviousChar();
@@ -206,7 +206,7 @@ public class FrmAlumnoController implements Initializable {
                 this.compruebaInt(caracter, txtTelefonoEmpresa, 12);
             }
         }
-
+        
         if (evt.equals(txtCPostalEmpresa)) {
             if (" ".equals(event.getCharacter())) {
                 txtCPostalEmpresa.deletePreviousChar();
@@ -215,7 +215,7 @@ public class FrmAlumnoController implements Initializable {
                 this.compruebaInt(caracter, txtCPostalEmpresa, 11);
             }
         }
-
+        
         if (evt.equals(txtNumeroEmpresa)) {
             if (" ".equals(event.getCharacter())) {
                 txtNumeroEmpresa.deletePreviousChar();
@@ -224,7 +224,7 @@ public class FrmAlumnoController implements Initializable {
                 this.compruebaInt(caracter, txtNumeroEmpresa, 11);
             }
         }
-
+        
         if (evt.equals(txtCifEmpresa)) {
             if (" ".equals(event.getCharacter())) {
                 txtCifEmpresa.deletePreviousChar();
@@ -233,30 +233,32 @@ public class FrmAlumnoController implements Initializable {
                 this.compruebaString(caracter, txtCifEmpresa, 9);
             }
         }
-
+        
         if (evt.equals(txtNombreEmpresa)) {
             String caracter = event.getCharacter();
             this.compruebaString(caracter, txtNombreEmpresa, 30);
         }
-
+        
         if (evt.equals(txtCalleEmpresa)) {
             String caracter = event.getCharacter();
             this.compruebaString(caracter, txtCalleEmpresa, 100); //le pasamos caracter, campo y tamaño máximo
         }
-
+        
         if (evt.equals(txtLocalidadEmpresa)) {
             String caracter = event.getCharacter();
             this.compruebaString(caracter, txtLocalidadEmpresa, 30); //le pasamos caracter, campo y tamaño máximo
         }
     }
-
+    
     @FXML
     private void cancelarEmpresa(ActionEvent event) {
         limpiarEmpresa();
         campoDesactivadoEmpresa(true);
         campoEditableEmpresa(false);
+        Variables.setAlumnoCreaEmpresa(0);
+        Variables.setEmpresaAniadia(0);
     }
-
+    
     private void validaCif() {
         try {
             if (ControlEmpresa.existe(txtAlumnoCif.getText())) {
@@ -265,9 +267,11 @@ public class FrmAlumnoController implements Initializable {
                 campoEditableEmpresa(false);
                 campoDesactivadoEmpresa(false);
                 Variables.setAlumnoCreaEmpresa(1);
+                Variables.setEmpresaAniadia(0);
                 pasarDatosEmpresa(objetoEmpresa);
             } else {
                 Variables.setAlumnoCreaEmpresa(1);
+                Variables.setEmpresaAniadia(1);
                 campoDesactivadoEmpresa(false);
                 campoEditableEmpresa(true);
                 txtCifEmpresa.setText(txtAlumnoCif.getText());
@@ -278,7 +282,7 @@ public class FrmAlumnoController implements Initializable {
             Logger.getLogger(FrmAlumnoController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
     private void guardarDatos() {
         String respuesta;
         try {
@@ -303,7 +307,7 @@ public class FrmAlumnoController implements Initializable {
                         }
                     }
                     break;
-
+                
                 case "EDITAR ALUMNO":
                     respuesta = this.CONTROL.actualizar(convertirStringObjeto(), dniAnterior);
                     if ("OK".equals(respuesta)) {
@@ -316,13 +320,13 @@ public class FrmAlumnoController implements Initializable {
                     }
                     break;
             }
-
+            
         } catch (SQLException ex) {
             Logger.getLogger(FrmAlumnoController.class
                     .getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
     private void guardarDatosEmpresa() {
         String respuesta;
         try {
@@ -333,7 +337,7 @@ public class FrmAlumnoController implements Initializable {
             } else {
                 MensajeFX.printTexto(respuesta, "ERROR", posicionX_Y());
             }
-
+            
         } catch (SQLException ex) {
             Logger.getLogger(FrmAlumnoController.class
                     .getName()).log(Level.SEVERE, null, ex);
@@ -354,13 +358,17 @@ public class FrmAlumnoController implements Initializable {
         objeto.setLocalidad(txtLocalidad.getText().strip().toUpperCase());
         objeto.setTelefono(txtTelefono.getText().strip().toUpperCase());
         objeto.setFecha_nacimiento(java.sql.Date.valueOf(txtFechaNac.getValue()));  //convertimos un campo datepicker en Date SQL
-        if (Variables.getEmpresaAniadia() == 1) {
-            try {
+        try {
+            if (Variables.getEmpresaAniadia() == 1) {
                 objeto.setId_empresa(ControlEmpresa.ultimoRegistro());
-            } catch (SQLException ex) {
-                Logger.getLogger(FrmAlumnoController.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println("Objeto convertido es " + objeto.toString());
+            } else {
+                objetoEmpresa = ControlEmpresa.cargarEmpresa(txtAlumnoCif.getText());
+                objeto.setId_empresa(objetoEmpresa.getId());
             }
-            System.out.println("Objeto convertido es " + objeto.toString());
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(FrmAlumnoController.class.getName()).log(Level.SEVERE, null, ex);
         }
         return objeto;
     }
@@ -376,7 +384,7 @@ public class FrmAlumnoController implements Initializable {
         objetoEmpresa.setCp(Integer.parseInt(txtCPostalEmpresa.getText()));
         objetoEmpresa.setLocalidad(txtLocalidadEmpresa.getText().strip());
         objetoEmpresa.setTelefono(txtTelefonoEmpresa.getText().strip());
-
+        
         return objetoEmpresa;
     }
 
@@ -395,7 +403,7 @@ public class FrmAlumnoController implements Initializable {
         txtTelefono.setText(objAlumno.getTelefono());
         txtFechaNac.setValue(objAlumno.getFecha_nacimiento().toLocalDate());
     }
-
+    
     public void pasarDatosEmpresa(ClassEmpresa objEmpresa) {
         idEmpresa = objEmpresa.getId();
         txtCifEmpresa.setText(objEmpresa.getCif());
@@ -420,7 +428,7 @@ public class FrmAlumnoController implements Initializable {
         txtTelefono.setEditable(valor);
         txtFechaNac.setEditable(valor);
     }
-
+    
     private void campoEditableEmpresa(boolean valor) {
         txtCifEmpresa.setEditable(valor);
         txtNombreEmpresa.setEditable(valor);
@@ -448,8 +456,12 @@ public class FrmAlumnoController implements Initializable {
         char palabra = caracter.charAt(0);
         if (txtAlumnoCif.getLength() > 0) {
             Variables.setAlumnoCreaEmpresa(1);
+            System.out.println("Valor 1 empresa");
         } else {
             Variables.setAlumnoCreaEmpresa(0);
+            Variables.setEmpresaAniadia(0);
+            System.out.println("Valor 0 empresa");
+            limpiarEmpresa();
         }
         if (txtCampo.getLength() > tamanio) {
             txtCampo.deletePreviousChar();
@@ -477,7 +489,7 @@ public class FrmAlumnoController implements Initializable {
             txtCampo.end();
         }
     }
-
+    
     private static boolean esNumerico(String valor) {
         try {
             if (valor != null) {
@@ -488,7 +500,7 @@ public class FrmAlumnoController implements Initializable {
         }
         return true;
     }
-
+    
     private void activaBotones(boolean valor) {
         btnCancelar.setDisable(valor);
         btnAceptar.setDisable(valor);
@@ -516,99 +528,101 @@ public class FrmAlumnoController implements Initializable {
             txtCalle.requestFocus();
             return false; //devuelvo false y no continuo
         }
-
+        
         if (txtNumero.getText().isEmpty()) {
             MensajeFX.printTexto("El campo 'Número' está vacío", "WARNING", posicionX_Y());
             txtNumero.requestFocus();
             return false; //devuelvo false y no continuo
         }
-
+        
         if (txtCodigoPostal.getText().isEmpty()) {
             MensajeFX.printTexto("El campo 'Código Postal' está vacío", "WARNING", posicionX_Y());
             txtCodigoPostal.requestFocus();
             return false; //devuelvo false y no continuo
         }
-
+        
         if (txtLocalidad.getText().isEmpty()) {
             MensajeFX.printTexto("El campo 'Localidad' está vacío", "WARNING", posicionX_Y());
             txtLocalidad.requestFocus();
             return false; //devuelvo false y no continuo
         }
-
+        
         if (txtTelefono.getText().isEmpty()) {
             MensajeFX.printTexto("El campo 'Teléfono' está vacío", "WARNING", posicionX_Y());
             txtTelefono.requestFocus();
             return false; //devuelvo false y no continuo
         }
-
+        
         if (txtFechaNac.getValue() == null) {
             MensajeFX.printTexto("El campo 'Fecha de nacimiento' está vacío", "WARNING", posicionX_Y());
             txtFechaNac.requestFocus();
             return false; //devuelvo false y no continuo
         }
-
+        
         if (!esNumerico(txtNumero.getText())) {
             MensajeFX.printTexto("El campo 'Número' tiene carácteres no permitidos", "WARNING", posicionX_Y());
             txtNumero.requestFocus();
             return false; //devuelvo false y no continuo
         }
-
+        
         if (!esNumerico(txtCodigoPostal.getText())) {
             MensajeFX.printTexto("El campo 'Código Postal' tiene carácteres no permitidos", "WARNING", posicionX_Y());
             txtCodigoPostal.requestFocus();
             return false; //devuelvo false y no continuo
         }
-
+        
         return true;  //si llega aquí es que todo está correcto
     }
-
+    
     private boolean comprobarDatosEmpresa() {
-        if (txtCifEmpresa.getText().isEmpty()) {
-            MensajeFX.printTexto("El campo 'CIF' está vacío", "WARNING", posicionX_Y());
-            txtCifEmpresa.requestFocus(); //llevo el 'foco' al campo
-            return false; //devuelvo false y no continuo
+        if (Variables.getAlumnoCreaEmpresa() > 0) {
+            if (txtCifEmpresa.getText().isEmpty()) {
+                MensajeFX.printTexto("El campo 'CIF' está vacío", "WARNING", posicionX_Y());
+                txtCifEmpresa.requestFocus(); //llevo el 'foco' al campo
+                return false; //devuelvo false y no continuo
+            }
+            if (txtNombreEmpresa.getText().isEmpty()) {
+                MensajeFX.printTexto("El campo 'Nombre Empresa' está vacío", "WARNING", posicionX_Y());
+                txtNombreEmpresa.requestFocus(); //llevo el 'foco' al campo
+                return false; //devuelvo false y no continuo
+            }
+            if (txtCalleEmpresa.getText().isEmpty()) {
+                MensajeFX.printTexto("El campo 'Calle Empresa' está vacío", "WARNING", posicionX_Y());
+                txtCalleEmpresa.requestFocus();
+                return false; //devuelvo false y no continuo
+            }
+            if (txtNumeroEmpresa.getText().isEmpty()) {
+                MensajeFX.printTexto("El campo 'Número Empresa' está vacío", "WARNING", posicionX_Y());
+                txtNumeroEmpresa.requestFocus();
+                return false; //devuelvo false y no continuo
+            }
+            if (txtCPostalEmpresa.getText().isEmpty()) {
+                MensajeFX.printTexto("El campo 'Código Postal Empresa' está vacío", "WARNING", posicionX_Y());
+                txtCPostalEmpresa.requestFocus();
+                return false; //devuelvo false y no continuo
+            }
+            if (txtLocalidadEmpresa.getText().isEmpty()) {
+                MensajeFX.printTexto("El campo 'Localidad Empresa' está vacío", "WARNING", posicionX_Y());
+                txtLocalidadEmpresa.requestFocus();
+                return false; //devuelvo false y no continuo
+            }
+            if (txtTelefonoEmpresa.getText().isEmpty()) {
+                MensajeFX.printTexto("El campo 'Teléfono Empresa' está vacío", "WARNING", posicionX_Y());
+                txtTelefonoEmpresa.requestFocus();
+                return false; //devuelvo false y no continuo
+            }
+            if (!esNumerico(txtNumeroEmpresa.getText())) {
+                MensajeFX.printTexto("El campo 'Número Empresa' tiene carácteres no permitidos", "WARNING", posicionX_Y());
+                txtNumeroEmpresa.requestFocus();
+                return false; //devuelvo false y no continuo
+            }
+            if (!esNumerico(txtCPostalEmpresa.getText())) {
+                MensajeFX.printTexto("El campo 'Código Postal Empresa' tiene carácteres no permitidos", "WARNING", posicionX_Y());
+                txtCPostalEmpresa.requestFocus();
+                return false; //devuelvo false y no continuo
+            }
         }
-        if (txtNombreEmpresa.getText().isEmpty()) {
-            MensajeFX.printTexto("El campo 'Nombre Empresa' está vacío", "WARNING", posicionX_Y());
-            txtNombreEmpresa.requestFocus(); //llevo el 'foco' al campo
-            return false; //devuelvo false y no continuo
-        }
-        if (txtCalleEmpresa.getText().isEmpty()) {
-            MensajeFX.printTexto("El campo 'Calle Empresa' está vacío", "WARNING", posicionX_Y());
-            txtCalleEmpresa.requestFocus();
-            return false; //devuelvo false y no continuo
-        }
-        if (txtNumeroEmpresa.getText().isEmpty()) {
-            MensajeFX.printTexto("El campo 'Número Empresa' está vacío", "WARNING", posicionX_Y());
-            txtNumeroEmpresa.requestFocus();
-            return false; //devuelvo false y no continuo
-        }
-        if (txtCPostalEmpresa.getText().isEmpty()) {
-            MensajeFX.printTexto("El campo 'Código Postal Empresa' está vacío", "WARNING", posicionX_Y());
-            txtCPostalEmpresa.requestFocus();
-            return false; //devuelvo false y no continuo
-        }
-        if (txtLocalidadEmpresa.getText().isEmpty()) {
-            MensajeFX.printTexto("El campo 'Localidad Empresa' está vacío", "WARNING", posicionX_Y());
-            txtLocalidadEmpresa.requestFocus();
-            return false; //devuelvo false y no continuo
-        }
-        if (txtTelefonoEmpresa.getText().isEmpty()) {
-            MensajeFX.printTexto("El campo 'Teléfono Empresa' está vacío", "WARNING", posicionX_Y());
-            txtTelefonoEmpresa.requestFocus();
-            return false; //devuelvo false y no continuo
-        }
-        if (!esNumerico(txtNumeroEmpresa.getText())) {
-            MensajeFX.printTexto("El campo 'Número Empresa' tiene carácteres no permitidos", "WARNING", posicionX_Y());
-            txtNumeroEmpresa.requestFocus();
-            return false; //devuelvo false y no continuo
-        }
-        if (!esNumerico(txtCPostalEmpresa.getText())) {
-            MensajeFX.printTexto("El campo 'Código Postal Empresa' tiene carácteres no permitidos", "WARNING", posicionX_Y());
-            txtCPostalEmpresa.requestFocus();
-            return false; //devuelvo false y no continuo
-        }
-
+        
         return true;  //si llega aquí es que todo está correcto
     }
 
@@ -625,7 +639,7 @@ public class FrmAlumnoController implements Initializable {
         txtNumero.setText("");
         idEmpresa = 0;
     }
-
+    
     private void limpiarEmpresa() {
         idEmpresa = 0;
         txtCifEmpresa.setText("");
@@ -666,7 +680,7 @@ public class FrmAlumnoController implements Initializable {
         int y = (int) (myStage.getHeight() / 2);
         posicionn[0] = myStage.getX() + (x - frmX);
         posicionn[1] = myStage.getY() + (y - frmY);
-
+        
         return posicionn;
     }
 
@@ -685,5 +699,5 @@ public class FrmAlumnoController implements Initializable {
         posicionxy[1] = myStage.getY() + (y - frmY);
         return posicionxy;
     }
-
+    
 }

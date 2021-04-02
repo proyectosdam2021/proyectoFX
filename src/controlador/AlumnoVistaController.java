@@ -125,15 +125,14 @@ public class AlumnoVistaController implements Initializable {
 
     @FXML
     private void eliminarAlumnoTabla(ActionEvent event) {
-        String respuesta = null;
+        String respuesta;
         CONTROL = new AlumnoNegocio();
         System.out.println("id alumno id " + copiaAlumno.getId());
         try {
             respuesta = this.CONTROL.eliminar(copiaAlumno.getId());
             if ("OK".equals(respuesta)) {
                 MensajeFX.printTexto("Alumno eliminado correctamente", "INFO", obtenPosicionX_Y());
-                this.tablaAlumno.refresh();  //refrescamos los datos de la tabla (sobre todo es interesante cuando actualizamos)
-                this.tablaAlumno.setItems(items); //mostramos las columnas de la tabla
+                cargarTabla("");
             } else {
                 MensajeFX.printTexto("Alumno no se ha podido eliminar", "ERROR", obtenPosicionX_Y());
             }
