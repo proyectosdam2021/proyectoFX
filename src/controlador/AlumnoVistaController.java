@@ -256,7 +256,7 @@ public class AlumnoVistaController implements Initializable {
         //creamos una nueva ventana temporal capturando de cualquier btn/lbl la escena y ventana
         //se entiende que los btn o lbl forman parte de la ventana que deseamos obtener datos
         Stage myStage = (Stage) this.lblNumRegistros.getScene().getWindow();
-        int frmX = 420 / 2; //tamaño ancho componente FrmAlumno
+        int frmX = 840 / 2; //tamaño ancho componente FrmAlumno
         int frmY = 700 / 2; //tamaño alto componente FrmAlumno
         int x = (int) (myStage.getWidth() / 2);
         int y = (int) (myStage.getHeight() / 2);

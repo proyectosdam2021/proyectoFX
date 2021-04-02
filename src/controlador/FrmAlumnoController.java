@@ -2,7 +2,6 @@ package controlador;
 
 import entidades.ClassAlumno;
 import entidades.ClassEmpresa;
-import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
@@ -10,18 +9,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import negocio.AlumnoNegocio;
 import negocio.EmpresaNegocio;
 import negocio.MensajeFX;
@@ -63,11 +58,27 @@ public class FrmAlumnoController implements Initializable {
     @FXML
     private DatePicker txtFechaNac;
     @FXML
-    private Button btnCancelar;
-    @FXML
     private TextField txtAlumnoCif;
     @FXML
     private Button btnAceptar;
+    @FXML
+    private Button btnCancelar;
+    @FXML
+    private TextField txtCifEmpresa;
+    @FXML
+    private TextField txtNombreEmpresa;
+    @FXML
+    private TextField txtCalleEmpresa;
+    @FXML
+    private TextField txtNumeroEmpresa;
+    @FXML
+    private TextField txtCPostalEmpresa;
+    @FXML
+    private TextField txtLocalidadEmpresa;
+    @FXML
+    private TextField txtTelefonoEmpresa;
+    @FXML
+    private Button btnCancelarEmpresa;
 
     /**
      * Initializes the controller class.
@@ -85,6 +96,7 @@ public class FrmAlumnoController implements Initializable {
             campoEditable(false);
         } else {
             campoEditable(true);
+            campoDesactivadoEmpresa(true);
         }
     }
 
@@ -97,7 +109,14 @@ public class FrmAlumnoController implements Initializable {
     @FXML
     private void grabarAlumno(ActionEvent event) {
         if (comprobarDatos()) {
-            System.out.println("ahora va a guardar datos"); /////////////////////////////
+            if (Variables.getAlumnoCreaEmpresa() == 1) {
+                if (comprobarDatosEmpresa()) {
+                    Variables.setEmpresaAniadia(1);
+                 //   guardarDatosEmpresa();  ////////////////PENDIENTE IMPLEMENTAR  ///////////////////////////////////////////////////
+                } else {
+                    Variables.setEmpresaAniadia(0);
+                }
+            }
             guardarDatos();
         }
     }
@@ -247,24 +266,20 @@ public class FrmAlumnoController implements Initializable {
             Variables.setAlumnoCreaEmpresa(0);
         } else {
             try {
-                if (CONTROL.existe(txtDni.getText())) {
-                    MensajeFX.printTexto("!Ese DNI ya existe!", "ERROR", posicionX_Y());
-                    txtDni.requestFocus();
+                if (ControlEmpresa.existe(txtAlumnoCif.getText())) {
+                    System.out.println("Empresa existe en la BD..");
+                    objetoEmpresa = ControlEmpresa.cargarEmpresa(txtAlumnoCif.getText());
+                    campoEditableEmpresa(false);
+                    campoDesactivadoEmpresa(false);
+                    Variables.setAlumnoCreaEmpresa(1);
+                    pasarDatosEmpresa(objetoEmpresa);
                 } else {
-                    if (ControlEmpresa.existe(txtAlumnoCif.getText())) {
-                        System.out.println("Empresa existe en la BD..");
-                        objetoEmpresa = ControlEmpresa.cargarEmpresa(txtAlumnoCif.getText());
-                        idEmpresa = objetoEmpresa.getId();
-                        Variables.setAlumnoCreaEmpresa(1);
-                        Variables.setEmpresaAniadia(1);
-                        System.out.println(objetoEmpresa.toString());
-                    } else {
-                        Variables.setTextoFrm("CREAR EMPRESA");
-                        Variables.setAlumnoCreaEmpresa(1);
-                        Variables.setEmpresaAniadia(0);
-                        activaBotones(true);
-                        cargarFrmEmpresa();
-                    }
+                    Variables.setAlumnoCreaEmpresa(1);
+                    campoDesactivadoEmpresa(false);
+                    campoEditableEmpresa(true);
+                    txtCifEmpresa.setText(txtAlumnoCif.getText());
+                    txtCifEmpresa.setEditable(false);
+                    txtNombreEmpresa.requestFocus();
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(FrmAlumnoController.class.getName()).log(Level.SEVERE, null, ex);
@@ -324,7 +339,8 @@ public class FrmAlumnoController implements Initializable {
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(FrmAlumnoController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FrmAlumnoController.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -337,7 +353,21 @@ public class FrmAlumnoController implements Initializable {
         txtApellido2.setText("");
         txtCalle.setText("");
         txtLocalidad.setText("");
+        txtCodigoPostal.setText("");
+        txtNumero.setText("");
         idEmpresa = 0;
+    }
+
+    private void limpiarEmpresa() {
+        idEmpresa = 0;
+        txtCifEmpresa.setText("");
+        txtNombreEmpresa.setText("");
+        txtCalleEmpresa.setText("");
+        txtLocalidadEmpresa.setText("");
+        txtAlumnoCif.setText("");
+        txtTelefonoEmpresa.setText("");
+        txtNumeroEmpresa.setText("");
+        txtCPostalEmpresa.setText("");
     }
 
     //Este método cierra la ventana que forme parte del componente capturado
@@ -410,7 +440,8 @@ public class FrmAlumnoController implements Initializable {
                 System.out.println("dentro de convertir es " + objeto.toString());
             }
         } catch (SQLException ex) {
-            Logger.getLogger(FrmAlumnoController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FrmAlumnoController.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
         return objeto;
     }
@@ -431,6 +462,17 @@ public class FrmAlumnoController implements Initializable {
         txtFechaNac.setValue(objAlumno.getFecha_nacimiento().toLocalDate());
     }
 
+    public void pasarDatosEmpresa(ClassEmpresa objEmpresa) {
+        idEmpresa = objEmpresa.getId();
+        txtCifEmpresa.setText(objEmpresa.getCif());
+        txtNombreEmpresa.setText(objEmpresa.getNombre());
+        txtCalleEmpresa.setText(objEmpresa.getCalle());
+        txtNumeroEmpresa.setText(String.valueOf(objEmpresa.getNumero()));
+        txtCPostalEmpresa.setText(String.valueOf(objEmpresa.getCp()));
+        txtLocalidadEmpresa.setText(objEmpresa.getLocalidad());
+        txtTelefonoEmpresa.setText(objEmpresa.getTelefono());
+    }
+
     //Activamos o desactivamos los campos del formulario
     private void campoEditable(boolean valor) {
         txtDni.setEditable(valor);
@@ -443,6 +485,28 @@ public class FrmAlumnoController implements Initializable {
         txtLocalidad.setEditable(valor);
         txtTelefono.setEditable(valor);
         txtFechaNac.setEditable(valor);
+    }
+
+    private void campoEditableEmpresa(boolean valor) {
+        txtCifEmpresa.setEditable(valor);
+        txtNombreEmpresa.setEditable(valor);
+        txtCalleEmpresa.setEditable(valor);
+        txtNumeroEmpresa.setEditable(valor);
+        txtCPostalEmpresa.setEditable(valor);
+        txtLocalidadEmpresa.setEditable(valor);
+        txtTelefonoEmpresa.setEditable(valor);
+    }
+
+    //Activamos o desactivamos los campos del formulario Empresa
+    private void campoDesactivadoEmpresa(boolean valor) {
+        txtCifEmpresa.setDisable(valor);
+        txtNombreEmpresa.setDisable(valor);
+        txtCalleEmpresa.setDisable(valor);
+        txtNumeroEmpresa.setDisable(valor);
+        txtCPostalEmpresa.setDisable(valor);
+        txtLocalidadEmpresa.setDisable(valor);
+        txtTelefonoEmpresa.setDisable(valor);
+        btnCancelarEmpresa.setDisable(valor);
     }
 
     //Método para campos de tipo String, convertiendo a mayúscula y comprobando tamaño
@@ -486,42 +550,122 @@ public class FrmAlumnoController implements Initializable {
         return true;
     }
 
-    private void cargarFrmEmpresa() {
-        try {
-            //cargamos la vista FXML
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/vista/FrmEmpresa.fxml"));
-            //instanciamos y cargamos el FXML en el padre
-            Parent root = loader.load();
-            //instanciamos al controlador FrmEmpresa haciendo uso del nuevo método getController
-            FrmEmpresaController ctrFrmEmpresa = loader.getController();
-            scene = new Scene(root); //creamos la nueva escena que viene del padre
-            stage = new Stage();    //creamos la nueva ventana
-            stage.setTitle("Alta de Empresa"); //ponemos un título
-            stage.initModality(Modality.APPLICATION_MODAL);  //hacemos que la escena nueva tome el foco y no permita cambiarse de ventana
-            stage.setScene(scene); //establecemos la escena
-            this.ventanaPosicion(); //posicionamos la nueva ventana
-            //this.cambiarOpacidad(0.5); //cambiamos la opacidad de la ventana anterior
-            stage.setResizable(false); //no permitimos que la ventana cambie de tamaño
-            stage.initStyle(StageStyle.UTILITY); //desactivamos maximinar y minimizar
-            // if (ControlEmpresa.existe(txtAlumnoCif.getText())) {
-            //     objetoEmpresa = ControlEmpresa.cargarEmpresa(txtAlumnoCif.getText());
-            //     ctrFrmEmpresa.pasarDatos(objetoEmpresa);
-            // }
-
-            stage.showAndWait(); //mostramos la nueva ventana y esperamos
-            //El programa continua en esta línea cuando la nueva ventana se cierre
-            Variables.setEmpresaAniadia(0);  /////////////////////////
-            Variables.setTextoFrm("CREAR ALUMNO");
-            activaBotones(false);
-
-        } catch (IOException ex) {
-            System.err.println("Error en el inicio validado " + ex);
-        }
-    }
-
     private void activaBotones(boolean valor) {
         btnCancelar.setDisable(valor);
         btnAceptar.setDisable(valor);
+    }
+
+    @FXML
+    private void valorTeclaEmpresa(KeyEvent event) {
+        Object evt = event.getSource();
+
+        if (evt.equals(txtTelefonoEmpresa)) {
+            if (" ".equals(event.getCharacter())) {
+                txtTelefonoEmpresa.deletePreviousChar();
+            } else {
+                String caracter = event.getCharacter();
+                this.compruebaInt(caracter, txtTelefonoEmpresa, 12);
+            }
+        }
+
+        if (evt.equals(txtCPostalEmpresa)) {
+            if (" ".equals(event.getCharacter())) {
+                txtCPostalEmpresa.deletePreviousChar();
+            } else {
+                String caracter = event.getCharacter();
+                this.compruebaInt(caracter, txtCPostalEmpresa, 11);
+            }
+        }
+
+        if (evt.equals(txtNumeroEmpresa)) {
+            if (" ".equals(event.getCharacter())) {
+                txtNumeroEmpresa.deletePreviousChar();
+            } else {
+                String caracter = event.getCharacter();
+                this.compruebaInt(caracter, txtNumeroEmpresa, 11);
+            }
+        }
+
+        if (evt.equals(txtCifEmpresa)) {
+            if (" ".equals(event.getCharacter())) {
+                txtCifEmpresa.deletePreviousChar();
+            } else {
+                String caracter = event.getCharacter();
+                this.compruebaString(caracter, txtCifEmpresa, 9);
+            }
+        }
+
+        if (evt.equals(txtNombreEmpresa)) {
+            String caracter = event.getCharacter();
+            this.compruebaString(caracter, txtNombreEmpresa, 30);
+        }
+
+        if (evt.equals(txtCalleEmpresa)) {
+            String caracter = event.getCharacter();
+            this.compruebaString(caracter, txtCalleEmpresa, 100); //le pasamos caracter, campo y tamaño máximo
+        }
+
+        if (evt.equals(txtLocalidadEmpresa)) {
+            String caracter = event.getCharacter();
+            this.compruebaString(caracter, txtLocalidadEmpresa, 30); //le pasamos caracter, campo y tamaño máximo
+        }
+    }
+
+    @FXML
+    private void cancelarEmpresa(ActionEvent event) {
+        limpiarEmpresa();
+        campoDesactivadoEmpresa(true);
+        campoEditableEmpresa(false);
+    }
+
+    private boolean comprobarDatosEmpresa() {
+        if (txtCifEmpresa.getText().isEmpty()) {
+            MensajeFX.printTexto("El campo 'CIF' está vacío", "WARNING", posicionX_Y());
+            txtCifEmpresa.requestFocus(); //llevo el 'foco' al campo
+            return false; //devuelvo false y no continuo
+        }
+        if (txtNombreEmpresa.getText().isEmpty()) {
+            MensajeFX.printTexto("El campo 'Nombre Empresa' está vacío", "WARNING", posicionX_Y());
+            txtNombreEmpresa.requestFocus(); //llevo el 'foco' al campo
+            return false; //devuelvo false y no continuo
+        }
+        if (txtCalleEmpresa.getText().isEmpty()) {
+            MensajeFX.printTexto("El campo 'Calle Empresa' está vacío", "WARNING", posicionX_Y());
+            txtCalleEmpresa.requestFocus();
+            return false; //devuelvo false y no continuo
+        }
+        if (txtNumeroEmpresa.getText().isEmpty()) {
+            MensajeFX.printTexto("El campo 'Número Empresa' está vacío", "WARNING", posicionX_Y());
+            txtNumeroEmpresa.requestFocus();
+            return false; //devuelvo false y no continuo
+        }
+        if (txtCPostalEmpresa.getText().isEmpty()) {
+            MensajeFX.printTexto("El campo 'Código Postal Empresa' está vacío", "WARNING", posicionX_Y());
+            txtCPostalEmpresa.requestFocus();
+            return false; //devuelvo false y no continuo
+        }
+        if (txtLocalidadEmpresa.getText().isEmpty()) {
+            MensajeFX.printTexto("El campo 'Localidad Empresa' está vacío", "WARNING", posicionX_Y());
+            txtLocalidadEmpresa.requestFocus();
+            return false; //devuelvo false y no continuo
+        }
+        if (txtTelefonoEmpresa.getText().isEmpty()) {
+            MensajeFX.printTexto("El campo 'Teléfono Empresa' está vacío", "WARNING", posicionX_Y());
+            txtTelefonoEmpresa.requestFocus();
+            return false; //devuelvo false y no continuo
+        }
+        if (!esNumerico(txtNumeroEmpresa.getText())) {
+            MensajeFX.printTexto("El campo 'Número Empresa' tiene carácteres no permitidos", "WARNING", posicionX_Y());
+            txtNumeroEmpresa.requestFocus();
+            return false; //devuelvo false y no continuo
+        }
+        if (!esNumerico(txtCPostalEmpresa.getText())) {
+            MensajeFX.printTexto("El campo 'Código Postal Empresa' tiene carácteres no permitidos", "WARNING", posicionX_Y());
+            txtCPostalEmpresa.requestFocus();
+            return false; //devuelvo false y no continuo
+        }
+
+        return true;  //si llega aquí es que todo está correcto
     }
 
 }
