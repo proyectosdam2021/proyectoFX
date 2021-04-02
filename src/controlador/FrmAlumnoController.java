@@ -253,6 +253,7 @@ public class FrmAlumnoController implements Initializable {
     @FXML
     private void cancelarEmpresa(ActionEvent event) {
         limpiarEmpresa();
+        
         campoDesactivadoEmpresa(true);
         campoEditableEmpresa(false);
         Variables.setAlumnoCreaEmpresa(0);
