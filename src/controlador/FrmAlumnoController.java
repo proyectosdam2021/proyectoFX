@@ -92,12 +92,8 @@ public class FrmAlumnoController implements Initializable {
         ControlEmpresa = new EmpresaNegocio();
         lblTextoFrm.setText(Variables.getTextoFrm());  //Envíamos el texto de la variable como título del campo label de nuestra ventana
         Variables.setAlumnoCreaEmpresa(0); //Por defecto asignamos que NO cree empresa al crear Alumno
-        if ("ELIMINAR ALUMNO".equals(Variables.getTextoFrm())) { //dependiendo de la acción a realizar (NUEVO/EDITAR/ELIMINAR) activamos/desactivamos botones
-            campoEditable(false);
-        } else {
-            campoEditable(true);
-            campoDesactivadoEmpresa(true);
-        }
+        campoEditable(true);
+        campoDesactivadoEmpresa(true);
     }
 
     @FXML
@@ -109,10 +105,11 @@ public class FrmAlumnoController implements Initializable {
     @FXML
     private void grabarAlumno(ActionEvent event) {
         if (comprobarDatos()) {
+            validaCif();
             if (Variables.getAlumnoCreaEmpresa() == 1) {
                 if (comprobarDatosEmpresa()) {
                     Variables.setEmpresaAniadia(1);
-                 //   guardarDatosEmpresa();  ////////////////PENDIENTE IMPLEMENTAR  ///////////////////////////////////////////////////
+                    guardarDatosEmpresa();
                 } else {
                     Variables.setEmpresaAniadia(0);
                 }
@@ -197,6 +194,306 @@ public class FrmAlumnoController implements Initializable {
         }
     }
 
+    @FXML
+    private void valorTeclaEmpresa(KeyEvent event) {
+        Object evt = event.getSource();
+
+        if (evt.equals(txtTelefonoEmpresa)) {
+            if (" ".equals(event.getCharacter())) {
+                txtTelefonoEmpresa.deletePreviousChar();
+            } else {
+                String caracter = event.getCharacter();
+                this.compruebaInt(caracter, txtTelefonoEmpresa, 12);
+            }
+        }
+
+        if (evt.equals(txtCPostalEmpresa)) {
+            if (" ".equals(event.getCharacter())) {
+                txtCPostalEmpresa.deletePreviousChar();
+            } else {
+                String caracter = event.getCharacter();
+                this.compruebaInt(caracter, txtCPostalEmpresa, 11);
+            }
+        }
+
+        if (evt.equals(txtNumeroEmpresa)) {
+            if (" ".equals(event.getCharacter())) {
+                txtNumeroEmpresa.deletePreviousChar();
+            } else {
+                String caracter = event.getCharacter();
+                this.compruebaInt(caracter, txtNumeroEmpresa, 11);
+            }
+        }
+
+        if (evt.equals(txtCifEmpresa)) {
+            if (" ".equals(event.getCharacter())) {
+                txtCifEmpresa.deletePreviousChar();
+            } else {
+                String caracter = event.getCharacter();
+                this.compruebaString(caracter, txtCifEmpresa, 9);
+            }
+        }
+
+        if (evt.equals(txtNombreEmpresa)) {
+            String caracter = event.getCharacter();
+            this.compruebaString(caracter, txtNombreEmpresa, 30);
+        }
+
+        if (evt.equals(txtCalleEmpresa)) {
+            String caracter = event.getCharacter();
+            this.compruebaString(caracter, txtCalleEmpresa, 100); //le pasamos caracter, campo y tamaño máximo
+        }
+
+        if (evt.equals(txtLocalidadEmpresa)) {
+            String caracter = event.getCharacter();
+            this.compruebaString(caracter, txtLocalidadEmpresa, 30); //le pasamos caracter, campo y tamaño máximo
+        }
+    }
+
+    @FXML
+    private void cancelarEmpresa(ActionEvent event) {
+        limpiarEmpresa();
+        campoDesactivadoEmpresa(true);
+        campoEditableEmpresa(false);
+    }
+
+    private void validaCif() {
+        try {
+            if (ControlEmpresa.existe(txtAlumnoCif.getText())) {
+                System.out.println("Empresa existe en la BD..");
+                objetoEmpresa = ControlEmpresa.cargarEmpresa(txtAlumnoCif.getText());
+                campoEditableEmpresa(false);
+                campoDesactivadoEmpresa(false);
+                Variables.setAlumnoCreaEmpresa(1);
+                pasarDatosEmpresa(objetoEmpresa);
+            } else {
+                Variables.setAlumnoCreaEmpresa(1);
+                campoDesactivadoEmpresa(false);
+                campoEditableEmpresa(true);
+                txtCifEmpresa.setText(txtAlumnoCif.getText());
+                txtCifEmpresa.setEditable(false);
+                txtNombreEmpresa.requestFocus();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(FrmAlumnoController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void guardarDatos() {
+        String respuesta;
+        try {
+            switch (Variables.getTextoFrm()) {
+                case "CREAR ALUMNO":
+                    if (Variables.getAlumnoCreaEmpresa() == 0) {
+                        System.out.println("Guardo alumno sin empresa..");
+                        respuesta = this.CONTROL.insertar(convertirStringObjeto());
+                        if ("OK".equals(respuesta)) {
+                            MensajeFX.printTexto("Alumno añadido correctamente", "INFO", posicionX_Y());
+                            this.limpiar();
+                            this.cerrarVentana();
+                        }
+                    } else if (Variables.getAlumnoCreaEmpresa() == 1 && Variables.getEmpresaAniadia() == 1) {
+                        respuesta = this.CONTROL.insertar(convertirStringObjeto());
+                        System.out.println("Guardo alumno con empresa..");
+                        if ("OK".equals(respuesta)) {
+                            MensajeFX.printTexto("Alumno añadido correctamente", "INFO", posicionX_Y());
+                            this.limpiar();
+                            this.limpiarEmpresa();
+                            this.cerrarVentana();
+                        }
+                    }
+                    break;
+
+                case "EDITAR ALUMNO":
+                    respuesta = this.CONTROL.actualizar(convertirStringObjeto(), dniAnterior);
+                    if ("OK".equals(respuesta)) {
+                        MensajeFX.printTexto("Alumno editado correctamente", "INFO", posicionX_Y());
+                        this.limpiar();
+                        this.limpiarEmpresa();
+                        this.cerrarVentana();
+                    } else {
+                        MensajeFX.printTexto(respuesta, "ERROR", posicionX_Y());
+                    }
+                    break;
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(FrmAlumnoController.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void guardarDatosEmpresa() {
+        String respuesta;
+        try {
+            respuesta = this.ControlEmpresa.insertar(convertirStringObjetoEmpresa());
+            if ("OK".equals(respuesta)) {
+                MensajeFX.printTexto("Empresa añadida correctamente", "INFO", posicionX_Y());
+                Variables.setEmpresaAniadia(1);
+            } else {
+                MensajeFX.printTexto(respuesta, "ERROR", posicionX_Y());
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(FrmAlumnoController.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    //Convertirmos los campos textfield a tipo objeto ClassAlumno
+    private ClassAlumno convertirStringObjeto() {
+        this.objeto = new ClassAlumno();
+        objeto.setId(idRegistro);
+        objeto.setDni(txtDni.getText().strip().toUpperCase());
+        objeto.setNombre(txtNombre.getText().strip().toUpperCase());
+        objeto.setApellido1(txtApellido1.getText().strip().toUpperCase());
+        objeto.setApellido2(txtApellido2.getText().strip().toUpperCase());
+        objeto.setCalle(txtCalle.getText().strip().toUpperCase());
+        objeto.setNumero(Integer.parseInt(txtNumero.getText()));
+        objeto.setCp(Integer.parseInt(txtCodigoPostal.getText()));
+        objeto.setLocalidad(txtLocalidad.getText().strip().toUpperCase());
+        objeto.setTelefono(txtTelefono.getText().strip().toUpperCase());
+        objeto.setFecha_nacimiento(java.sql.Date.valueOf(txtFechaNac.getValue()));  //convertimos un campo datepicker en Date SQL
+        if (Variables.getEmpresaAniadia() == 1) {
+            try {
+                objeto.setId_empresa(ControlEmpresa.ultimoRegistro());
+            } catch (SQLException ex) {
+                Logger.getLogger(FrmAlumnoController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            System.out.println("Objeto convertido es " + objeto.toString());
+        }
+        return objeto;
+    }
+
+    //Convertirmos los campos textfield a tipo objeto ClassAlumno
+    private ClassEmpresa convertirStringObjetoEmpresa() {
+        this.objetoEmpresa = new ClassEmpresa();
+        objetoEmpresa.setId(idEmpresa);
+        objetoEmpresa.setCif(txtCifEmpresa.getText().strip());
+        objetoEmpresa.setNombre(txtNombreEmpresa.getText().strip());
+        objetoEmpresa.setCalle(txtCalleEmpresa.getText().strip());
+        objetoEmpresa.setNumero(Integer.parseInt(txtNumeroEmpresa.getText()));
+        objetoEmpresa.setCp(Integer.parseInt(txtCPostalEmpresa.getText()));
+        objetoEmpresa.setLocalidad(txtLocalidadEmpresa.getText().strip());
+        objetoEmpresa.setTelefono(txtTelefonoEmpresa.getText().strip());
+
+        return objetoEmpresa;
+    }
+
+    //Este método viene de AlumnoVistaController y nos pasa los datos de los campos que asignamos a los txtfield
+    public void pasarDatos(ClassAlumno objAlumno) {
+        idRegistro = objAlumno.getId();
+        txtDni.setText(objAlumno.getDni());
+        dniAnterior = objAlumno.getDni();
+        txtNombre.setText(objAlumno.getNombre());
+        txtApellido1.setText(objAlumno.getApellido1());
+        txtApellido2.setText(objAlumno.getApellido2());
+        txtCalle.setText(objAlumno.getCalle());
+        txtNumero.setText(String.valueOf(objAlumno.getNumero()));
+        txtCodigoPostal.setText(String.valueOf(objAlumno.getCp()));
+        txtLocalidad.setText(objAlumno.getLocalidad());
+        txtTelefono.setText(objAlumno.getTelefono());
+        txtFechaNac.setValue(objAlumno.getFecha_nacimiento().toLocalDate());
+    }
+
+    public void pasarDatosEmpresa(ClassEmpresa objEmpresa) {
+        idEmpresa = objEmpresa.getId();
+        txtCifEmpresa.setText(objEmpresa.getCif());
+        txtNombreEmpresa.setText(objEmpresa.getNombre());
+        txtCalleEmpresa.setText(objEmpresa.getCalle());
+        txtNumeroEmpresa.setText(String.valueOf(objEmpresa.getNumero()));
+        txtCPostalEmpresa.setText(String.valueOf(objEmpresa.getCp()));
+        txtLocalidadEmpresa.setText(objEmpresa.getLocalidad());
+        txtTelefonoEmpresa.setText(objEmpresa.getTelefono());
+    }
+
+    //Activamos o desactivamos los campos del formulario
+    private void campoEditable(boolean valor) {
+        txtDni.setEditable(valor);
+        txtNombre.setEditable(valor);
+        txtApellido1.setEditable(valor);
+        txtApellido2.setEditable(valor);
+        txtCalle.setEditable(valor);
+        txtNumero.setEditable(valor);
+        txtCodigoPostal.setEditable(valor);
+        txtLocalidad.setEditable(valor);
+        txtTelefono.setEditable(valor);
+        txtFechaNac.setEditable(valor);
+    }
+
+    private void campoEditableEmpresa(boolean valor) {
+        txtCifEmpresa.setEditable(valor);
+        txtNombreEmpresa.setEditable(valor);
+        txtCalleEmpresa.setEditable(valor);
+        txtNumeroEmpresa.setEditable(valor);
+        txtCPostalEmpresa.setEditable(valor);
+        txtLocalidadEmpresa.setEditable(valor);
+        txtTelefonoEmpresa.setEditable(valor);
+    }
+
+    //Activamos o desactivamos los campos del formulario Empresa
+    private void campoDesactivadoEmpresa(boolean valor) {
+        txtCifEmpresa.setDisable(valor);
+        txtNombreEmpresa.setDisable(valor);
+        txtCalleEmpresa.setDisable(valor);
+        txtNumeroEmpresa.setDisable(valor);
+        txtCPostalEmpresa.setDisable(valor);
+        txtLocalidadEmpresa.setDisable(valor);
+        txtTelefonoEmpresa.setDisable(valor);
+        btnCancelarEmpresa.setDisable(valor);
+    }
+
+    //Método para campos de tipo String, convertiendo a mayúscula y comprobando tamaño
+    private void compruebaString(String caracter, TextField txtCampo, int tamanio) {
+        char palabra = caracter.charAt(0);
+        if (txtAlumnoCif.getLength() > 0) {
+            Variables.setAlumnoCreaEmpresa(1);
+        } else {
+            Variables.setAlumnoCreaEmpresa(0);
+        }
+        if (txtCampo.getLength() > tamanio) {
+            txtCampo.deletePreviousChar();
+            txtCampo.end();
+        } else if (palabra >= 'a') {
+            caracter = caracter.toUpperCase();
+            txtCampo.deletePreviousChar();
+            txtCampo.setText(txtCampo.getText() + caracter);
+            txtCampo.end();
+        }
+    }
+
+    //Método para campos de tipo Int, permitiendo solo números y comprobando tamaño
+    private void compruebaInt(String caracter, TextField txtCampo, int tamanio) {
+        char palabra = caracter.charAt(0);
+        if (txtCampo.getLength() > tamanio) {
+            txtCampo.deletePreviousChar();
+            txtCampo.end();
+        } else if (palabra >= '0' && palabra <= '9') {
+            txtCampo.deletePreviousChar();
+            txtCampo.setText(txtCampo.getText() + caracter);
+            txtCampo.end();
+        } else if (palabra >= 'a' || palabra >= 'A') {
+            txtCampo.deletePreviousChar();
+            txtCampo.end();
+        }
+    }
+
+    private static boolean esNumerico(String valor) {
+        try {
+            if (valor != null) {
+                Integer.parseInt(valor);
+            }
+        } catch (NumberFormatException ex) {
+            return false;
+        }
+        return true;
+    }
+
+    private void activaBotones(boolean valor) {
+        btnCancelar.setDisable(valor);
+        btnAceptar.setDisable(valor);
+    }
+
     //Método donde comprobamos los campos no estén vacíos
     private boolean comprobarDatos() {
         if (txtDni.getText().isEmpty()) {
@@ -262,89 +559,60 @@ public class FrmAlumnoController implements Initializable {
             return false; //devuelvo false y no continuo
         }
 
-        if (txtAlumnoCif.getText().isEmpty()) {
-            Variables.setAlumnoCreaEmpresa(0);
-        } else {
-            try {
-                if (ControlEmpresa.existe(txtAlumnoCif.getText())) {
-                    System.out.println("Empresa existe en la BD..");
-                    objetoEmpresa = ControlEmpresa.cargarEmpresa(txtAlumnoCif.getText());
-                    campoEditableEmpresa(false);
-                    campoDesactivadoEmpresa(false);
-                    Variables.setAlumnoCreaEmpresa(1);
-                    pasarDatosEmpresa(objetoEmpresa);
-                } else {
-                    Variables.setAlumnoCreaEmpresa(1);
-                    campoDesactivadoEmpresa(false);
-                    campoEditableEmpresa(true);
-                    txtCifEmpresa.setText(txtAlumnoCif.getText());
-                    txtCifEmpresa.setEditable(false);
-                    txtNombreEmpresa.requestFocus();
-                }
-            } catch (SQLException ex) {
-                Logger.getLogger(FrmAlumnoController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        return true;  //si llega aquí es que todo está correcto
+    }
+
+    private boolean comprobarDatosEmpresa() {
+        if (txtCifEmpresa.getText().isEmpty()) {
+            MensajeFX.printTexto("El campo 'CIF' está vacío", "WARNING", posicionX_Y());
+            txtCifEmpresa.requestFocus(); //llevo el 'foco' al campo
+            return false; //devuelvo false y no continuo
+        }
+        if (txtNombreEmpresa.getText().isEmpty()) {
+            MensajeFX.printTexto("El campo 'Nombre Empresa' está vacío", "WARNING", posicionX_Y());
+            txtNombreEmpresa.requestFocus(); //llevo el 'foco' al campo
+            return false; //devuelvo false y no continuo
+        }
+        if (txtCalleEmpresa.getText().isEmpty()) {
+            MensajeFX.printTexto("El campo 'Calle Empresa' está vacío", "WARNING", posicionX_Y());
+            txtCalleEmpresa.requestFocus();
+            return false; //devuelvo false y no continuo
+        }
+        if (txtNumeroEmpresa.getText().isEmpty()) {
+            MensajeFX.printTexto("El campo 'Número Empresa' está vacío", "WARNING", posicionX_Y());
+            txtNumeroEmpresa.requestFocus();
+            return false; //devuelvo false y no continuo
+        }
+        if (txtCPostalEmpresa.getText().isEmpty()) {
+            MensajeFX.printTexto("El campo 'Código Postal Empresa' está vacío", "WARNING", posicionX_Y());
+            txtCPostalEmpresa.requestFocus();
+            return false; //devuelvo false y no continuo
+        }
+        if (txtLocalidadEmpresa.getText().isEmpty()) {
+            MensajeFX.printTexto("El campo 'Localidad Empresa' está vacío", "WARNING", posicionX_Y());
+            txtLocalidadEmpresa.requestFocus();
+            return false; //devuelvo false y no continuo
+        }
+        if (txtTelefonoEmpresa.getText().isEmpty()) {
+            MensajeFX.printTexto("El campo 'Teléfono Empresa' está vacío", "WARNING", posicionX_Y());
+            txtTelefonoEmpresa.requestFocus();
+            return false; //devuelvo false y no continuo
+        }
+        if (!esNumerico(txtNumeroEmpresa.getText())) {
+            MensajeFX.printTexto("El campo 'Número Empresa' tiene carácteres no permitidos", "WARNING", posicionX_Y());
+            txtNumeroEmpresa.requestFocus();
+            return false; //devuelvo false y no continuo
+        }
+        if (!esNumerico(txtCPostalEmpresa.getText())) {
+            MensajeFX.printTexto("El campo 'Código Postal Empresa' tiene carácteres no permitidos", "WARNING", posicionX_Y());
+            txtCPostalEmpresa.requestFocus();
+            return false; //devuelvo false y no continuo
         }
 
         return true;  //si llega aquí es que todo está correcto
     }
 
-    private void guardarDatos() {
-        String respuesta;
-        try {
-            switch (Variables.getTextoFrm()) {
-                case "CREAR ALUMNO":
-                    System.out.println("Entra dentro de Guardar datos..");
-                    if (Variables.getAlumnoCreaEmpresa() == 0) {
-                        respuesta = this.CONTROL.insertar(convertirStringObjeto());
-                        if ("OK".equals(respuesta)) {
-                            MensajeFX.printTexto("Alumno añadido correctamente", "INFO", posicionX_Y());
-                            this.limpiar();
-                            this.cerrarVentana();
-                        }
-                    } else if (Variables.getAlumnoCreaEmpresa() == 1 && Variables.getEmpresaAniadia() == 1) {
-                        respuesta = this.CONTROL.insertar(convertirStringObjeto());
-                        System.out.println("dentro de guardardatos " + objeto.toString()); ///////////////
-                        if ("OK".equals(respuesta)) {
-                            MensajeFX.printTexto("Alumno añadido correctamente", "INFO", posicionX_Y());
-                            this.limpiar();
-                            this.cerrarVentana();
-                        }
-                    }
-                    break;
-
-                case "EDITAR ALUMNO":
-                    respuesta = this.CONTROL.actualizar(convertirStringObjeto(), dniAnterior);
-                    if ("OK".equals(respuesta)) {
-                        MensajeFX.printTexto("Alumno editado correctamente", "INFO", posicionX_Y());
-                        this.limpiar();
-                        this.cerrarVentana();
-                    } else {
-                        MensajeFX.printTexto(respuesta, "ERROR", posicionX_Y());
-                    }
-                    break;
-
-                case "ELIMINAR ALUMNO":
-                    if (MensajeFX.printTexto("¿Desea eliminar este registro?", "CONFIRM", posicionX_Y())) {
-                        respuesta = this.CONTROL.eliminar(idRegistro);
-                        if ("OK".equals(respuesta)) {
-                            MensajeFX.printTexto("Alumno eliminado correctamente", "INFO", posicionX_Y());
-                            this.limpiar();
-                            this.cerrarVentana();
-                        } else {
-                            MensajeFX.printTexto(respuesta, "ERROR", posicionX_Y());
-                        }
-                    }
-                    break;
-            }
-
-        } catch (SQLException ex) {
-            Logger.getLogger(FrmAlumnoController.class
-                    .getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    //Nétodo para limpiar todos los campos que forman parte del formulario
+    //Método para limpiar todos los campos que forman parte del formulario
     private void limpiar() {
         idRegistro = 0;
         txtDni.setText("");
@@ -416,256 +684,6 @@ public class FrmAlumnoController implements Initializable {
         posicionxy[0] = myStage.getX() + (x - frmX);
         posicionxy[1] = myStage.getY() + (y - frmY);
         return posicionxy;
-    }
-
-    //Convertirmos los campos textfield a tipo objeto ClassAlumno
-    private ClassAlumno convertirStringObjeto() {
-        this.objeto = new ClassAlumno();
-        objeto.setId(idRegistro);
-        objeto.setDni(txtDni.getText().strip().toUpperCase());
-        objeto.setNombre(txtNombre.getText().strip().toUpperCase());
-        objeto.setApellido1(txtApellido1.getText().strip().toUpperCase());
-        objeto.setApellido2(txtApellido2.getText().strip().toUpperCase());
-        objeto.setCalle(txtCalle.getText().strip().toUpperCase());
-        objeto.setNumero(Integer.parseInt(txtNumero.getText()));
-        objeto.setCp(Integer.parseInt(txtCodigoPostal.getText()));
-        objeto.setLocalidad(txtLocalidad.getText().strip().toUpperCase());
-        objeto.setTelefono(txtTelefono.getText().strip().toUpperCase());
-        objeto.setFecha_nacimiento(java.sql.Date.valueOf(txtFechaNac.getValue()));  //convertimos un campo datepicker en Date SQL
-        try {
-            objeto.setId_empresa(ControlEmpresa.ultimoRegistro());
-            if (Variables.getEmpresaAniadia() == 1) {
-                objeto.setId_empresa(idEmpresa);
-                System.out.println("asigno valor de empresa al existir " + objeto.getId_empresa());
-                System.out.println("dentro de convertir es " + objeto.toString());
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(FrmAlumnoController.class
-                    .getName()).log(Level.SEVERE, null, ex);
-        }
-        return objeto;
-    }
-
-    //Este método viene de AlumnoVistaController y nos pasa los datos de los campos que asignamos a los txtfield
-    public void pasarDatos(ClassAlumno objAlumno) {
-        idRegistro = objAlumno.getId();
-        txtDni.setText(objAlumno.getDni());
-        dniAnterior = objAlumno.getDni();
-        txtNombre.setText(objAlumno.getNombre());
-        txtApellido1.setText(objAlumno.getApellido1());
-        txtApellido2.setText(objAlumno.getApellido2());
-        txtCalle.setText(objAlumno.getCalle());
-        txtNumero.setText(String.valueOf(objAlumno.getNumero()));
-        txtCodigoPostal.setText(String.valueOf(objAlumno.getCp()));
-        txtLocalidad.setText(objAlumno.getLocalidad());
-        txtTelefono.setText(objAlumno.getTelefono());
-        txtFechaNac.setValue(objAlumno.getFecha_nacimiento().toLocalDate());
-    }
-
-    public void pasarDatosEmpresa(ClassEmpresa objEmpresa) {
-        idEmpresa = objEmpresa.getId();
-        txtCifEmpresa.setText(objEmpresa.getCif());
-        txtNombreEmpresa.setText(objEmpresa.getNombre());
-        txtCalleEmpresa.setText(objEmpresa.getCalle());
-        txtNumeroEmpresa.setText(String.valueOf(objEmpresa.getNumero()));
-        txtCPostalEmpresa.setText(String.valueOf(objEmpresa.getCp()));
-        txtLocalidadEmpresa.setText(objEmpresa.getLocalidad());
-        txtTelefonoEmpresa.setText(objEmpresa.getTelefono());
-    }
-
-    //Activamos o desactivamos los campos del formulario
-    private void campoEditable(boolean valor) {
-        txtDni.setEditable(valor);
-        txtNombre.setEditable(valor);
-        txtApellido1.setEditable(valor);
-        txtApellido2.setEditable(valor);
-        txtCalle.setEditable(valor);
-        txtNumero.setEditable(valor);
-        txtCodigoPostal.setEditable(valor);
-        txtLocalidad.setEditable(valor);
-        txtTelefono.setEditable(valor);
-        txtFechaNac.setEditable(valor);
-    }
-
-    private void campoEditableEmpresa(boolean valor) {
-        txtCifEmpresa.setEditable(valor);
-        txtNombreEmpresa.setEditable(valor);
-        txtCalleEmpresa.setEditable(valor);
-        txtNumeroEmpresa.setEditable(valor);
-        txtCPostalEmpresa.setEditable(valor);
-        txtLocalidadEmpresa.setEditable(valor);
-        txtTelefonoEmpresa.setEditable(valor);
-    }
-
-    //Activamos o desactivamos los campos del formulario Empresa
-    private void campoDesactivadoEmpresa(boolean valor) {
-        txtCifEmpresa.setDisable(valor);
-        txtNombreEmpresa.setDisable(valor);
-        txtCalleEmpresa.setDisable(valor);
-        txtNumeroEmpresa.setDisable(valor);
-        txtCPostalEmpresa.setDisable(valor);
-        txtLocalidadEmpresa.setDisable(valor);
-        txtTelefonoEmpresa.setDisable(valor);
-        btnCancelarEmpresa.setDisable(valor);
-    }
-
-    //Método para campos de tipo String, convertiendo a mayúscula y comprobando tamaño
-    private void compruebaString(String caracter, TextField txtCampo, int tamanio) {
-        char palabra = caracter.charAt(0);
-        if (txtCampo.getLength() > tamanio) {
-            txtCampo.deletePreviousChar();
-            txtCampo.end();
-        } else if (palabra >= 'a') {
-            caracter = caracter.toUpperCase();
-            txtCampo.deletePreviousChar();
-            txtCampo.setText(txtCampo.getText() + caracter);
-            txtCampo.end();
-        }
-    }
-
-    //Método para campos de tipo Int, permitiendo solo números y comprobando tamaño
-    private void compruebaInt(String caracter, TextField txtCampo, int tamanio) {
-        char palabra = caracter.charAt(0);
-        if (txtCampo.getLength() > tamanio) {
-            txtCampo.deletePreviousChar();
-            txtCampo.end();
-        } else if (palabra >= '0' && palabra <= '9') {
-            txtCampo.deletePreviousChar();
-            txtCampo.setText(txtCampo.getText() + caracter);
-            txtCampo.end();
-        } else if (palabra >= 'a' || palabra >= 'A') {
-            txtCampo.deletePreviousChar();
-            txtCampo.end();
-        }
-    }
-
-    private static boolean esNumerico(String valor) {
-        try {
-            if (valor != null) {
-                Integer.parseInt(valor);
-            }
-        } catch (NumberFormatException ex) {
-            return false;
-        }
-        return true;
-    }
-
-    private void activaBotones(boolean valor) {
-        btnCancelar.setDisable(valor);
-        btnAceptar.setDisable(valor);
-    }
-
-    @FXML
-    private void valorTeclaEmpresa(KeyEvent event) {
-        Object evt = event.getSource();
-
-        if (evt.equals(txtTelefonoEmpresa)) {
-            if (" ".equals(event.getCharacter())) {
-                txtTelefonoEmpresa.deletePreviousChar();
-            } else {
-                String caracter = event.getCharacter();
-                this.compruebaInt(caracter, txtTelefonoEmpresa, 12);
-            }
-        }
-
-        if (evt.equals(txtCPostalEmpresa)) {
-            if (" ".equals(event.getCharacter())) {
-                txtCPostalEmpresa.deletePreviousChar();
-            } else {
-                String caracter = event.getCharacter();
-                this.compruebaInt(caracter, txtCPostalEmpresa, 11);
-            }
-        }
-
-        if (evt.equals(txtNumeroEmpresa)) {
-            if (" ".equals(event.getCharacter())) {
-                txtNumeroEmpresa.deletePreviousChar();
-            } else {
-                String caracter = event.getCharacter();
-                this.compruebaInt(caracter, txtNumeroEmpresa, 11);
-            }
-        }
-
-        if (evt.equals(txtCifEmpresa)) {
-            if (" ".equals(event.getCharacter())) {
-                txtCifEmpresa.deletePreviousChar();
-            } else {
-                String caracter = event.getCharacter();
-                this.compruebaString(caracter, txtCifEmpresa, 9);
-            }
-        }
-
-        if (evt.equals(txtNombreEmpresa)) {
-            String caracter = event.getCharacter();
-            this.compruebaString(caracter, txtNombreEmpresa, 30);
-        }
-
-        if (evt.equals(txtCalleEmpresa)) {
-            String caracter = event.getCharacter();
-            this.compruebaString(caracter, txtCalleEmpresa, 100); //le pasamos caracter, campo y tamaño máximo
-        }
-
-        if (evt.equals(txtLocalidadEmpresa)) {
-            String caracter = event.getCharacter();
-            this.compruebaString(caracter, txtLocalidadEmpresa, 30); //le pasamos caracter, campo y tamaño máximo
-        }
-    }
-
-    @FXML
-    private void cancelarEmpresa(ActionEvent event) {
-        limpiarEmpresa();
-        campoDesactivadoEmpresa(true);
-        campoEditableEmpresa(false);
-    }
-
-    private boolean comprobarDatosEmpresa() {
-        if (txtCifEmpresa.getText().isEmpty()) {
-            MensajeFX.printTexto("El campo 'CIF' está vacío", "WARNING", posicionX_Y());
-            txtCifEmpresa.requestFocus(); //llevo el 'foco' al campo
-            return false; //devuelvo false y no continuo
-        }
-        if (txtNombreEmpresa.getText().isEmpty()) {
-            MensajeFX.printTexto("El campo 'Nombre Empresa' está vacío", "WARNING", posicionX_Y());
-            txtNombreEmpresa.requestFocus(); //llevo el 'foco' al campo
-            return false; //devuelvo false y no continuo
-        }
-        if (txtCalleEmpresa.getText().isEmpty()) {
-            MensajeFX.printTexto("El campo 'Calle Empresa' está vacío", "WARNING", posicionX_Y());
-            txtCalleEmpresa.requestFocus();
-            return false; //devuelvo false y no continuo
-        }
-        if (txtNumeroEmpresa.getText().isEmpty()) {
-            MensajeFX.printTexto("El campo 'Número Empresa' está vacío", "WARNING", posicionX_Y());
-            txtNumeroEmpresa.requestFocus();
-            return false; //devuelvo false y no continuo
-        }
-        if (txtCPostalEmpresa.getText().isEmpty()) {
-            MensajeFX.printTexto("El campo 'Código Postal Empresa' está vacío", "WARNING", posicionX_Y());
-            txtCPostalEmpresa.requestFocus();
-            return false; //devuelvo false y no continuo
-        }
-        if (txtLocalidadEmpresa.getText().isEmpty()) {
-            MensajeFX.printTexto("El campo 'Localidad Empresa' está vacío", "WARNING", posicionX_Y());
-            txtLocalidadEmpresa.requestFocus();
-            return false; //devuelvo false y no continuo
-        }
-        if (txtTelefonoEmpresa.getText().isEmpty()) {
-            MensajeFX.printTexto("El campo 'Teléfono Empresa' está vacío", "WARNING", posicionX_Y());
-            txtTelefonoEmpresa.requestFocus();
-            return false; //devuelvo false y no continuo
-        }
-        if (!esNumerico(txtNumeroEmpresa.getText())) {
-            MensajeFX.printTexto("El campo 'Número Empresa' tiene carácteres no permitidos", "WARNING", posicionX_Y());
-            txtNumeroEmpresa.requestFocus();
-            return false; //devuelvo false y no continuo
-        }
-        if (!esNumerico(txtCPostalEmpresa.getText())) {
-            MensajeFX.printTexto("El campo 'Código Postal Empresa' tiene carácteres no permitidos", "WARNING", posicionX_Y());
-            txtCPostalEmpresa.requestFocus();
-            return false; //devuelvo false y no continuo
-        }
-
-        return true;  //si llega aquí es que todo está correcto
     }
 
 }

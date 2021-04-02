@@ -4,8 +4,11 @@ import datos.AlumnoDAO;
 import entidades.ClassAlumno;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -26,6 +29,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import negocio.AlumnoNegocio;
+import negocio.MensajeFX;
 import negocio.Variables;
 
 public class AlumnoVistaController implements Initializable {
@@ -36,6 +41,7 @@ public class AlumnoVistaController implements Initializable {
     private static Scene scene;   //variable de clase Scene donde se produce la acción con los elementos creados
     private static Stage stage;   //variable de clase Stage que es la ventana actual
     private double[] posicion;    //posición de la ventana en eje X-Y
+    private AlumnoNegocio CONTROL;
 
     @FXML
     private TextField txtFiltrarAlumnoTabla;
@@ -119,13 +125,26 @@ public class AlumnoVistaController implements Initializable {
 
     @FXML
     private void eliminarAlumnoTabla(ActionEvent event) {
-        //guardamos en la variable el valor de la acción a ejecutar.
-        Variables.setTextoFrm("ELIMINAR ALUMNO");  //Se usará posteriormente en el controlador FrmAlumno
-        this.cargarFrmAlumno();
+        String respuesta = null;
+        CONTROL = new AlumnoNegocio();
+        System.out.println("id alumno id " + copiaAlumno.getId());
+        try {
+            respuesta = this.CONTROL.eliminar(copiaAlumno.getId());
+            if ("OK".equals(respuesta)) {
+                MensajeFX.printTexto("Alumno eliminado correctamente", "INFO", obtenPosicionX_Y());
+                this.tablaAlumno.refresh();  //refrescamos los datos de la tabla (sobre todo es interesante cuando actualizamos)
+                this.tablaAlumno.setItems(items); //mostramos las columnas de la tabla
+            } else {
+                MensajeFX.printTexto("Alumno no se ha podido eliminar", "ERROR", obtenPosicionX_Y());
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(AlumnoVistaController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @FXML
-    private void posicionRatonTabla(MouseEvent event) {
+    private void posicionRatonTabla(MouseEvent event
+    ) {
         //cuando pulsamos con el ratón en algún registro de la tabla capturamos la información de la fila
         ClassAlumno claseAlumno = tablaAlumno.getSelectionModel().getSelectedItem();
         if (claseAlumno != null) {  //si no es NULL capturamos los datos de la fila
@@ -140,7 +159,8 @@ public class AlumnoVistaController implements Initializable {
     }
 
     @FXML
-    private void posicionTeclaTabla(KeyEvent event) {
+    private void posicionTeclaTabla(KeyEvent event
+    ) {
         //cuando nos desplazamos con el cursor por la tabla capturamos la información de la fila
         ClassAlumno claseAlumno = tablaAlumno.getSelectionModel().getSelectedItem();
         if (claseAlumno != null) {  //si no es NULL capturamos los datos de la fila
@@ -155,7 +175,8 @@ public class AlumnoVistaController implements Initializable {
     }
 
     @FXML
-    private void txtPulsadoEnter(KeyEvent event) {
+    private void txtPulsadoEnter(KeyEvent event
+    ) {
         //keyPressed: cuando se pulsa ENTER en la caja de textoBuscar hacemos la acción de buscar
         Object evt = event.getSource();
         if (evt.equals(txtFiltrarAlumnoTabla)) {
