@@ -91,7 +91,6 @@ public class FrmAlumnoController implements Initializable {
         CONTROL = new AlumnoNegocio();  //instanciamos la clase AlumnoNegocio
         ControlEmpresa = new EmpresaNegocio();
         lblTextoFrm.setText(Variables.getTextoFrm());  //Envíamos el texto de la variable como título del campo label de nuestra ventana
-        Variables.setAlumnoCreaEmpresa(0); //Por defecto asignamos que NO cree empresa al crear Alumno
         campoEditable(true);
         campoDesactivadoEmpresa(true);
     }
@@ -108,7 +107,7 @@ public class FrmAlumnoController implements Initializable {
             if (!txtAlumnoCif.getText().isEmpty()) {
                 validaCif();
                 if (comprobarDatosEmpresa()) {
-                    if (MensajeFX.printTexto("¿Desea crear esta empresa?", "CONFIRM", obtenPosicionX_Y())) {
+                    if (MensajeFX.printTexto("¿Los datos de empresa son correctos?", "CONFIRM", obtenPosicionX_Y())) {
                         guardarDatosEmpresa();
                         try {
                             Thread.sleep(500);
@@ -261,8 +260,6 @@ public class FrmAlumnoController implements Initializable {
         limpiarEmpresa();
         campoDesactivadoEmpresa(true);
         campoEditableEmpresa(false);
-        Variables.setAlumnoCreaEmpresa(0);
-        Variables.setEmpresaAniadia(0);
     }
 
     private void validaCif() {
@@ -323,10 +320,8 @@ public class FrmAlumnoController implements Initializable {
                 respuesta = this.ControlEmpresa.insertar(objetoEmpresa);
                 if ("OK".equals(respuesta)) {
                     MensajeFX.printTexto("Empresa añadida correctamente", "INFO", posicionX_Y());
-                    Variables.setAlumnoCreaEmpresa(1);
                 } else {
                     MensajeFX.printTexto(respuesta, "ERROR", posicionX_Y());
-                    Variables.setAlumnoCreaEmpresa(0);
                 }
             }
         } catch (SQLException ex) {
@@ -650,7 +645,7 @@ public class FrmAlumnoController implements Initializable {
         posicion = obtenPosicionX_Y();
         stage.setX(posicion[0]);
         stage.setY(posicion[1]);
-        if (Variables.getAlumnoCreaEmpresa() == 1) {
+        if (txtAlumnoCif.getLength() > 0) {
             stage.setX(posicion[0] + 415);
             stage.setY(posicion[1] - 95);
         }
