@@ -282,7 +282,7 @@
                               <Insets right="10.0" />
                            </GridPane.margin>
                         </Label>
-                        <Label alignment="CENTER" contentDisplay="RIGHT" text="Alta de Empresa" textAlignment="JUSTIFY" GridPane.columnIndex="1">
+                        <Label alignment="CENTER" contentDisplay="RIGHT" text="Datos de Empresa" textAlignment="JUSTIFY" GridPane.columnIndex="1">
                            <font>
                               <Font name="Segoe UI Black" size="14.0" />
                            </font>

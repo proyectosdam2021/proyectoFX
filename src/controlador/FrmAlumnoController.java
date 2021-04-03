@@ -668,9 +668,9 @@ public class FrmAlumnoController implements Initializable {
         //se entiende que los btn o lbl forman parte de la ventana que deseamos obtener datos
         Stage myStage = (Stage) this.txtDni.getScene().getWindow();
         int frmX = 420 / 2; //tamaño ancho componente FrmAlumno
-        int frmY = 50; //tamaño alto componente FrmAlumno
-        int x = (int) (myStage.getWidth() / 2);
-        int y = (int) myStage.getY();
+        int frmY = 50; //posición Y
+        int x = (int) (myStage.getWidth() / 2);  //guardamos el ancho eje X
+        int y = (int) myStage.getY();  //guardamos la posición Y
         posicionxy[0] = myStage.getX() + (x - frmX);
         posicionxy[1] = y - frmY;
         return posicionxy;
