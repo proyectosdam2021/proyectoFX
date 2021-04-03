@@ -1,7 +1,7 @@
 .root {
--fx-font-size: 10pt;
--fx-font-family: "Segoe";
--fx-background: #6a8b93;
+    -fx-font-size: 10pt;
+    -fx-font-family: "Segoe";
+    -fx-background: #6a8b93;
 }
 
 .indicetablas {
@@ -14,26 +14,27 @@
 }
 
 .botonesmenu {
--fx-font-size: 12px;
+    -fx-font-size: 12px;
     -fx-font-weight: bold;
     -fx-text-fill: #333333;
     -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );
-  }
+}
 
 .botonesmenu:hover{
-  -fx-text-fill: white;
-      -fx-font-family: "Segoe UI";
-      -fx-font-weight: bold;
-      -fx-background-color: linear-gradient(#61a2b1, #2A5058);
-      -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+    -fx-text-fill: white;
+    -fx-font-family: "Segoe UI";
+    -fx-font-weight: bold;
+    -fx-background-color: linear-gradient(#61a2b1, #2A5058);
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+    -fx-background-radius: 3em;
 }
 
 .botonesmenu:pressed{
-  -fx-text-fill: white;
-      -fx-font-family: "Segoe UI";
-      -fx-font-weight: bold;
-      -fx-background-color: linear-gradient(#61a291, #2A5058);
-      -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+    -fx-text-fill: white;
+    -fx-font-family: "Segoe UI";
+    -fx-font-weight: bold;
+    -fx-background-color: linear-gradient(#61a291, #2A5058);
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
 }
 
 .label {
@@ -45,5 +46,5 @@
 .imgfondo{
     -fx-background-color: #1c5757;
     -fx-aligment: center;
-   
+
 }

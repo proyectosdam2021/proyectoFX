@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="2000.0" prefWidth="1100.0" styleClass="indicetablas" stylesheets="@../Estilo/Style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controlador.AlumnoVistaController">
+<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="2000.0" prefWidth="1100.0" styleClass="indicetablas" stylesheets="@../Estilo/Style.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controlador.AlumnoVistaController">
    <children>
       <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="1100.0" VBox.vgrow="ALWAYS">
          <children>
@@ -39,7 +39,7 @@
                                           <Insets top="12.0" />
                                        </HBox.margin>
                                     </TextField>
-                                    <Button fx:id="btnBuscar" graphicTextGap="3.0" minWidth="75.0" mnemonicParsing="false" onAction="#buscarAlumnoTabla" text="Buscar">
+                                    <Button fx:id="btnBuscar" graphicTextGap="3.0" minWidth="75.0" mnemonicParsing="false" onAction="#buscarAlumnoTabla" styleClass="botonesmenu" text="Buscar">
                                        <HBox.margin>
                                           <Insets left="20.0" top="11.0" />
                                        </HBox.margin>
@@ -54,7 +54,7 @@
                                           </ImageView>
                                        </graphic>
                                     </Button>
-                                    <Button fx:id="btnLimpiar" minWidth="85.0" mnemonicParsing="false" onAction="#limpiarAlumnoTabla" text="Limpiar">
+                                    <Button fx:id="btnLimpiar" minWidth="85.0" mnemonicParsing="false" onAction="#limpiarAlumnoTabla" styleClass="botonesmenu" text="Limpiar">
                                        <font>
                                           <Font name="Segoe UI Bold" size="13.0" />
                                        </font>
@@ -69,7 +69,7 @@
                                           </ImageView>
                                        </graphic>
                                     </Button>
-                                    <Button fx:id="btnNuevo" minWidth="75.0" mnemonicParsing="false" onAction="#nuevoAlumnoTabla" text="Nuevo">
+                                    <Button fx:id="btnNuevo" minWidth="75.0" mnemonicParsing="false" onAction="#nuevoAlumnoTabla" styleClass="botonesmenu" text="Nuevo">
                                        <font>
                                           <Font name="Segoe UI Bold" size="13.0" />
                                        </font>
@@ -84,7 +84,7 @@
                                           </ImageView>
                                        </graphic>
                                     </Button>
-                                    <Button fx:id="btnEditar" minWidth="75.0" mnemonicParsing="false" onAction="#editarAlumnoTabla" text="Editar">
+                                    <Button fx:id="btnEditar" minWidth="75.0" mnemonicParsing="false" onAction="#editarAlumnoTabla" styleClass="botonesmenu" text="Editar">
                                        <font>
                                           <Font name="Segoe UI Bold" size="13.0" />
                                        </font>
@@ -99,7 +99,7 @@
                                           </ImageView>
                                        </graphic>
                                     </Button>
-                                    <Button fx:id="btnEliminar" minWidth="80.0" mnemonicParsing="false" onAction="#eliminarAlumnoTabla" text="Eliminar">
+                                    <Button fx:id="btnEliminar" minWidth="80.0" mnemonicParsing="false" onAction="#eliminarAlumnoTabla" styleClass="botonesmenu" text="Eliminar">
                                        <font>
                                           <Font name="Segoe UI Bold" size="13.0" />
                                        </font>
