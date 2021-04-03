@@ -17,14 +17,10 @@ public class EmpresaNegocio {
 
     public String insertar(ClassEmpresa objeto) throws SQLException {
         //comprobamos si existe el CIF a insertar
-        if (DATOS.existe(objeto.getCif())) {
-            return "El registro con ese CIF ya existe";
+        if (DATOS.insertar(objeto)) {
+            return "OK";
         } else {
-            if (DATOS.insertar(objeto)) {
-                return "OK";
-            } else {
-                return "Error en el registro";
-            }
+            return "Error en el registro";
         }
     }
 
