@@ -16,8 +16,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: white;" stylesheets="@../Estilo/Style.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label fx:id="lblTextoFrm" alignment="CENTER" blendMode="DARKEN" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="420.0" text="CREAR ALUMNO" textAlignment="CENTER">
          <font>
@@ -200,7 +199,7 @@
       </Separator>
       <HBox alignment="CENTER" layoutX="118.0" layoutY="518.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
          <children>
-            <Button fx:id="btnCancelar" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" maxWidth="-Infinity" mnemonicParsing="false" onAction="#cancelarAlumno" style="-fx-background-color: white;" text="Button" HBox.hgrow="ALWAYS">
+            <Button fx:id="btnCancelar" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" maxWidth="-Infinity" mnemonicParsing="false" onAction="#cancelarAlumno" style="-fx-background-color: white;" styleClass="botonesmenu" text="Button" HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets left="20.0" right="10.0" />
                </HBox.margin>
@@ -212,7 +211,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="btnAceptar" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" maxWidth="-Infinity" mnemonicParsing="false" onAction="#grabarAlumno" style="-fx-background-color: white;" text="Button" HBox.hgrow="ALWAYS">
+            <Button fx:id="btnAceptar" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" maxWidth="-Infinity" mnemonicParsing="false" onAction="#grabarAlumno" style="-fx-background-color: white;" styleClass="botonesmenu" text="Button" HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets left="10.0" right="50.0" />
                </HBox.margin>
@@ -347,7 +346,7 @@
                   </TextField>
                   <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="8">
                      <children>
-                        <Button fx:id="btnCancelarEmpresa" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#cancelarEmpresa" text="Cancelar">
+                        <Button fx:id="btnCancelarEmpresa" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#cancelarEmpresa" styleClass="botonesmenu" text="Cancelar">
                            <HBox.margin>
                               <Insets left="40.0" right="10.0" top="10.0" />
                            </HBox.margin>

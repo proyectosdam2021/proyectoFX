@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="0.9" prefHeight="500.0" prefWidth="420.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controlador.FrmEmpresaController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="0.9" prefHeight="500.0" prefWidth="420.0" style="-fx-background-color: white;" stylesheets="@../Estilo/Style.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controlador.FrmEmpresaController">
    <children>
       <Label fx:id="lblTextoFrm" alignment="CENTER" blendMode="DARKEN" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="400.0" text="CREAR EMPRESA" textAlignment="CENTER" VBox.vgrow="ALWAYS">
          <font>
@@ -148,7 +148,7 @@
       </Separator>
       <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="380.0" VBox.vgrow="ALWAYS">
          <children>
-            <Button alignment="CENTER" contentDisplay="GRAPHIC_ONLY" maxWidth="-Infinity" mnemonicParsing="false" onAction="#cancelarFormulario" style="-fx-background-color: white;" text="Button" HBox.hgrow="ALWAYS">
+            <Button alignment="CENTER" contentDisplay="GRAPHIC_ONLY" maxWidth="-Infinity" mnemonicParsing="false" onAction="#cancelarFormulario" style="-fx-background-color: white;" styleClass="botonesmenu" text="Button" HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets left="100.0" right="10.0" />
                </HBox.margin>
@@ -160,7 +160,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button alignment="CENTER" contentDisplay="GRAPHIC_ONLY" maxWidth="-Infinity" mnemonicParsing="false" onAction="#grabarFormulario" style="-fx-background-color: white;" text="Button" HBox.hgrow="ALWAYS">
+            <Button alignment="CENTER" contentDisplay="GRAPHIC_ONLY" maxWidth="-Infinity" mnemonicParsing="false" onAction="#grabarFormulario" style="-fx-background-color: white;" styleClass="botonesmenu" text="Button" HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets left="10.0" right="50.0" />
                </HBox.margin>
