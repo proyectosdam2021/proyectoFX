@@ -17,4 +17,4 @@ Aplicación proyecto Academia
 
 
 ### Screenshots
-<img src=https://github.com/proyectosdam2021/proyectoFX/blob/master/src/imagenes/academia2.png>
+<img src=https://github.com/proyectosdam2021/proyectoFX/blob/Master2/src/imagenes/academia2.png>
