@@ -130,14 +130,15 @@ public class AlumnoVistaController implements Initializable {
     private void eliminarAlumnoTabla(ActionEvent event) {
         String respuesta;
         CONTROL = new AlumnoNegocio();
-        System.out.println("id alumno id " + copiaAlumno.getId());
         try {
-            respuesta = this.CONTROL.eliminar(copiaAlumno.getId());
-            if ("OK".equals(respuesta)) {
-                MensajeFX.printTexto("Alumno eliminado correctamente", "INFO", obtenPosicionX_Y());
-                cargarTabla("");
-            } else {
-                MensajeFX.printTexto("Alumno no se ha podido eliminar", "ERROR", obtenPosicionX_Y());
+            if (MensajeFX.printTexto("¿Desea eliminar este registro?", "CONFIRM", obtenPosicionX_Y())) {
+                respuesta = this.CONTROL.eliminar(copiaAlumno.getId());
+                if ("OK".equals(respuesta)) {
+                    MensajeFX.printTexto("Alumno eliminado correctamente", "INFO", obtenPosicionX_Y());
+                    cargarTabla("");
+                } else {
+                    MensajeFX.printTexto("Alumno no se ha podido eliminar", "ERROR", obtenPosicionX_Y());
+                }
             }
         } catch (SQLException ex) {
             Logger.getLogger(AlumnoVistaController.class.getName()).log(Level.SEVERE, null, ex);
@@ -176,7 +177,7 @@ public class AlumnoVistaController implements Initializable {
         }
     }
 
-     @FXML
+    @FXML
     private void txtPulsadoEnter(KeyEvent event) {
 
         //keyPressed: cuando se pulsa ENTER en la caja de textoBuscar hacemos la acción de buscar
@@ -184,8 +185,8 @@ public class AlumnoVistaController implements Initializable {
         if (evt.equals(txtFiltrarAlumnoTabla) && txtFiltrarAlumnoTabla.getText().length() >= 2) {
             final int segundos = 3;
             Timeline lineadetiempo = new Timeline(new KeyFrame(Duration.seconds(segundos), (ActionEvent event1) -> {
-                cargarTabla(txtFiltrarAlumnoTabla.getText());
-            }));
+                                                           cargarTabla(txtFiltrarAlumnoTabla.getText());
+                                                       }));
             lineadetiempo.setCycleCount(1);
             lineadetiempo.play();
             System.out.println("Pulsando tecla");

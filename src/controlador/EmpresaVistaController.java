@@ -4,7 +4,10 @@ import datos.EmpresaDAO;
 import entidades.ClassEmpresa;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.collections.ObservableList;
@@ -28,6 +31,9 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
+import negocio.AlumnoNegocio;
+import negocio.EmpresaNegocio;
+import negocio.MensajeFX;
 import negocio.Variables;
 
 public class EmpresaVistaController implements Initializable {
@@ -38,6 +44,7 @@ public class EmpresaVistaController implements Initializable {
     private static Scene scene;   //variable de clase Scene donde se produce la acción con los elementos creados
     private static Stage stage;   //variable de clase Stage que es la ventana actual
     private double[] posicion;    //posición de la ventana en eje X-Y
+    private EmpresaNegocio CONTROL;
 
     @FXML // fx:id="txtFiltrarEmpresaTabla"
     private TextField txtFiltrarEmpresaTabla; // Value injected by FXMLLoader
@@ -104,9 +111,21 @@ public class EmpresaVistaController implements Initializable {
 
     @FXML
     private void eliminarEmpresaTabla(ActionEvent event) {
-        //guardamos en la variable el valor de la acción a ejecutar.
-        Variables.setTextoFrm("ELIMINAR EMPRESA");  //Se usará posteriormente en el controlador FrmAlumno
-        this.cargarFrmEmpresa();
+        String respuesta;
+        CONTROL = new EmpresaNegocio();
+        try {
+            if (MensajeFX.printTexto("¿Desea eliminar este registro?", "CONFIRM", obtenPosicionX_Y())) {
+                respuesta = this.CONTROL.eliminar(copiaEmpresa.getId());
+                if ("OK".equals(respuesta)) {
+                    MensajeFX.printTexto("Empresa eliminada correctamente", "INFO", obtenPosicionX_Y());
+                    cargarTabla("");
+                } else {
+                    MensajeFX.printTexto("La empresa no se ha podido eliminar", "ERROR", obtenPosicionX_Y());
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(EmpresaVistaController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @FXML
@@ -146,8 +165,8 @@ public class EmpresaVistaController implements Initializable {
         if (evt.equals(txtFiltrarEmpresaTabla) && txtFiltrarEmpresaTabla.getText().length() >= 2) {
             final int segundos = 3;
             Timeline lineadetiempo = new Timeline(new KeyFrame(Duration.seconds(segundos), (ActionEvent event1) -> {
-                cargarTabla(txtFiltrarEmpresaTabla.getText());
-            }));
+                                                           cargarTabla(txtFiltrarEmpresaTabla.getText());
+                                                       }));
             lineadetiempo.setCycleCount(1);
             lineadetiempo.play();
             System.out.println("Pulsando tecla");
