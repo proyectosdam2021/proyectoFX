@@ -4,6 +4,7 @@ Aplicación proyecto Academia
 ### Project details
 - Written on JavaFX 16
 - OpenJDK 11+ JRE is required
+- Created with Netbeans 12
 
 ### How to get it?
  1. Download latest build Windows,Mac,Linux [from here](https://github.com/proyectosdam2021/proyectoFX)
