@@ -33,6 +33,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import negocio.AlumnoNegocio;
+import negocio.EmpresaNegocio;
 import negocio.MensajeFX;
 import negocio.Variables;
 
@@ -45,6 +46,7 @@ public class AlumnoVistaController implements Initializable {
     private static Stage stage;   //variable de clase Stage que es la ventana actual
     private double[] posicion;    //posición de la ventana en eje X-Y
     private AlumnoNegocio CONTROL;
+    private EmpresaNegocio ControlEmpresa;
 
     @FXML
     private TextField txtFiltrarAlumnoTabla;
@@ -130,12 +132,14 @@ public class AlumnoVistaController implements Initializable {
     private void eliminarAlumnoTabla(ActionEvent event) {
         String respuesta;
         CONTROL = new AlumnoNegocio();
+        ControlEmpresa = new EmpresaNegocio();
         try {
             if (MensajeFX.printTexto("¿Desea eliminar este registro?", "CONFIRM", obtenPosicionX_Y())) {
                 respuesta = this.CONTROL.eliminar(copiaAlumno.getId());
                 if ("OK".equals(respuesta)) {
                     MensajeFX.printTexto("Alumno eliminado correctamente", "INFO", obtenPosicionX_Y());
                     cargarTabla("");
+                    ControlEmpresa.eliminar(copiaAlumno.getId_empresa()); //Eliminamos también la empresa asociada
                 } else {
                     MensajeFX.printTexto("Alumno no se ha podido eliminar", "ERROR", obtenPosicionX_Y());
                 }
