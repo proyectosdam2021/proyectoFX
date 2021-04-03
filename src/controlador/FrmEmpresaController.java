@@ -294,7 +294,8 @@ public class FrmEmpresaController implements Initializable {
                             this.limpiar();
                             this.cerrarVentana();
                         } else {
-                            MensajeFX.printTexto(respuesta, "ERROR", posicionX_Y());
+                            // Lo quito ya que el dao controla este mensaje también hay que revalorar MensajeFX.printTexto(respuesta, "ERROR", posicionX_Y());
+                            this.cerrarVentana();
                         }
                     }
                     break;

@@ -9,6 +9,8 @@ import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -29,6 +31,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
 import negocio.AlumnoNegocio;
 import negocio.MensajeFX;
 import negocio.Variables;
@@ -173,12 +176,19 @@ public class AlumnoVistaController implements Initializable {
         }
     }
 
-    @FXML
-    private void txtPulsadoEnter(KeyEvent event
-    ) {
+     @FXML
+    private void txtPulsadoEnter(KeyEvent event) {
+
         //keyPressed: cuando se pulsa ENTER en la caja de textoBuscar hacemos la acción de buscar
         Object evt = event.getSource();
-        if (evt.equals(txtFiltrarAlumnoTabla)) {
+        if (evt.equals(txtFiltrarAlumnoTabla) && txtFiltrarAlumnoTabla.getText().length() >= 2) {
+            final int segundos = 3;
+            Timeline lineadetiempo = new Timeline(new KeyFrame(Duration.seconds(segundos), (ActionEvent event1) -> {
+                cargarTabla(txtFiltrarAlumnoTabla.getText());
+            }));
+            lineadetiempo.setCycleCount(1);
+            lineadetiempo.play();
+            System.out.println("Pulsando tecla");
             if (event.getCode().equals(KeyCode.ENTER)) {
                 this.cargarTabla(txtFiltrarAlumnoTabla.getText());
             }

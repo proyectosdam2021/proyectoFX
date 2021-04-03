@@ -2,8 +2,14 @@
 package negocio;
 
 import java.util.Optional;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.stage.Modality;
+import javafx.stage.StageStyle;
+import javafx.util.Duration;
 
 public class MensajeFX {
 
@@ -12,6 +18,7 @@ public class MensajeFX {
     private final String ERROR = "ERROR";
     private final String CONFIRM = "CONFIRM";
     private final String TIEMPO = "TIEMPO";
+    private static final int segundos = 3;
 
     public MensajeFX() {
     }
@@ -21,6 +28,13 @@ public class MensajeFX {
         Alert alertError = new Alert(Alert.AlertType.ERROR);
         Alert alertWarning = new Alert(Alert.AlertType.WARNING);
         Alert alertConfirm = new Alert(Alert.AlertType.CONFIRMATION);
+
+        Timeline lineadetiempo = new Timeline(new KeyFrame(Duration.seconds(segundos), (ActionEvent event) -> {
+            alertInfo.hide();
+        }));
+        lineadetiempo.setCycleCount(1);
+        lineadetiempo.play();
+
         //ponemos las coordenadas a las ventanas de mensajes
         posicion[0] = posicion[0] - 5;  //ajustamos la posición en eje X
         posicion[1] = posicion[1] + 50; //ajustamos la posición en el eje Y
@@ -32,13 +46,15 @@ public class MensajeFX {
         alertError.setY(posicion[1]);
         alertConfirm.setX(posicion[0]);
         alertConfirm.setY(posicion[1]);
+        alertInfo.initStyle(StageStyle.UNDECORATED);
+        alertInfo.initModality(Modality.WINDOW_MODAL);
 
         switch (tipo) {
             case "INFO":
                 alertInfo.setHeaderText(null);
                 alertInfo.setTitle("Información del sistema");
                 alertInfo.setContentText(mensaje);
-                alertInfo.showAndWait();
+                alertInfo.show();
                 return true;
 
             case "WARNING":

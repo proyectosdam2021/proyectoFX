@@ -5,12 +5,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import datos.interfaces.CrudInterface;
 import entidades.ClassEmpresa;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.stage.Stage;
 import javax.swing.JOptionPane;
+import negocio.MensajeFX;
 import negocio.Variables;
 
 public class EmpresaDAO implements CrudInterface<ClassEmpresa> {
@@ -157,8 +161,15 @@ public class EmpresaDAO implements CrudInterface<ClassEmpresa> {
                 resp = true;
             }
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage());
-        } finally {
+             if (e.getMessage().contains("foreign"))
+                System.out.println("Existen alumnos");
+            //JOptionPane.showMessageDialog(null, e.getMessage())
+            Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+            int x = (int) ((dimension.getWidth() / 2-200)); //Esto ya lo cuadraremos en una clase independiente para todos los mensajes
+            int y = (int) ((dimension.getHeight() / 2-200));
+            double posicion[] = {x,y};
+            MensajeFX.printTexto("Existen alumnos en esa empresa, no puede ser eliminada", "ERROR", posicion);
+        }  finally {
             try {
                 //Para el correcto funcionamiento del Pool de conexiones
                 //Hemos puesto el conexion.close() en el finally del try-catch, para asegurarnos de que la conexion se cierra

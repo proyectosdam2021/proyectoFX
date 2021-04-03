@@ -5,6 +5,8 @@ import entidades.ClassEmpresa;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -25,6 +27,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
 import negocio.Variables;
 
 public class EmpresaVistaController implements Initializable {
@@ -140,7 +143,15 @@ public class EmpresaVistaController implements Initializable {
     void txtPulsadoEnter(KeyEvent event) {
         //keyPressed: cuando se pulsa ENTER en la caja de textoBuscar hacemos la acción de buscar
         Object evt = event.getSource();
-        if (evt.equals(txtFiltrarEmpresaTabla)) {
+        if (evt.equals(txtFiltrarEmpresaTabla) && txtFiltrarEmpresaTabla.getText().length() >= 2) {
+            final int segundos = 3;
+            Timeline lineadetiempo = new Timeline(new KeyFrame(Duration.seconds(segundos), (ActionEvent event1) -> {
+                cargarTabla(txtFiltrarEmpresaTabla.getText());
+            }));
+            lineadetiempo.setCycleCount(1);
+            lineadetiempo.play();
+            System.out.println("Pulsando tecla");
+
             if (event.getCode().equals(KeyCode.ENTER)) {
                 this.cargarTabla(txtFiltrarEmpresaTabla.getText());
             }

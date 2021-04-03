@@ -1,7 +1,8 @@
 .root {
 -fx-font-size: 10pt;
 -fx-font-family: "Segoe";
--fx-background: #61a2b1;}
+-fx-background: #6a8b93;
+}
 
 .indicetablas {
     -fx-font-size: 10pt;
@@ -40,4 +41,9 @@
     -fx-font-weight: bold;
     -fx-text-fill: #333333;
     -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );
+}
+.imgfondo{
+    -fx-background-color: white;
+    -fx-aligment: center;
+   
 }
