@@ -1,5 +1,6 @@
 package controlador;
 
+import datos.EmpresaDAO;
 import entidades.ClassAlumno;
 import entidades.ClassEmpresa;
 import java.net.URL;
@@ -31,6 +32,7 @@ public class FrmAlumnoController implements Initializable {
     private String dniAnterior;
     private ClassAlumno objeto;
     private ClassEmpresa objetoEmpresa, objetoCopia;
+    private EmpresaDAO empresadao;
     private static Scene scene;   //variable de clase Scene donde se produce la acción con los elementos creados
     private static Stage stage;   //variable de clase Stage que es la ventana actual
     private double[] posicion;    //posición de la ventana en eje X-Y
@@ -408,6 +410,8 @@ public class FrmAlumnoController implements Initializable {
         txtLocalidad.setText(objAlumno.getLocalidad());
         txtTelefono.setText(objAlumno.getTelefono());
         txtFechaNac.setValue(objAlumno.getFecha_nacimiento().toLocalDate());
+        idEmpresa = objAlumno.getId_empresa();
+        cargarDatosEmpresa(idEmpresa);
     }
 
     public void mostrarDatosEmpresa(ClassEmpresa objEmpresa) {
@@ -419,6 +423,16 @@ public class FrmAlumnoController implements Initializable {
         txtCPostalEmpresa.setText(String.valueOf(objEmpresa.getCp()));
         txtLocalidadEmpresa.setText(objEmpresa.getLocalidad());
         txtTelefonoEmpresa.setText(objEmpresa.getTelefono());
+        txtAlumnoCif.setText(objetoEmpresa.getCif());
+    }
+    
+    
+    private void cargarDatosEmpresa(int idEmpresa) {
+        objetoEmpresa = new ClassEmpresa();
+        objetoEmpresa = ControlEmpresa.cargarEmpresaId(idEmpresa);
+        System.out.println(objetoEmpresa);
+        mostrarDatosEmpresa(objetoEmpresa);
+        txtAlumnoCif.setDisable(true);
     }
 
     //Activamos o desactivamos los campos del formulario

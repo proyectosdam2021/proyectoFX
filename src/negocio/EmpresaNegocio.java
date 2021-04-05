@@ -73,4 +73,8 @@ public class EmpresaNegocio {
     public ClassEmpresa cargarEmpresa(String cif) {
         return DATOS.cargarEmpresa(cif);
     }
+    
+     public ClassEmpresa cargarEmpresaId(int idEmpresa) {
+        return DATOS.cargarEmpresaId(idEmpresa);
+    }
 }

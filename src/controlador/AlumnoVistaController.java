@@ -141,7 +141,7 @@ public class AlumnoVistaController implements Initializable {
                     cargarTabla("");
                     ControlEmpresa.eliminar(copiaAlumno.getId_empresa()); //Eliminamos también la empresa asociada
                 } else {
-                    MensajeFX.printTexto("Alumno no se ha podido eliminar", "ERROR", obtenPosicionX_Y());
+                    MensajeFX.printTexto("El Alumno no se ha podido eliminar", "ERROR", obtenPosicionX_Y());
                 }
             }
         } catch (SQLException ex) {
@@ -264,7 +264,7 @@ public class AlumnoVistaController implements Initializable {
             stage.initStyle(StageStyle.UTILITY); //desactivamos maximinar y minimizar
             stage.getIcons().add(new Image(getClass().getResourceAsStream("/imagenes/icons8_java_duke_50px.png")));
             //Pasamos los datos a la nueva ventana FrmAlumno mientras sea distinto a CREAR ALUMNO (se usará para EDITAR/ELIMINAR)
-            if (!"CREAR ALUMNO".equals(Variables.getTextoFrm())) {
+            if ("EDITAR ALUMNO".equals(Variables.getTextoFrm())) {
                 ctrFrmAlumno.pasarDatos(copiaAlumno);
             }
             stage.showAndWait(); //mostramos la nueva ventana y esperamos
@@ -274,7 +274,7 @@ public class AlumnoVistaController implements Initializable {
             this.cargarTabla("");
 
         } catch (IOException ex) {
-            System.err.println("Error en el inicio validado " + ex);
+            System.err.println("Error en cargarFrmAlumno " + ex);
         }
     }
 
