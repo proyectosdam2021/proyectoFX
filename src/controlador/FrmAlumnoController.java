@@ -1,6 +1,5 @@
 package controlador;
 
-import datos.EmpresaDAO;
 import entidades.ClassAlumno;
 import entidades.ClassEmpresa;
 import java.net.URL;
@@ -32,7 +31,6 @@ public class FrmAlumnoController implements Initializable {
     private String dniAnterior;
     private ClassAlumno objeto, objetocopia;
     private ClassEmpresa objetoEmpresa, objetoCopiaEmpresa;
-    private EmpresaDAO empresadao;
     private static Scene scene;   //variable de clase Scene donde se produce la acción con los elementos creados
     private static Stage stage;   //variable de clase Stage que es la ventana actual
     private double[] posicion;    //posición de la ventana en eje X-Y
@@ -166,7 +164,7 @@ public class FrmAlumnoController implements Initializable {
             }
         }
 
-        if (evt.equals(txtAlumnoCif)) {
+        if (evt.equals(txtAlumnoCif) && txtAlumnoCif.isEditable()) {
             if (" ".equals(event.getCharacter())) {
                 txtAlumnoCif.deletePreviousChar();
             } else {
@@ -204,8 +202,7 @@ public class FrmAlumnoController implements Initializable {
     @FXML
     private void valorTeclaEmpresa(KeyEvent event) {
         Object evt = event.getSource();
-
-        if (evt.equals(txtTelefonoEmpresa)) {
+        if (evt.equals(txtTelefonoEmpresa) && txtTelefonoEmpresa.isEditable()) {
             if (" ".equals(event.getCharacter())) {
                 txtTelefonoEmpresa.deletePreviousChar();
             } else {
@@ -214,7 +211,7 @@ public class FrmAlumnoController implements Initializable {
             }
         }
 
-        if (evt.equals(txtCPostalEmpresa)) {
+        if (evt.equals(txtCPostalEmpresa) && txtCPostalEmpresa.isEditable()) {
             if (" ".equals(event.getCharacter())) {
                 txtCPostalEmpresa.deletePreviousChar();
             } else {
@@ -223,7 +220,7 @@ public class FrmAlumnoController implements Initializable {
             }
         }
 
-        if (evt.equals(txtNumeroEmpresa)) {
+        if (evt.equals(txtNumeroEmpresa) && txtNumeroEmpresa.isEditable()) {
             if (" ".equals(event.getCharacter())) {
                 txtNumeroEmpresa.deletePreviousChar();
             } else {
@@ -232,7 +229,7 @@ public class FrmAlumnoController implements Initializable {
             }
         }
 
-        if (evt.equals(txtCifEmpresa)) {
+        if (evt.equals(txtCifEmpresa) && txtCifEmpresa.isEditable()) {
             if (" ".equals(event.getCharacter())) {
                 txtCifEmpresa.deletePreviousChar();
             } else {
@@ -241,17 +238,17 @@ public class FrmAlumnoController implements Initializable {
             }
         }
 
-        if (evt.equals(txtNombreEmpresa)) {
+        if (evt.equals(txtNombreEmpresa) && txtNombreEmpresa.isEditable()) {
             String caracter = event.getCharacter();
             this.compruebaString(caracter, txtNombreEmpresa, 30);
         }
 
-        if (evt.equals(txtCalleEmpresa)) {
+        if (evt.equals(txtCalleEmpresa) && txtCalleEmpresa.isEditable()) {
             String caracter = event.getCharacter();
             this.compruebaString(caracter, txtCalleEmpresa, 100); //le pasamos caracter, campo y tamaño máximo
         }
 
-        if (evt.equals(txtLocalidadEmpresa)) {
+        if (evt.equals(txtLocalidadEmpresa) && txtLocalidadEmpresa.isEditable()) {
             String caracter = event.getCharacter();
             this.compruebaString(caracter, txtLocalidadEmpresa, 30); //le pasamos caracter, campo y tamaño máximo
         }
@@ -262,6 +259,8 @@ public class FrmAlumnoController implements Initializable {
         limpiarEmpresa();
         campoDesactivadoEmpresa(true);
         campoEditableEmpresa(false);
+        txtAlumnoCif.setEditable(true);
+        txtAlumnoCif.setText("");
     }
 
     private boolean validaDni() {
@@ -287,8 +286,10 @@ public class FrmAlumnoController implements Initializable {
             } else {
                 campoDesactivadoEmpresa(false);
                 campoEditableEmpresa(true);
+                limpiarEmpresa();
                 txtCifEmpresa.setText(txtAlumnoCif.getText());
                 txtCifEmpresa.setEditable(false);
+                txtAlumnoCif.setEditable(false);
                 txtNombreEmpresa.requestFocus();
             }
         } catch (SQLException ex) {
@@ -301,7 +302,8 @@ public class FrmAlumnoController implements Initializable {
         try {
             switch (Variables.getTextoFrm()) {
                 case "CREAR ALUMNO":
-                    respuesta = this.CONTROL.insertar(convertirStringObjeto());
+                    objeto = convertirStringObjeto();
+                    respuesta = this.CONTROL.insertar(objeto);
                     if ("OK".equals(respuesta)) {
                         MensajeFX.printTexto("Alumno añadido correctamente", "INFO", obtenPosicionX_Y());
                         this.limpiar();
@@ -310,9 +312,7 @@ public class FrmAlumnoController implements Initializable {
                     break;
                 case "EDITAR ALUMNO":
                     objeto = convertirStringObjeto();
-                    System.out.println("edito alumno :" + objeto.toString()); /////////////////////////////////
                     respuesta = this.CONTROL.actualizar(objeto, dniAnterior);
-                    
                     if ("OK".equals(respuesta)) {
                         MensajeFX.printTexto("Alumno editado correctamente", "INFO", obtenPosicionX_Y());
                         this.limpiar();
@@ -334,7 +334,6 @@ public class FrmAlumnoController implements Initializable {
         String respuesta;
         try {
             objetoEmpresa = convertirStringObjetoEmpresa();
-            System.out.println(objetoEmpresa); //////////////////////////////////////////////////////////
             if (objetoEmpresa.getId() == 0) {
                 respuesta = this.ControlEmpresa.insertar(objetoEmpresa);
                 if ("OK".equals(respuesta)) {
@@ -453,6 +452,7 @@ public class FrmAlumnoController implements Initializable {
         txtLocalidad.setEditable(valor);
         txtTelefono.setEditable(valor);
         txtFechaNac.setEditable(valor);
+        txtAlumnoCif.setEditable(valor);
     }
 
     private void campoEditableEmpresa(boolean valor) {
@@ -658,7 +658,7 @@ public class FrmAlumnoController implements Initializable {
         txtLocalidad.setText("");
         txtCodigoPostal.setText("");
         txtNumero.setText("");
-        idEmpresa = 0;
+        txtAlumnoCif.setText("");
     }
 
     private void limpiarEmpresa() {
@@ -667,7 +667,6 @@ public class FrmAlumnoController implements Initializable {
         txtNombreEmpresa.setText("");
         txtCalleEmpresa.setText("");
         txtLocalidadEmpresa.setText("");
-        txtAlumnoCif.setText("");
         txtTelefonoEmpresa.setText("");
         txtNumeroEmpresa.setText("");
         txtCPostalEmpresa.setText("");

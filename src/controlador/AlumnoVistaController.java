@@ -150,8 +150,7 @@ public class AlumnoVistaController implements Initializable {
     }
 
     @FXML
-    private void posicionRatonTabla(MouseEvent event
-    ) {
+    private void posicionRatonTabla(MouseEvent event) {
         //cuando pulsamos con el ratón en algún registro de la tabla capturamos la información de la fila
         ClassAlumno claseAlumno = tablaAlumno.getSelectionModel().getSelectedItem();
         if (claseAlumno != null) {  //si no es NULL capturamos los datos de la fila
@@ -166,8 +165,7 @@ public class AlumnoVistaController implements Initializable {
     }
 
     @FXML
-    private void posicionTeclaTabla(KeyEvent event
-    ) {
+    private void posicionTeclaTabla(KeyEvent event) {
         //cuando nos desplazamos con el cursor por la tabla capturamos la información de la fila
         ClassAlumno claseAlumno = tablaAlumno.getSelectionModel().getSelectedItem();
         if (claseAlumno != null) {  //si no es NULL capturamos los datos de la fila
@@ -183,7 +181,6 @@ public class AlumnoVistaController implements Initializable {
 
     @FXML
     private void txtPulsadoEnter(KeyEvent event) {
-
         //keyPressed: cuando se pulsa ENTER en la caja de textoBuscar hacemos la acción de buscar
         Object evt = event.getSource();
         if (evt.equals(txtFiltrarAlumnoTabla) && txtFiltrarAlumnoTabla.getText().length() >= 2) {
