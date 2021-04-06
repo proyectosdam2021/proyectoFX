@@ -29,8 +29,8 @@ public class FrmAlumnoController implements Initializable {
     private int idRegistro;
     private int idEmpresa;
     private String dniAnterior;
-    private ClassAlumno objeto, objetocopia;
-    private ClassEmpresa objetoEmpresa, objetoCopiaEmpresa;
+    private ClassAlumno objetoAlumno;
+    private ClassEmpresa objetoEmpresa;
     private static Scene scene;   //variable de clase Scene donde se produce la acción con los elementos creados
     private static Stage stage;   //variable de clase Stage que es la ventana actual
     private double[] posicion;    //posición de la ventana en eje X-Y
@@ -92,7 +92,7 @@ public class FrmAlumnoController implements Initializable {
         ControlEmpresa = new EmpresaNegocio();
         lblTextoFrm.setText(Variables.getTextoFrm());  //Envíamos el texto de la variable como título del campo label de nuestra ventana
         campoEditable(true);
-        campoDesactivadoEmpresa(true);
+        campoEditableEmpresa(false);
     }
 
     @FXML
@@ -105,7 +105,9 @@ public class FrmAlumnoController implements Initializable {
     private void grabarAlumno(ActionEvent event) {
         if (comprobarDatos()) {
             if (!txtAlumnoCif.getText().isEmpty()) {
-                validaCif();
+                if (!validaCif()) {
+                    editaEmpresa();
+                }
                 if (comprobarDatosEmpresa()) {
                     if (MensajeFX.printTexto("¿Los datos de empresa son correctos?", "CONFIRM", obtenPosicionX_Y())) {
                         guardarDatosEmpresa();
@@ -168,6 +170,7 @@ public class FrmAlumnoController implements Initializable {
             if (" ".equals(event.getCharacter())) {
                 txtAlumnoCif.deletePreviousChar();
             } else {
+                limpiarEmpresa(); /////////////////////////////////////
                 String caracter = event.getCharacter();
                 this.compruebaString(caracter, txtAlumnoCif, 9);
             }
@@ -257,7 +260,7 @@ public class FrmAlumnoController implements Initializable {
     @FXML
     private void cancelarEmpresa(ActionEvent event) {
         limpiarEmpresa();
-        campoDesactivadoEmpresa(true);
+        //campoDesactivadoEmpresa(true);
         campoEditableEmpresa(false);
         txtAlumnoCif.setEditable(true);
         txtAlumnoCif.setText("");
@@ -276,25 +279,18 @@ public class FrmAlumnoController implements Initializable {
         return true;
     }
 
-    private void validaCif() {
+    private boolean validaCif() {
         try {
             if (ControlEmpresa.existe(txtAlumnoCif.getText())) {
                 objetoEmpresa = ControlEmpresa.cargarEmpresa(txtAlumnoCif.getText());
                 campoEditableEmpresa(false);
-                campoDesactivadoEmpresa(false);
                 mostrarDatosEmpresa(objetoEmpresa);
-            } else {
-                campoDesactivadoEmpresa(false);
-                campoEditableEmpresa(true);
-                limpiarEmpresa();
-                txtCifEmpresa.setText(txtAlumnoCif.getText());
-                txtCifEmpresa.setEditable(false);
-                txtAlumnoCif.setEditable(false);
-                txtNombreEmpresa.requestFocus();
+                return true;
             }
         } catch (SQLException ex) {
             Logger.getLogger(FrmAlumnoController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return false;
     }
 
     private void guardarDatos() {
@@ -302,8 +298,8 @@ public class FrmAlumnoController implements Initializable {
         try {
             switch (Variables.getTextoFrm()) {
                 case "CREAR ALUMNO":
-                    objeto = convertirStringObjeto();
-                    respuesta = this.CONTROL.insertar(objeto);
+                    objetoAlumno = convertirStringObjeto();
+                    respuesta = this.CONTROL.insertar(objetoAlumno);
                     if ("OK".equals(respuesta)) {
                         MensajeFX.printTexto("Alumno añadido correctamente", "INFO", obtenPosicionX_Y());
                         this.limpiar();
@@ -311,8 +307,8 @@ public class FrmAlumnoController implements Initializable {
                     }
                     break;
                 case "EDITAR ALUMNO":
-                    objeto = convertirStringObjeto();
-                    respuesta = this.CONTROL.actualizar(objeto, dniAnterior);
+                    objetoAlumno = convertirStringObjeto();
+                    respuesta = this.CONTROL.actualizar(objetoAlumno, dniAnterior);
                     if ("OK".equals(respuesta)) {
                         MensajeFX.printTexto("Alumno editado correctamente", "INFO", obtenPosicionX_Y());
                         this.limpiar();
@@ -348,39 +344,39 @@ public class FrmAlumnoController implements Initializable {
         }
     }
 
-    //Convertirmos los campos textfield a tipo objeto ClassAlumno
+    //Convertirmos los campos textfield a tipo objetoAlumno ClassAlumno
     private ClassAlumno convertirStringObjeto() {
-        this.objeto = new ClassAlumno();
-        objeto.setId(idRegistro);
-        objeto.setDni(txtDni.getText().strip().toUpperCase());
-        objeto.setNombre(txtNombre.getText().strip().toUpperCase());
-        objeto.setApellido1(txtApellido1.getText().strip().toUpperCase());
-        objeto.setApellido2(txtApellido2.getText().strip().toUpperCase());
-        objeto.setCalle(txtCalle.getText().strip().toUpperCase());
-        objeto.setNumero(Integer.parseInt(txtNumero.getText()));
-        objeto.setCp(Integer.parseInt(txtCodigoPostal.getText()));
-        objeto.setLocalidad(txtLocalidad.getText().strip().toUpperCase());
-        objeto.setTelefono(txtTelefono.getText().strip().toUpperCase());
-        objeto.setFecha_nacimiento(java.sql.Date.valueOf(txtFechaNac.getValue()));  //convertimos un campo datepicker en Date SQL
+        this.objetoAlumno = new ClassAlumno();
+        objetoAlumno.setId(idRegistro);
+        objetoAlumno.setDni(txtDni.getText().strip().toUpperCase());
+        objetoAlumno.setNombre(txtNombre.getText().strip().toUpperCase());
+        objetoAlumno.setApellido1(txtApellido1.getText().strip().toUpperCase());
+        objetoAlumno.setApellido2(txtApellido2.getText().strip().toUpperCase());
+        objetoAlumno.setCalle(txtCalle.getText().strip().toUpperCase());
+        objetoAlumno.setNumero(Integer.parseInt(txtNumero.getText()));
+        objetoAlumno.setCp(Integer.parseInt(txtCodigoPostal.getText()));
+        objetoAlumno.setLocalidad(txtLocalidad.getText().strip().toUpperCase());
+        objetoAlumno.setTelefono(txtTelefono.getText().strip().toUpperCase());
+        objetoAlumno.setFecha_nacimiento(java.sql.Date.valueOf(txtFechaNac.getValue()));  //convertimos un campo datepicker en Date SQL
         try {
             if (txtAlumnoCif.getText().isEmpty()) {
-                objeto.setId_empresa(0);
+                objetoAlumno.setId_empresa(0);
             } else if (!txtAlumnoCif.getText().isEmpty() && objetoEmpresa.getId() == 0) {
-                objeto.setId_empresa(ControlEmpresa.ultimoRegistro());
+                objetoAlumno.setId_empresa(ControlEmpresa.ultimoRegistro());
             } else {
-                objeto.setId_empresa(objetoEmpresa.getId());
+                objetoAlumno.setId_empresa(objetoEmpresa.getId());
             }
         } catch (SQLException ex) {
             Logger.getLogger(FrmAlumnoController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        return objeto;
+        return objetoAlumno;
     }
 
-    //Convertirmos los campos textfield a tipo objeto ClassEmpresa
+    //Convertirmos los campos textfield a tipo objetoAlumno ClassEmpresa
     private ClassEmpresa convertirStringObjetoEmpresa() {
         this.objetoEmpresa = new ClassEmpresa();
-        this.objetoCopiaEmpresa = new ClassEmpresa();
+        ClassEmpresa objetocopiaEmpresa = new ClassEmpresa();
         objetoEmpresa.setCif(txtCifEmpresa.getText().strip());
         objetoEmpresa.setNombre(txtNombreEmpresa.getText().strip());
         objetoEmpresa.setCalle(txtCalleEmpresa.getText().strip());
@@ -389,11 +385,11 @@ public class FrmAlumnoController implements Initializable {
         objetoEmpresa.setLocalidad(txtLocalidadEmpresa.getText().strip());
         objetoEmpresa.setTelefono(txtTelefonoEmpresa.getText().strip());
 
-        objetoCopiaEmpresa = ControlEmpresa.cargarEmpresa(txtAlumnoCif.getText());
-        if (objetoCopiaEmpresa.getId() == 0) {
+        objetocopiaEmpresa = ControlEmpresa.cargarEmpresa(txtAlumnoCif.getText());
+        if (objetocopiaEmpresa.getId() == 0) {
             objetoEmpresa.setId(0);  //si la empresa no existe le ponemos al ID valor 0 para que lo grabe
         } else {
-            objetoEmpresa.setId(objetoCopiaEmpresa.getId());
+            objetoEmpresa.setId(objetocopiaEmpresa.getId());
         }
 
         return objetoEmpresa;
@@ -427,17 +423,24 @@ public class FrmAlumnoController implements Initializable {
         txtLocalidadEmpresa.setText(objEmpresa.getLocalidad());
         txtTelefonoEmpresa.setText(objEmpresa.getTelefono());
         txtAlumnoCif.setText(objetoEmpresa.getCif());
-        objetoCopiaEmpresa = (ClassEmpresa) objetoEmpresa.clonar();
+        //objetocopiaEmpresa = (ClassEmpresa) objetoEmpresa.clonar();
     }
 
     private void cargarDatosEmpresa(int idEmpresa) {
         objetoEmpresa = new ClassEmpresa();
         objetoEmpresa = ControlEmpresa.cargarEmpresaId(idEmpresa);
-        System.out.println(lblTextoFrm);
         mostrarDatosEmpresa(objetoEmpresa);
         if (txtAlumnoCif.getText() == null) {
             txtAlumnoCif.setText("");
         }
+    }
+
+    private void editaEmpresa() {
+        campoEditableEmpresa(true);
+        txtCifEmpresa.setText(txtAlumnoCif.getText());
+        txtCifEmpresa.setEditable(false);
+        txtAlumnoCif.setEditable(false);
+        txtNombreEmpresa.requestFocus();
     }
 
     //Activamos o desactivamos los campos del formulario
@@ -463,18 +466,6 @@ public class FrmAlumnoController implements Initializable {
         txtCPostalEmpresa.setEditable(valor);
         txtLocalidadEmpresa.setEditable(valor);
         txtTelefonoEmpresa.setEditable(valor);
-    }
-
-    //Activamos o desactivamos los campos del formulario Empresa
-    private void campoDesactivadoEmpresa(boolean valor) {
-        txtCifEmpresa.setDisable(valor);
-        txtNombreEmpresa.setDisable(valor);
-        txtCalleEmpresa.setDisable(valor);
-        txtNumeroEmpresa.setDisable(valor);
-        txtCPostalEmpresa.setDisable(valor);
-        txtLocalidadEmpresa.setDisable(valor);
-        txtTelefonoEmpresa.setDisable(valor);
-        btnCancelarEmpresa.setDisable(valor);
     }
 
     //Método para campos de tipo String, convertiendo a mayúscula y comprobando tamaño
@@ -516,11 +507,6 @@ public class FrmAlumnoController implements Initializable {
             return false;
         }
         return true;
-    }
-
-    private void activaBotones(boolean valor) {
-        btnCancelar.setDisable(valor);
-        btnAceptar.setDisable(valor);
     }
 
     //Método donde comprobamos los campos no estén vacíos
