@@ -104,23 +104,24 @@ public class FrmAlumnoController implements Initializable {
     @FXML
     private void grabarAlumno(ActionEvent event) {
         if (comprobarDatos()) {
-            if (!txtAlumnoCif.getText().isEmpty()) {
+            if (!txtAlumnoCif.getText().isEmpty()) {  //si el textfield del alumno cif NO está vacia realizamos lo siguiente...
                 if (!validaCif()) {
                     editaEmpresa();
                 }
                 if (comprobarDatosEmpresa()) {
                     if (MensajeFX.printTexto("¿Los datos de empresa son correctos?", "CONFIRM", obtenPosicionX_Y())) {
-                        guardarDatosEmpresa();
+                        guardarDatosEmpresa();  //guardamos datos de la empresa del alumno
                         try {
                             Thread.sleep(500);
                         } catch (InterruptedException ex) {
                             Logger.getLogger(FrmAlumnoController.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                        guardarDatos();
+                        guardarDatos(); //guardamos datos del alumno con el id_empresa asociado
                     }
                 }
-            } else if (txtAlumnoCif.getText().isEmpty()) {
-                guardarDatos();
+            } else //si ejecuta SI el textfield del alumno cif está vacio
+            {
+                guardarDatos();  //guardamos datos del alumno sin empresa
             }
         }
     }
