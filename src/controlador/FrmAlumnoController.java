@@ -111,11 +111,7 @@ public class FrmAlumnoController implements Initializable {
                 if (comprobarDatosEmpresa()) {
                     if (MensajeFX.printTexto("¿Los datos de empresa son correctos?", "CONFIRM", obtenPosicionX_Y())) {
                         guardarDatosEmpresa();  //guardamos datos de la empresa del alumno
-                        try {
-                            Thread.sleep(500);
-                        } catch (InterruptedException ex) {
-                            Logger.getLogger(FrmAlumnoController.class.getName()).log(Level.SEVERE, null, ex);
-                        }
+                        hacerPausa(500);  //realizamos una pausa de 500ms
                         guardarDatos(); //guardamos datos del alumno con el id_empresa asociado
                     }
                 }
@@ -686,6 +682,14 @@ public class FrmAlumnoController implements Initializable {
         posicionxy[0] = myStage.getX() + (x - frmX);
         posicionxy[1] = y - frmY;
         return posicionxy;
+    }
+
+    private void hacerPausa(int valor) {
+        try {
+            Thread.sleep(valor);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(FrmAlumnoController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }
