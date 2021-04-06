@@ -96,7 +96,7 @@ public class FrmAlumnoController implements Initializable {
     }
 
     @FXML
-    private void cancelarAlumno(ActionEvent event) {
+    private void cancelarAlumno(ActionEvent event) {  //cerramos el FrmAlumno
         Stage myStage = (Stage) this.txtDni.getScene().getWindow();
         myStage.close();
     }
@@ -104,18 +104,18 @@ public class FrmAlumnoController implements Initializable {
     @FXML
     private void grabarAlumno(ActionEvent event) {
         if (comprobarDatos()) {
-            if (!txtAlumnoCif.getText().isEmpty()) {  //si el textfield del alumno cif NO está vacia realizamos lo siguiente...
-                if (!validaCif()) {
-                    editaEmpresa();
+            if (!txtAlumnoCif.getText().isEmpty()) {  //si el textfield del alumno cif NO está vacio realizamos lo siguiente...
+                if (!validaCif()) { //si no se valida es CIF entonces la empresa no existe
+                    editaEmpresa();     //permitimos que se inserten los datos en los campos de empresa
                 }
-                if (comprobarDatosEmpresa()) {
+                if (comprobarDatosEmpresa()) {  //si los datos de empresa son correctos
                     if (MensajeFX.printTexto("¿Los datos de empresa son correctos?", "CONFIRM", obtenPosicionX_Y())) {
                         guardarDatosEmpresa();  //guardamos datos de la empresa del alumno
                         hacerPausa(500);  //realizamos una pausa de 500ms
                         guardarDatos(); //guardamos datos del alumno con el id_empresa asociado
                     }
                 }
-            } else //si ejecuta SI el textfield del alumno cif está vacio
+            } else //solo si el textfield del alumno cif está vacio..
             {
                 guardarDatos();  //guardamos datos del alumno sin empresa
             }
@@ -125,14 +125,14 @@ public class FrmAlumnoController implements Initializable {
     //En este método controlamos el texto introducido en los campos textfield
     @FXML
     private void valorTecla(KeyEvent event) {
-        Object evt = event.getSource();
+        Object evt = event.getSource();  //capturamos el evento cuando se pulsa una tecla en los campos que tenemos el evento activado
 
-        if (evt.equals(txtTelefono)) {
-            if (" ".equals(event.getCharacter())) {
-                txtTelefono.deletePreviousChar();
-            } else {
-                String caracter = event.getCharacter();
-                this.compruebaInt(caracter, txtTelefono, 12);
+        if (evt.equals(txtTelefono)) {                  //si el evento es el campo teléfono
+            if (" ".equals(event.getCharacter())) {      //si el caracter que se introduce es un "espacio en blanco"
+                txtTelefono.deletePreviousChar();         //eliminamos el caracter (solo si trata de un "espacio")
+            } else {                                          //sino es un "espacio" en blanco..
+                String caracter = event.getCharacter();       //guardamos en un string el valor del caracter
+                this.compruebaInt(caracter, txtTelefono, 12); //llamamos al método de tipo entero, pasando el string(caracter), campo textfield, y tamaño máximo permitido
             }
         }
 
@@ -154,22 +154,22 @@ public class FrmAlumnoController implements Initializable {
             }
         }
 
-        if (evt.equals(txtDni)) {
-            if (" ".equals(event.getCharacter())) {
-                txtDni.deletePreviousChar();
-            } else {
-                String caracter = event.getCharacter();
-                this.compruebaString(caracter, txtDni, 9);
+        if (evt.equals(txtDni)) {    //si el evento es el campo dni
+            if (" ".equals(event.getCharacter())) {  //si el caracter que se introduce es un "espacio en blanco"
+                txtDni.deletePreviousChar();           //eliminamos el caracter (solo si trata de un "espacio")
+            } else {                                         //sino es un "espacio" en blanco..
+                String caracter = event.getCharacter();         //guardamos en un string el valor del caracter
+                this.compruebaString(caracter, txtDni, 9);      //llamamos al método de tipo string, pasando el string(caracter), campo textfield, y tamaño máximo permitido
             }
         }
 
-        if (evt.equals(txtAlumnoCif) && txtAlumnoCif.isEditable()) {
-            if (" ".equals(event.getCharacter())) {
-                txtAlumnoCif.deletePreviousChar();
-            } else {
-                limpiarEmpresa(); /////////////////////////////////////
-                String caracter = event.getCharacter();
-                this.compruebaString(caracter, txtAlumnoCif, 9);
+        if (evt.equals(txtAlumnoCif) && txtAlumnoCif.isEditable()) {  //si el evento es campo alumnoCif y alumnoCif es editable
+            if (" ".equals(event.getCharacter())) {                     //si el caracter que se introduce es un "espacio en blanco"
+                txtAlumnoCif.deletePreviousChar();                      //eliminamos el caracter (solo si trata de un "espacio")
+            } else {                                                    //sino es un "espacio" en blanco..
+                limpiarEmpresa();                                       // limpiamos los campos textfield de empresa 
+                String caracter = event.getCharacter();                 //guardamos en un string el valor del caracter
+                this.compruebaString(caracter, txtAlumnoCif, 9);       //llamamos al método de tipo string, pasando el string(caracter), campo textfield, y tamaño máximo permitido 
             }
         }
 
@@ -257,7 +257,6 @@ public class FrmAlumnoController implements Initializable {
     @FXML
     private void cancelarEmpresa(ActionEvent event) {
         limpiarEmpresa();
-        //campoDesactivadoEmpresa(true);
         campoEditableEmpresa(false);
         txtAlumnoCif.setEditable(true);
         txtAlumnoCif.setText("");
@@ -265,42 +264,44 @@ public class FrmAlumnoController implements Initializable {
 
     private boolean validaDni() {
         try {
-            if (CONTROL.existe(txtDni.getText())) {
+            if (CONTROL.existe(txtDni.getText())) {  //si Existe el dni (usamos los métodos de la clase AlumnoNegocio = CONTROL)
                 MensajeFX.printTexto("El campo 'DNI' ya existe", "WARNING", obtenPosicionX_Y());
                 txtDni.requestFocus();
                 return false;
             }
         } catch (SQLException ex) {
-            Logger.getLogger(FrmAlumnoController.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("Error en validaDni :" + ex);
         }
         return true;
     }
 
     private boolean validaCif() {
         try {
-            if (ControlEmpresa.existe(txtAlumnoCif.getText())) {
-                objetoEmpresa = ControlEmpresa.cargarEmpresa(txtAlumnoCif.getText());
-                campoEditableEmpresa(false);
-                mostrarDatosEmpresa(objetoEmpresa);
+            if (ControlEmpresa.existe(txtAlumnoCif.getText())) {  //si Existe el cif de la empresa del alumno (usamos los métodos de la clase EmpresaNegocio = ControlEmpresa)
+                objetoEmpresa = ControlEmpresa.cargarEmpresa(txtAlumnoCif.getText());  //metemos en objeto empresa los datos de la empresa que cargada
+                campoEditableEmpresa(false);  //no permitimos que se puedan editarr los campos de empresa
+                mostrarDatosEmpresa(objetoEmpresa);  //mostramos en los textfield los datos de la empresa cargada
                 return true;
             }
         } catch (SQLException ex) {
-            Logger.getLogger(FrmAlumnoController.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("Error en validaCif :" + ex);
         }
         return false;
     }
 
     private void guardarDatos() {
-        String respuesta;
+        String respuesta;  //vamos a guardar la respuesta de tipo string que nos devolverá al llamar con el método CONTROL
         try {
-            switch (Variables.getTextoFrm()) {
+            switch (Variables.getTextoFrm()) { //desde el método anterior (AlumnoVistaController) envíamos el tipo de operación a realizar
                 case "CREAR ALUMNO":
-                    objetoAlumno = convertirStringObjeto();
-                    respuesta = this.CONTROL.insertar(objetoAlumno);
-                    if ("OK".equals(respuesta)) {
-                        MensajeFX.printTexto("Alumno añadido correctamente", "INFO", obtenPosicionX_Y());
+                    objetoAlumno = convertirStringObjeto();  //guardamos en el objeto de tipo alumno los datos de los textfield mediante un método de convertir
+                    respuesta = this.CONTROL.insertar(objetoAlumno); //procemos insertar del objeto alumno y guardamos la respuesta
+                    if ("OK".equals(respuesta)) {   //si la respuesta es OK mostramos un mensaje de información
+                        MensajeFX.printTexto("Alumno añadido correctamente", "INFO", obtenPosicionX_Y());  //mensaje compuesto del texto, tipo de mensaje, y posición en la ventana
                         this.limpiar();
                         this.cerrarVentana();
+                    } else {  //si la respuesta NO es OK
+                        MensajeFX.printTexto(respuesta, "ERROR", obtenPosicionX_Y());  //mostramos el mensaje de error de la respuesta
                     }
                     break;
                 case "EDITAR ALUMNO":
@@ -311,24 +312,23 @@ public class FrmAlumnoController implements Initializable {
                         this.limpiar();
                         this.limpiarEmpresa();
                         this.cerrarVentana();
-                    } else {
-                        MensajeFX.printTexto(respuesta, "ERROR", obtenPosicionX_Y());
+                    } else {  //si la respuesta NO es OK
+                        MensajeFX.printTexto(respuesta, "ERROR", obtenPosicionX_Y());  //mostramos el mensaje de error de la respuesta
                     }
                     break;
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(FrmAlumnoController.class
-                    .getName()).log(Level.SEVERE, null, ex);
+            System.err.println("Error en guardarDatos :" + ex);
         }
     }
 
     private void guardarDatosEmpresa() {
         String respuesta;
         try {
-            objetoEmpresa = convertirStringObjetoEmpresa();
-            if (objetoEmpresa.getId() == 0) {
-                respuesta = this.ControlEmpresa.insertar(objetoEmpresa);
+            objetoEmpresa = convertirStringObjetoEmpresa(); //guardamos el objeto de tipo empresa los datos de los campos textfield mediante un método convertir
+            if (objetoEmpresa.getId() == 0) {                //si el id empresa es 0 = significa que es una nueva empresa
+                respuesta = this.ControlEmpresa.insertar(objetoEmpresa);  //realizamos la inserción de la nueva empresa y guardamos la respuesta
                 if ("OK".equals(respuesta)) {
                     MensajeFX.printTexto("Empresa añadida correctamente", "INFO", obtenPosicionX_Y());
                 } else {
@@ -336,8 +336,7 @@ public class FrmAlumnoController implements Initializable {
                 }
             }
         } catch (SQLException ex) {
-            Logger.getLogger(FrmAlumnoController.class
-                    .getName()).log(Level.SEVERE, null, ex);
+            System.err.println("Error en guardarDatosEmpresa :" + ex);
         }
     }
 
@@ -356,15 +355,15 @@ public class FrmAlumnoController implements Initializable {
         objetoAlumno.setTelefono(txtTelefono.getText().strip().toUpperCase());
         objetoAlumno.setFecha_nacimiento(java.sql.Date.valueOf(txtFechaNac.getValue()));  //convertimos un campo datepicker en Date SQL
         try {
-            if (txtAlumnoCif.getText().isEmpty()) {
-                objetoAlumno.setId_empresa(0);
-            } else if (!txtAlumnoCif.getText().isEmpty() && objetoEmpresa.getId() == 0) {
-                objetoAlumno.setId_empresa(ControlEmpresa.ultimoRegistro());
-            } else {
+            if (txtAlumnoCif.getText().isEmpty()) { //si textfield de alumnoCif está vacío 
+                objetoAlumno.setId_empresa(0);          //guardamos en el objeto id_empresa un 0 (no se va a guardar empresa)
+            } else if (!txtAlumnoCif.getText().isEmpty() && objetoEmpresa.getId() == 0) {  //si el campo alumnocif NO está vacío y el campo id empresa es 0
+                objetoAlumno.setId_empresa(ControlEmpresa.ultimoRegistro());  //guardamos en idempresa del último registro introducido **cambiar por una búsqueda por CIF**, al crear la nueva empresa este proceso es una lectura casi inmediata después de guardar la empresa
+            } else {  //sino .. (significa que ya existe la empresa y solo requerimos el id_empresa)
                 objetoAlumno.setId_empresa(objetoEmpresa.getId());
             }
         } catch (SQLException ex) {
-            Logger.getLogger(FrmAlumnoController.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("Error en convertirStringObeto :" + ex);
         }
 
         return objetoAlumno;
@@ -373,7 +372,7 @@ public class FrmAlumnoController implements Initializable {
     //Convertirmos los campos textfield a tipo objetoAlumno ClassEmpresa
     private ClassEmpresa convertirStringObjetoEmpresa() {
         this.objetoEmpresa = new ClassEmpresa();
-        ClassEmpresa objetocopiaEmpresa = new ClassEmpresa();
+        ClassEmpresa objetocopiaEmpresa = new ClassEmpresa();  //creamos un nuevo objeto de tipo empresa
         objetoEmpresa.setCif(txtCifEmpresa.getText().strip());
         objetoEmpresa.setNombre(txtNombreEmpresa.getText().strip());
         objetoEmpresa.setCalle(txtCalleEmpresa.getText().strip());
@@ -381,12 +380,11 @@ public class FrmAlumnoController implements Initializable {
         objetoEmpresa.setCp(Integer.parseInt(txtCPostalEmpresa.getText()));
         objetoEmpresa.setLocalidad(txtLocalidadEmpresa.getText().strip());
         objetoEmpresa.setTelefono(txtTelefonoEmpresa.getText().strip());
-
-        objetocopiaEmpresa = ControlEmpresa.cargarEmpresa(txtAlumnoCif.getText());
-        if (objetocopiaEmpresa.getId() == 0) {
-            objetoEmpresa.setId(0);  //si la empresa no existe le ponemos al ID valor 0 para que lo grabe
-        } else {
-            objetoEmpresa.setId(objetocopiaEmpresa.getId());
+        objetocopiaEmpresa = ControlEmpresa.cargarEmpresa(txtAlumnoCif.getText());  //guardamos en el objeto copia la empresa a través del método y el parámetro alumno cif empresa
+        if (objetocopiaEmpresa.getId() == 0) {  //si la empresa no existe le ponemos al ID valor 0 
+            objetoEmpresa.setId(0);    //establecemos el id empresa a 0 (para que lo grabe como nueva empresa)
+        } else {                                 // sino..
+            objetoEmpresa.setId(objetocopiaEmpresa.getId());  //establecemos en el id empresa el id del objeto copia que habíamos cargado
         }
 
         return objetoEmpresa;
