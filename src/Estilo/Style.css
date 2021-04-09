@@ -29,6 +29,7 @@
     -fx-background-radius: 3em;
 }
 
+
 .botonesmenu:pressed{
     -fx-text-fill: white;
     -fx-font-family: "Segoe UI";
@@ -37,8 +38,24 @@
     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
 }
 
+.tab-header-background {
+    -fx-background-color: linear-gradient(#61a2b1, #2A5058);
+        
+
+}
+.tab-label {
+    -fx-font-size: 16px;
+    -fx-text-fill: white;
+    -fx-font-family: "Segoe UI";
+    -fx-font-weight: bold;
+    -fx-background-color: linear-gradient(#61a2b1, #2A5058);
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+    -fx-background-radius: 1px;
+
+}
+
 .label {
-    -fx-font-size: 12px;
+    -fx-font-size: 14px;
     -fx-font-weight: bold;
     -fx-text-fill: #333333;
     -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );
