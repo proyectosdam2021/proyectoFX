@@ -13,7 +13,7 @@
   <children>
       <ToolBar prefHeight="40.0" prefWidth="200.0">
         <items>
-          <Button mnemonicParsing="false" onAction="#mnuiAlumno" styleClass="botonesmenu" text="Alumnos">
+          <Button fx:id="btnAlumnos" mnemonicParsing="false" onAction="#mnuiAlumno" styleClass="botonesmenu" text="Alumnos">
                <graphic>
                   <ImageView fitHeight="50.0" fitWidth="50.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -28,7 +28,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#mnuiProfesor" styleClass="botonesmenu" text="Profesores">
+            <Button fx:id="btnProfesores" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#mnuiProfesor" styleClass="botonesmenu" text="Profesores">
                <graphic>
                   <ImageView fitHeight="50.0" fitWidth="50.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -43,7 +43,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button layoutX="131.0" layoutY="10.0" mnemonicParsing="false" onAction="#mnuiCursos" styleClass="botonesmenu" text="Cursos">
+            <Button fx:id="btnCursos" layoutX="131.0" layoutY="10.0" mnemonicParsing="false" onAction="#mnuiCursos" styleClass="botonesmenu" text="Cursos">
                <graphic>
                   <ImageView fitHeight="50.0" fitWidth="50.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -58,7 +58,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button mnemonicParsing="false" onAction="#mnuiEmpresas" styleClass="botonesmenu" text="Empresas">
+            <Button fx:id="btnEmpresas" mnemonicParsing="false" onAction="#mnuiEmpresas" styleClass="botonesmenu" text="Empresas">
                <graphic>
                   <ImageView fitHeight="50.0" fitWidth="50.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
                      <image>
