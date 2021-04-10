@@ -20,10 +20,22 @@ public class PrincipalVistaController implements Initializable {
     private static Stage stage;   //variable de clase Stage que es la ventana actual
     private VBox ventana; //creamos un objeto de tipo VBox (Todas nuestras ventanas hijas comienzan por este tipo de elemento)
     private double[] posicion;    //posición de la ventana en eje X-Y
+    private final String btnClicked = (""
+            + "-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );"
+            + "-fx-background-color: linear-gradient(#61a2b1, #2A5058);"
+            + "");
     @FXML
     private VBox vboxPrincipal;
     @FXML
     private Button mnuSalir;
+    @FXML
+    private Button btnAlumnos;
+    @FXML
+    private Button btnProfesores;
+    @FXML
+    private Button btnCursos;
+    @FXML
+    private Button btnEmpresas;
 
     /**
      * Initializes the controller class.
@@ -37,20 +49,30 @@ public class PrincipalVistaController implements Initializable {
 
     @FXML
     private void mnuiAlumno(ActionEvent event) {
+        DefaultStyle();
+        btnAlumnos.setStyle(btnClicked);
         cargarAlumno();
     }
 
     @FXML
     private void mnuiEmpresas(ActionEvent event) {
+        DefaultStyle();
+        btnEmpresas.setStyle(btnClicked);
         cargarEmpresa();
     }
 
     @FXML
     private void mnuiProfesor(ActionEvent event) {
+        DefaultStyle();
+        btnProfesores.setStyle(btnClicked);
+        cargarProfesor();
     }
 
     @FXML
     private void mnuiCursos(ActionEvent event) {
+        DefaultStyle();
+        btnCursos.setStyle(btnClicked);
+        cargarCurso();
     }
 
     @FXML
@@ -119,5 +141,17 @@ public class PrincipalVistaController implements Initializable {
         posicionxy[1] = myStage.getY() + (y - frmY);
         return posicionxy;
     }
+    void DefaultStyle() {
+        String DefaultStyle = (""
+                + "    -fx-font-size: 12px;\n"
+                + "    -fx-font-weight: bold;\n"
+                + "    -fx-text-fill: #333333;\n"
+                + "    -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );"
+                + "");
+        btnAlumnos.setStyle(DefaultStyle);
+        btnProfesores.setStyle(DefaultStyle);
+        btnEmpresas.setStyle(DefaultStyle);
+        btnCursos.setStyle(DefaultStyle);
 
+    }
 }
