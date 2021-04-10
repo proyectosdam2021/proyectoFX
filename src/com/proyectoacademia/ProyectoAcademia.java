@@ -42,6 +42,22 @@ public class ProyectoAcademia extends Application {
         stage.getIcons().add(new Image(getClass().getResourceAsStream("/imagenes/icons8_java_duke_50px.png")));  //Cargamos un nuevo icono en la ventana
         //stage.setResizable(false); //no permitimos que la ventana cambie de tamaño
         stage.show(); //mostramos la ventana
+        //este código es para controlar el evento al pulsar la X y confirmar el cierre de la aplicación
+        double[] posicionxy = new double[2]; 
+        int frmX = 420 / 2; //tamaño ancho componente
+        int frmY = 400; //tamaño alto componente
+        int x = (int) (stage.getWidth() / 2);
+        int y = (int) (stage.getHeight() / 2);
+        posicionxy[0] = stage.getX() + (x - frmX);
+        posicionxy[1] = stage.getY() + (y - frmY);
+        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            public void handle(WindowEvent we) {
+                if (MensajeFX.printTexto("¿Desea salir de la aplicación?", "CONFIRM", posicionxy)) {
+                } else {
+                    we.consume();
+                }
+            }
+        });
     }
     
     @Override
