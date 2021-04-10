@@ -63,16 +63,16 @@ public class PrincipalVistaController implements Initializable {
 
     @FXML
     private void mnuiProfesor(ActionEvent event) {
-        DefaultStyle();
-        btnProfesores.setStyle(btnClicked);
-        cargarProfesor();
+       // DefaultStyle();
+       // btnProfesores.setStyle(btnClicked);
+        // cargarProfesor();
     }
 
     @FXML
     private void mnuiCursos(ActionEvent event) {
-        DefaultStyle();
-        btnCursos.setStyle(btnClicked);
-        cargarCurso();
+       // DefaultStyle();
+        //btnCursos.setStyle(btnClicked);
+        //cargarCurso();
     }
 
     @FXML
@@ -149,9 +149,9 @@ public class PrincipalVistaController implements Initializable {
                 + "    -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );"
                 + "");
         btnAlumnos.setStyle(DefaultStyle);
-        btnProfesores.setStyle(DefaultStyle);
+       // btnProfesores.setStyle(DefaultStyle);
         btnEmpresas.setStyle(DefaultStyle);
-        btnCursos.setStyle(DefaultStyle);
+       // btnCursos.setStyle(DefaultStyle);
 
     }
 }
