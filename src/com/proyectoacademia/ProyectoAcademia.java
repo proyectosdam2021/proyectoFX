@@ -3,11 +3,14 @@ package com.proyectoacademia;
 import controlador.PrincipalVistaController;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
+import negocio.MensajeFX;
         
 public class ProyectoAcademia extends Application {
     
@@ -51,6 +54,7 @@ public class ProyectoAcademia extends Application {
         posicionxy[0] = stage.getX() + (x - frmX);
         posicionxy[1] = stage.getY() + (y - frmY);
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
             public void handle(WindowEvent we) {
                 if (MensajeFX.printTexto("¿Desea salir de la aplicación?", "CONFIRM", posicionxy)) {
                 } else {

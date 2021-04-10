@@ -5,8 +5,6 @@ import entidades.ClassEmpresa;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -686,7 +684,7 @@ public class FrmAlumnoController implements Initializable {
         try {
             Thread.sleep(valor);
         } catch (InterruptedException ex) {
-            Logger.getLogger(FrmAlumnoController.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("Error en hacerPausa :" + ex);
         }
     }
 
