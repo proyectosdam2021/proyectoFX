@@ -12,7 +12,7 @@ Aplicación proyecto Academia
  3. Configuring JAVA FX Modules and Libraries on the Netbeans environment  (https://gluonhq.com/products/javafx/)
  4. Adding the vm optiones same that:
  vm options
---module-path "[path-to-sdk_FX\lib]" --add-modules=javafx.controls,javafx.fxml,javafx.graphics
+--module-path "[path-to-sdk-JavaFX\lib]" --add-modules=javafx.controls,javafx.fxml,javafx.graphics
 
  5. Compile and enjoy with Netbeans
 
